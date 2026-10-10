@@ -12,7 +12,7 @@
 
 // Master WhatsApp Contact & Admin Credentials
 let ADMIN_WHATSAPP_NUMBER = '919496924874';
-let ADMIN_UPI_ID = '9496924874@upi';
+let ADMIN_UPI_ID = 'mithumithlaj007-1@okaxis';
 const ADMIN_LOGIN_ID = 'lakexplorer';
 const ADMIN_LOGIN_PASS = 'mj@010701#';
 
@@ -697,8 +697,215 @@ let MARKETPLACE_SERVICES = [
     image: 'assets/images/resort.jpg',
     desc: 'Professional photographer capturing candid memories at golden hour along the palm trees and crashing waves.',
     features: ['50+ high-res edited photos', 'Prop setup (hats, shell garland)', 'Delivery via Google Drive']
+  },
+
+  // HOTELS & STAYS
+  {
+    id: 'hotel-agatti-beachfront',
+    category: 'stays',
+    title: 'Agatti Beach Resort — Deluxe Sea View Room',
+    island: 'Agatti Island',
+    vendor: 'Agatti Island Beach Resort (Official)',
+    price: 8500,
+    priceUnit: 'per room / night (incl. meals)',
+    commission: 1200,
+    image: 'assets/images/resort.jpg',
+    desc: 'Government-approved resort with stunning sea-view rooms, private beach access, all meals, and dolphin-spotting guided tours.',
+    features: ['Direct beach access', 'All 3 meals included', 'SCUBA intro session', 'Entry permit assistance']
+  },
+  {
+    id: 'hotel-kadmat-cottage',
+    category: 'stays',
+    title: 'Kadmat Water Sports Resort — Beach Cottage',
+    island: 'Kadmat Island',
+    vendor: 'SPORTS Kadmat Island Resort',
+    price: 9200,
+    priceUnit: 'per cottage / night',
+    commission: 1400,
+    image: 'assets/images/resort.jpg',
+    desc: 'Premium beach cottage on the world-famous Kadmat lagoon. Includes access to diving center, kayaking, and glass-bottom boat rides.',
+    features: ['2 Adults + 1 child', 'All meals buffet', 'Free glass-bottom boat ride daily', 'SCUBA & snorkel gear']
+  },
+  {
+    id: 'hotel-minicoy-heritage',
+    category: 'stays',
+    title: 'Minicoy Heritage Seafront Bungalow',
+    island: 'Minicoy Island',
+    vendor: 'Minicoy Heritage Stays',
+    price: 6800,
+    priceUnit: 'per bungalow / night',
+    commission: 1000,
+    image: 'assets/images/resort.jpg',
+    desc: 'Traditional Maldivian-style bungalow on Minicoy, the southernmost island. Walk to 1885 lighthouse. Authentic Mahl culture experience.',
+    features: ['Traditional architecture', 'Lighthouse walk guided', 'All meals home-cooked', 'Cultural dance show']
+  },
+  {
+    id: 'hotel-kalpeni-homestay',
+    category: 'stays',
+    title: 'Kalpeni Lagoon View AC Homestay',
+    island: 'Kalpeni Island',
+    vendor: 'Kalpeni Coral Homestays',
+    price: 3800,
+    priceUnit: 'per room / night',
+    commission: 600,
+    image: 'assets/images/resort.jpg',
+    desc: 'Budget-friendly lagoon-facing AC room in a certified island homestay. Home-cooked authentic Lakshadweep meals included.',
+    features: ['AC room, attached bath', 'Lagoon view', 'Breakfast + dinner', 'Local guide included']
+  },
+
+  // PHOTOGRAPHY & VIDEOGRAPHY
+  {
+    id: 'photo-drone-reel',
+    category: 'photographers',
+    title: 'Aerial Drone Reel — 60s Island Cinematic Video',
+    island: 'All Islands',
+    vendor: 'SkyView Lakshadweep Drone Films',
+    price: 6000,
+    priceUnit: 'per reel (60 seconds)',
+    commission: 1000,
+    image: 'assets/images/scuba.jpg',
+    desc: 'Licensed drone operator captures breathtaking aerial videos of the atoll, lagoon, coral reefs, and your stay. Delivered as edited 4K reel.',
+    features: ['4K 60fps footage', 'Licensed DJI Mini 4 Pro', 'Music + color graded edit', 'Instagram-ready format']
+  },
+  {
+    id: 'photo-scuba-underwater',
+    category: 'photographers',
+    title: 'Underwater Scuba Dive Photography',
+    island: 'Kadmat / Agatti / Bangaram',
+    vendor: 'Deep Blue Lakshadweep Photography',
+    price: 3500,
+    priceUnit: 'per dive (30 photos)',
+    commission: 600,
+    image: 'assets/images/scuba.jpg',
+    desc: 'Certified divemaster-photographer captures your scuba dive with professional underwater housing. Turtles, corals, and reef fish.',
+    features: ['30 RAW + edited photos', 'Waterproof 40m housing', 'Coral ID notes', 'Same-day WhatsApp delivery']
+  },
+  {
+    id: 'video-full-day',
+    category: 'photographers',
+    title: 'Full Day Island Videography — Travel Vlog Edit',
+    island: 'Any Island',
+    vendor: 'Island Frames Productions',
+    price: 9500,
+    priceUnit: 'per full day (8 hrs)',
+    commission: 1500,
+    image: 'assets/images/resort.jpg',
+    desc: 'Professional videographer follows you throughout your island day — beach, watersports, resort, sunset. Delivers a cinematic 5-min travel vlog.',
+    features: ['8 hours coverage', '5-min cinematic vlog', 'Raw footage backup', 'YouTube/Reels formatted']
+  },
+
+  // FOOD & CUISINE
+  {
+    id: 'food-tuna-feast',
+    category: 'food',
+    title: 'Traditional Lakshadweep Tuna Feast',
+    island: 'Kavaratti / Kadmat / Agatti',
+    vendor: 'Island Kitchen by Fatima',
+    price: 800,
+    priceUnit: 'per person (full meal)',
+    commission: 150,
+    image: 'assets/images/hero.jpg',
+    desc: 'Authentic island home-cooked tuna curry, coconut fish fry, rice porridge, and fresh coconut water — the true Lakshadweep experience.',
+    features: ['Full traditional meal', 'Tuna curry + coconut rice', 'Fresh coconut drinks', 'Vegetarian option available']
+  },
+  {
+    id: 'food-lobster-bbq',
+    category: 'food',
+    title: 'Premium Beach Lobster & Crab BBQ Night',
+    island: 'Bangaram / Agatti / Kadmat',
+    vendor: 'Coral Beach BBQ Co.',
+    price: 2200,
+    priceUnit: 'per person',
+    commission: 400,
+    image: 'assets/images/hero.jpg',
+    desc: 'Exclusive open-air beach BBQ with freshly caught lobster, crab, prawn, and catch-of-day fish. Bonfire on the beach under the stars.',
+    features: ['Fresh-catch seafood', 'Garlic butter, lemon sauces', 'Beach bonfire setup', 'Mocktails included']
+  },
+
+  // CLOTHING & CRAFTS
+  {
+    id: 'cloth-lak-tshirt',
+    category: 'clothing',
+    title: 'LakExplorer Official Lakshadweep T-Shirt',
+    island: 'All Islands / Online',
+    vendor: 'Island Prints by LakExplorer',
+    price: 599,
+    priceUnit: 'per piece',
+    commission: 100,
+    image: 'assets/images/hero.jpg',
+    desc: 'Premium 100% cotton Lakshadweep souvenir tshirt with island map print. Available in 8 colors. Sizes XS–5XL.',
+    features: ['100% cotton, pre-shrunk', 'Island map print', 'XS to 5XL sizes', 'Shipped or collect on island']
+  },
+  {
+    id: 'cloth-traditional-saree',
+    category: 'clothing',
+    title: 'Traditional Lakshadweep Mundu & Kasavu Set',
+    island: 'Kavaratti / Agatti',
+    vendor: 'Island Weavers Collective',
+    price: 1800,
+    priceUnit: 'per set',
+    commission: 300,
+    image: 'assets/images/hero.jpg',
+    desc: 'Authentic handloom Mundu and Kasavu saree woven by local island artisans. Cultural dress of Lakshadweep. Great gift.',
+    features: ['Handloom woven', 'Kasavu gold border', 'Unisex Mundu + Saree set', 'Certified artisan product']
+  },
+  {
+    id: 'cloth-handicraft',
+    category: 'clothing',
+    title: 'Handwoven Coconut Coir & Cane Craft Set',
+    island: 'Amini / Chetlat',
+    vendor: 'Amini Artisans Guild',
+    price: 950,
+    priceUnit: 'per gift set',
+    commission: 180,
+    image: 'assets/images/hero.jpg',
+    desc: 'Traditional island handicraft — handmade coconut coir mat, cane baskets, and shell ornament. Authentic Lakshadweep souvenir.',
+    features: ['100% handmade', 'Coir + shell craft', 'Gift box packaging', 'Artisan certificate included']
+  },
+
+  // JEWELRY & TRADITIONAL GIFTS
+  {
+    id: 'jewel-coral-necklace',
+    category: 'jewels',
+    title: 'Natural Coral & Shell Jewelry Set (Necklace + Earrings)',
+    island: 'Kavaratti / Agatti',
+    vendor: 'Island Pearl Jewelers',
+    price: 1200,
+    priceUnit: 'per set',
+    commission: 220,
+    image: 'assets/images/hero.jpg',
+    desc: 'Handcrafted coral and sea-shell jewelry set. Each piece unique — pink coral beads, cowrie shells, and sea glass.',
+    features: ['Natural coral & shell', 'Adjustable silver clasp', 'Gift box included', 'No two pieces alike']
+  },
+  {
+    id: 'jewel-silver-fish',
+    category: 'jewels',
+    title: 'Sterling Silver Tuna Fish Island Pendant',
+    island: 'All Islands',
+    vendor: 'Kavaratti Silver Workshop',
+    price: 1800,
+    priceUnit: 'per pendant + chain',
+    commission: 350,
+    image: 'assets/images/hero.jpg',
+    desc: 'Handcrafted 925 sterling silver tuna fish pendant — symbol of Lakshadweep. Comes with a 22-inch silver chain.',
+    features: ['925 Sterling silver', 'Hallmarked', '22" silver chain', 'Gift wrapped']
+  },
+  {
+    id: 'jewel-shell-souvenirs',
+    category: 'jewels',
+    title: 'Premium Lakshadweep Seashell & Starfish Gift Box',
+    island: 'All Islands',
+    vendor: 'Island Treasures Collective',
+    price: 650,
+    priceUnit: 'per gift box',
+    commission: 120,
+    image: 'assets/images/hero.jpg',
+    desc: 'Curated collection of rare Lakshadweep seashells, dried starfish, cowrie shells, and coral fragments in a handmade cane gift box.',
+    features: ['10+ unique shells', 'Rare cowrie & cone shells', 'Cane gift box', 'Perfect souvenir gift']
   }
 ];
+
+
 
 
 
@@ -1629,25 +1836,51 @@ function openBookingPaymentFlow(type, id) {
     commission = s.commission;
   }
 
-  // Set booking session
-  activeBookingSession = {
-    type,
-    id,
-    title,
-    island,
-    vendor,
-    price,
-    commission,
-    advanceToken: type === 'package' ? 3000 : 1000
-  };
+  const advanceToken = type === 'package' ? 3000 : 1000;
+
+  activeBookingSession = { type, id, title, island, vendor, price, commission, advanceToken };
 
   const modalOverlay = document.getElementById('qr-modal-overlay');
   if (!modalOverlay) return;
 
+  // Fill booking info
   document.getElementById('qr-item-title').textContent = title;
   document.getElementById('qr-item-vendor').textContent = `Provided by: ${vendor} (${island})`;
   document.getElementById('qr-item-total').textContent = `Total: ₹${price.toLocaleString('en-IN')}`;
-  document.getElementById('qr-token-amount').textContent = `Token Advance: ₹${activeBookingSession.advanceToken.toLocaleString('en-IN')}`;
+  document.getElementById('qr-token-amount').textContent = `₹${advanceToken.toLocaleString('en-IN')}`;
+  document.getElementById('qr-pay-amount-label').textContent = `₹${advanceToken.toLocaleString('en-IN')}`;
+
+  // 📱 Generate real UPI QR code via free QR API
+  const upiId = ADMIN_UPI_ID;
+  const upiNote = encodeURIComponent(`LakExplorer: ${title.substring(0, 40)}`);
+  const upiLink = `upi://pay?pa=${upiId}&pn=LakExplorer&am=${advanceToken}&cu=INR&tn=${upiNote}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}&bgcolor=ffffff&color=031926&margin=8`;
+
+  const qrImg = document.getElementById('qr-code-img');
+  if (qrImg) {
+    qrImg.src = qrUrl;
+    qrImg.style.display = 'block';
+    qrImg.alt = `Scan to pay ₹${advanceToken} via UPI`;
+  }
+
+  // UPI ID display
+  const upiDisplay = document.getElementById('qr-upi-id-display');
+  if (upiDisplay) upiDisplay.textContent = upiId;
+
+  // UPI deep link button
+  const deepLinkBtn = document.getElementById('upi-deeplink-btn');
+  if (deepLinkBtn) deepLinkBtn.href = upiLink;
+
+  // Reset form
+  const form = document.querySelector('.qr-modal-body');
+  const nameInput = document.getElementById('qr-tourist-name');
+  const phoneInput = document.getElementById('qr-tourist-phone');
+  const utrInput = document.getElementById('qr-tourist-utr');
+  const uploadInput = document.getElementById('qr-screenshot-upload');
+  if (nameInput) nameInput.value = '';
+  if (phoneInput) phoneInput.value = '';
+  if (utrInput) utrInput.value = '';
+  if (uploadInput) uploadInput.value = '';
 
   modalOverlay.classList.add('active');
 }
@@ -1657,37 +1890,63 @@ function closeQrModal() {
   if (modalOverlay) modalOverlay.classList.remove('active');
 }
 
+// Screenshot upload handler
+let screenshotDataUrl = null;
+function handleScreenshotUpload(input) {
+  const file = input?.files?.[0];
+  const status = document.getElementById('qr-screenshot-status');
+  if (!file) { screenshotDataUrl = null; return; }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    screenshotDataUrl = e.target.result;
+    if (status) {
+      status.textContent = `✅ Screenshot ready: ${file.name}`;
+      status.style.display = 'block';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
 function confirmPaymentAndSendWhatsApp() {
   if (!activeBookingSession) return;
 
-  const touristName = document.getElementById('qr-tourist-name')?.value.trim() || 'Explorer';
+  const touristName  = document.getElementById('qr-tourist-name')?.value.trim()  || 'Explorer';
   const touristPhone = document.getElementById('qr-tourist-phone')?.value.trim() || 'Not specified';
-  const touristDate = document.getElementById('qr-tourist-date')?.value || 'Upcoming Season';
-  const utr = document.getElementById('qr-tourist-utr')?.value.trim() || 'Pending verification';
+  const touristDate  = document.getElementById('qr-tourist-date')?.value          || 'Upcoming Season';
+  const utr          = document.getElementById('qr-tourist-utr')?.value.trim()   || '';
+  const hasScreenshot = !!screenshotDataUrl;
 
-  // Compose structured WhatsApp message with full details, vendor, and commission tracking for the owner
-  const waMessage = `🌴 *LAKEXPLORER BOOKING ENQUIRY & PAYMENT NOTIFICATION* 🌴
+  const paymentProof = utr
+    ? `UTR / Transaction ID: ${utr}`
+    : (hasScreenshot ? 'Payment screenshot uploaded (sent separately on WhatsApp)' : '⚠️ Payment proof not yet provided');
+
+  const waMessage = `🌴 *LAKEXPLORER BOOKING & PAYMENT NOTIFICATION* 🌴
 ----------------------------------------
 👤 *Customer:* ${touristName}
 📞 *Phone:* ${touristPhone}
-📅 *Preferred Date:* ${touristDate}
+📅 *Travel Date:* ${touristDate}
 
 🏷️ *Item / Tour:* ${activeBookingSession.title}
 🏝️ *Island:* ${activeBookingSession.island}
-🏢 *Local Vendor/Team:* ${activeBookingSession.vendor}
+🏢 *Local Vendor:* ${activeBookingSession.vendor}
 💰 *Total Amount:* ₹${activeBookingSession.price.toLocaleString('en-IN')}
-💵 *Advance Token Paid via QR:* ₹${activeBookingSession.advanceToken.toLocaleString('en-IN')}
-🧾 *Transaction / UTR Number:* ${utr}
+💵 *Advance Token Paid:* ₹${activeBookingSession.advanceToken.toLocaleString('en-IN')}
+🏦 *UPI ID Paid To:* ${ADMIN_UPI_ID}
+🧾 *Payment Proof:* ${paymentProof}
 ----------------------------------------
-💼 *Owner Commission to Deduct:* ₹${activeBookingSession.commission.toLocaleString('en-IN')}
+💼 *Owner Commission:* ₹${activeBookingSession.commission.toLocaleString('en-IN')}
 ----------------------------------------
-Hello! I have sent the advance token payment via your QR code. Please verify my payment, confirm resort/activity availability, and initiate the Lakshadweep entry permit process!`;
+Please verify payment manually and confirm slot availability. Initiate entry permit after confirmation.`;
 
-  // Open WhatsApp directly
-  const url = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`;
-  window.open(url, '_blank');
+  window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`, '_blank');
 
-  // Record into Local Storage Enquiry CRM
+  // If screenshot was uploaded, open a second WhatsApp message prompt to send it
+  if (hasScreenshot) {
+    setTimeout(() => {
+      showToast('📎 Please also send the screenshot image in the WhatsApp chat that just opened!');
+    }, 1500);
+  }
+
   const newLead = {
     id: 'LE-' + Date.now().toString().slice(-5),
     timestamp: new Date().toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }),
@@ -1702,18 +1961,21 @@ Hello! I have sent the advance token payment via your QR code. Please verify my 
     totalPrice: `₹${activeBookingSession.price.toLocaleString('en-IN')}`,
     commission: activeBookingSession.commission,
     paidToken: `₹${activeBookingSession.advanceToken.toLocaleString('en-IN')}`,
-    paymentStatus: utr !== 'Pending verification' ? 'Paid via QR (Pending Check)' : 'Awaiting Payment',
+    paymentStatus: utr ? 'Paid via UPI QR (Pending Verify)' : (hasScreenshot ? 'Screenshot Uploaded' : 'Awaiting Payment'),
     bookingStatus: 'New',
-    utr: utr
+    utr: utr || (hasScreenshot ? 'Screenshot Uploaded' : 'Pending')
   };
 
   currentEnquiries.unshift(newLead);
   localStorage.setItem('lak_enquiries_v2', JSON.stringify(currentEnquiries));
   renderAdminTable();
 
+  screenshotDataUrl = null;
   closeQrModal();
-  showToast('🎉 Booking enquiry & payment notification sent to WhatsApp!');
+  showToast('🎉 Booking enquiry & payment sent to WhatsApp! Admin will manually confirm.');
 }
+
+
 
 // =============================================================================
 // Partner / Local Agency Registration Form

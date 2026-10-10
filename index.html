@@ -191,12 +191,15 @@
           </p>
 
           <!-- Marketplace Category Navigation -->
+          <!-- Marketplace Category Navigation -->
           <div class="marketplace-tabs" role="tablist">
-            <button class="market-tab-btn active" data-category="activities">🤿 Water Activities</button>
-            <button class="market-tab-btn" data-category="stays">🏡 Beach Stays & Tents</button>
-            <button class="market-tab-btn" data-category="rentals">🚴 GoPro & Bike Rentals</button>
-            <button class="market-tab-btn" data-category="food">🥘 Local Food & BBQ</button>
-            <button class="market-tab-btn" data-category="photographers">📸 Drone & Photographers</button>
+            <button class="market-tab-btn active" data-category="activities">🤿 Water Sports</button>
+            <button class="market-tab-btn" data-category="stays">🏨 Hotels &amp; Stays</button>
+            <button class="market-tab-btn" data-category="photographers">📸 Photography &amp; Video</button>
+            <button class="market-tab-btn" data-category="food">🍱 Food &amp; Cuisine</button>
+            <button class="market-tab-btn" data-category="clothing">👗 Clothing &amp; Crafts</button>
+            <button class="market-tab-btn" data-category="jewels">💎 Jewelry &amp; Gifts</button>
+            <button class="market-tab-btn" data-category="rentals">🚴 Gear Rentals</button>
           </div>
         </div>
 
@@ -756,37 +759,69 @@
         </div>
       </div>
     </section>
-
-    <!-- ==========================================================
-         Partner & Local Agencies Registration Form
-         ========================================================== -->
+    <!-- ================================================================
+         Partner & Vendor Registration — Join LakExplorer Marketplace
+         ================================================================ -->
     <section class="section-padding partner-section" id="partner-register">
       <div class="container">
         <div class="partner-card">
           <div class="text-center" style="margin-bottom:2rem;">
-            <span class="section-tag">Partner With LakExplorer</span>
-            <h2 class="section-title" style="font-size:2.2rem;">List Your Agency, Stay or Activities</h2>
+            <span class="section-tag">Join Our Network</span>
+            <h2 class="section-title" style="font-size:2.2rem;">Partner with LakExplorer</h2>
             <p class="section-desc" style="margin-bottom:1rem;">
-              Are you a local travel agency, scuba operator, homestay owner, boat captain, or photographer in Lakshadweep? Partner with us to receive tourist bookings. We manage payments via our official QR code and coordinate bookings with you.
+              Are you a local photographer, hotelier, food vendor, jeweler, or tour operator in Lakshadweep? List your services here. 
+              We handle bookings &amp; payments — you get customers. Admin confirms each booking before payment is released to you.
             </p>
+            <!-- Category Cards -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:0.75rem; margin:1.5rem 0; text-align:left;">
+              <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:0.9rem; text-align:center;">
+                <div style="font-size:1.8rem;">📸</div>
+                <strong style="font-size:0.85rem; color:#0c4a6e;">Photography &amp; Video</strong>
+              </div>
+              <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:0.9rem; text-align:center;">
+                <div style="font-size:1.8rem;">🏨</div>
+                <strong style="font-size:0.85rem; color:#14532d;">Hotels &amp; Stays</strong>
+              </div>
+              <div style="background:#fefce8; border:1px solid #fde68a; border-radius:10px; padding:0.9rem; text-align:center;">
+                <div style="font-size:1.8rem;">🍱</div>
+                <strong style="font-size:0.85rem; color:#713f12;">Food &amp; Cuisine</strong>
+              </div>
+              <div style="background:#fdf4ff; border:1px solid #e9d5ff; border-radius:10px; padding:0.9rem; text-align:center;">
+                <div style="font-size:1.8rem;">💎</div>
+                <strong style="font-size:0.85rem; color:#581c87;">Jewelry &amp; Gifts</strong>
+              </div>
+              <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:10px; padding:0.9rem; text-align:center;">
+                <div style="font-size:1.8rem;">👗</div>
+                <strong style="font-size:0.85rem; color:#7c2d12;">Clothing &amp; Crafts</strong>
+              </div>
+              <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:0.9rem; text-align:center;">
+                <div style="font-size:1.8rem;">🤿</div>
+                <strong style="font-size:0.85rem; color:#0c4a6e;">Water Sports</strong>
+              </div>
+            </div>
+            <div style="background:#fef3c7; border:1px solid #fcd34d; border-radius:10px; padding:0.75rem 1rem; font-size:0.85rem; color:#92400e; margin-bottom:1.5rem; text-align:left;">
+              💡 <strong>How it works:</strong> You register below → Admin reviews and approves → Your service goes live → Customers book and pay via our QR → We confirm the booking with you → Payment released after service delivery.
+            </div>
           </div>
 
           <form id="partner-registration-form">
             <div class="form-row form-row-2" style="margin-bottom:1.25rem;">
               <div class="form-group">
-                <label class="form-label" for="part-agency-name">Venture / Agency / Business Name *</label>
-                <input type="text" id="part-agency-name" class="form-control" placeholder="e.g. Coral Sands Tours, Agatti Divers" required>
+                <label class="form-label" for="part-agency-name">Venture / Business Name *</label>
+                <input type="text" id="part-agency-name" class="form-control" placeholder="e.g. Coral Clicks Photography, Agatti Divers" required>
               </div>
-
               <div class="form-group">
                 <label class="form-label" for="part-service-type">Service Category *</label>
                 <select id="part-service-type" class="form-control">
-                  <option value="Travel Agency">Local Travel Agency (Holiday Packages)</option>
-                  <option value="Water Sports">Water Activities & Scuba Diving</option>
-                  <option value="Homestay / Resort">Island Stay / Homestay / Tents</option>
-                  <option value="Rentals">GoPro, Scooter, Snorkel Gear Rental</option>
-                  <option value="Drone & Photography">Drone Video & Photography</option>
-                  <option value="Food & Culinary">Local Food & Beach Barbecue</option>
+                  <option value="Photography &amp; Video">📸 Photography &amp; Videography</option>
+                  <option value="Hotels &amp; Stays">🏨 Hotels, Resorts &amp; Homestays</option>
+                  <option value="Food &amp; Culinary">🍱 Local Food, Restaurants &amp; BBQ</option>
+                  <option value="Jewelry &amp; Gifts">💎 Jewelry, Shells &amp; Traditional Gifts</option>
+                  <option value="Clothing &amp; Crafts">👗 Clothing, T-Shirts &amp; Handicrafts</option>
+                  <option value="Water Sports">🤿 Water Activities &amp; Scuba Diving</option>
+                  <option value="Travel Agency">🌴 Local Travel Agency / Tour Operator</option>
+                  <option value="Rentals">🚴 GoPro, Scooter &amp; Gear Rentals</option>
+                  <option value="Boat &amp; Transfer">⛵ Boat Rides &amp; Island Transfers</option>
                 </select>
               </div>
             </div>
@@ -796,7 +831,6 @@
                 <label class="form-label" for="part-islands">Islands You Operate On *</label>
                 <input type="text" id="part-islands" class="form-control" placeholder="e.g. Agatti, Kadmat, Kalpeni, Minicoy" required>
               </div>
-
               <div class="form-group">
                 <label class="form-label" for="part-phone">WhatsApp Contact Number *</label>
                 <input type="tel" id="part-phone" class="form-control" placeholder="e.g. +91 94471 23456" required>
@@ -805,22 +839,25 @@
 
             <div class="form-row form-row-2" style="margin-bottom:1.25rem;">
               <div class="form-group">
-                <label class="form-label" for="part-commission">Commission Offered to Us (Per Person / Booking) *</label>
+                <label class="form-label" for="part-commission">Commission Offered (Per Booking) *</label>
                 <input type="text" id="part-commission" class="form-control" placeholder="e.g. ₹2,000 per person OR 10%" required>
               </div>
-
               <div class="form-group">
-                <label class="form-label" for="part-details">Brief Details of What You Provide</label>
-                <input type="text" id="part-details" class="form-control" placeholder="e.g. 5 AC Cottages on Kadmat beach, 2 Speedboats">
+                <label class="form-label" for="part-details">Brief Description of Your Services</label>
+                <input type="text" id="part-details" class="form-control" placeholder="e.g. Drone + portrait shoots, Full-day packages">
               </div>
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg" style="width:100%; padding:1rem;">
-              🤝 Submit Partnership Application on WhatsApp
+              🤝 Submit Partnership Application → Admin Reviews &amp; Approves
             </button>
+            <p style="font-size:0.78rem; color:var(--text-muted); text-align:center; margin-top:0.75rem;">
+              Admin manually verifies every partner. Payment is only released to you after confirmed service delivery.
+            </p>
           </form>
         </div>
       </div>
+    </section>
     </section>
 
     <!-- ==========================================================
@@ -868,89 +905,87 @@
   <!-- ==========================================================
        Payment QR Code Modal & Manual Booking Workflow
        ========================================================== -->
+  <!-- ===== Upgraded Payment QR Modal with Real QR, UPI Deeplink, Screenshot Upload ===== -->
   <div class="qr-modal-overlay" id="qr-modal-overlay">
-    <div class="qr-modal">
+    <div class="qr-modal" style="max-width:520px;">
       <div class="qr-modal-header">
-        <h3 style="margin:0; font-size:1.25rem;">🔒 Pay Advance Token via Official QR</h3>
+        <h3 style="margin:0; font-size:1.2rem;">💳 Advance Token Payment</h3>
         <button class="admin-close-btn" onclick="closeQrModal()">✕</button>
       </div>
 
-      <div class="qr-modal-body">
-        <div style="margin-bottom:1rem;">
-          <h4 id="qr-item-title" style="color:var(--ocean-deep); font-size:1.2rem; margin-bottom:0.25rem;">Tour Booking</h4>
-          <span id="qr-item-vendor" style="font-size:0.85rem; color:var(--text-muted); display:block;">Provided by Partner</span>
-          <strong id="qr-item-total" style="font-size:1.1rem; color:#0284c7; display:block; margin-top:0.35rem;">Total: ₹0</strong>
+      <div class="qr-modal-body" style="padding:1.25rem;">
+        <!-- Booking summary -->
+        <div style="background:#f0f9ff; border-radius:10px; padding:0.85rem 1rem; margin-bottom:1rem; border-left:4px solid #0284c7;">
+          <h4 id="qr-item-title" style="color:var(--ocean-deep); margin:0 0 0.2rem; font-size:1.1rem;">Tour Booking</h4>
+          <span id="qr-item-vendor" style="font-size:0.82rem; color:var(--text-muted); display:block;">Provided by Partner</span>
+          <strong id="qr-item-total" style="font-size:1rem; color:#0284c7; display:block; margin-top:0.3rem;">Total: ₹0</strong>
         </div>
 
-        <!-- QR Code Frame (Generated SVG QR representation) -->
-        <div class="qr-code-frame">
-          <svg width="180" height="180" viewBox="0 0 180 180" style="display:block; margin:0 auto;">
-            <!-- Outer border & background -->
-            <rect width="180" height="180" fill="#ffffff" rx="8" />
-            <!-- Corner Finder 1 (Top-Left) -->
-            <rect x="15" y="15" width="45" height="45" fill="#031926" rx="4" />
-            <rect x="23" y="23" width="29" height="29" fill="#ffffff" rx="2" />
-            <rect x="29" y="29" width="17" height="17" fill="#0284c7" rx="2" />
-            <!-- Corner Finder 2 (Top-Right) -->
-            <rect x="120" y="15" width="45" height="45" fill="#031926" rx="4" />
-            <rect x="128" y="23" width="29" height="29" fill="#ffffff" rx="2" />
-            <rect x="134" y="29" width="17" height="17" fill="#0284c7" rx="2" />
-            <!-- Corner Finder 3 (Bottom-Left) -->
-            <rect x="15" y="120" width="45" height="45" fill="#031926" rx="4" />
-            <rect x="23" y="128" width="29" height="29" fill="#ffffff" rx="2" />
-            <rect x="29" y="134" width="17" height="17" fill="#0284c7" rx="2" />
-            <!-- Sample QR Grid Data Pixels -->
-            <rect x="70" y="20" width="12" height="12" fill="#072a40" />
-            <rect x="90" y="20" width="18" height="12" fill="#072a40" />
-            <rect x="70" y="40" width="15" height="15" fill="#072a40" />
-            <rect x="95" y="45" width="12" height="12" fill="#0284c7" />
-            <rect x="20" y="70" width="14" height="14" fill="#072a40" />
-            <rect x="42" y="75" width="12" height="12" fill="#072a40" />
-            <rect x="65" y="70" width="16" height="16" fill="#0284c7" />
-            <rect x="90" y="75" width="22" height="14" fill="#072a40" />
-            <rect x="125" y="70" width="15" height="15" fill="#072a40" />
-            <rect x="150" y="75" width="14" height="14" fill="#0284c7" />
-            <rect x="70" y="100" width="18" height="18" fill="#072a40" />
-            <rect x="100" y="105" width="15" height="15" fill="#072a40" />
-            <rect x="130" y="100" width="18" height="18" fill="#072a40" />
-            <rect x="70" y="130" width="16" height="16" fill="#0284c7" />
-            <rect x="95" y="125" width="22" height="14" fill="#072a40" />
-            <rect x="125" y="135" width="18" height="18" fill="#072a40" />
-            <rect x="150" y="125" width="15" height="15" fill="#072a40" />
-            <!-- Center UPI Symbol icon -->
-            <circle cx="90" cy="90" r="14" fill="#00b4d8" />
-            <text x="90" y="95" font-size="12" text-anchor="middle" fill="#ffffff" font-weight="bold">UPI</text>
-          </svg>
-        </div>
-
-        <div>
-          <span class="upi-id-badge">UPI ID: 9496924874@upi</span>
-        </div>
-
-        <div class="upi-apps-icons">
-          <span>Google Pay</span> • <span>PhonePe</span> • <span>Paytm</span> • <span>BHIM UPI</span>
-        </div>
-
-        <div style="background:#f8fafc; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:1rem; margin-bottom:1.25rem; text-align:left;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem;">
-            <strong style="color:var(--ocean-deep);">Required Advance:</strong>
-            <strong id="qr-token-amount" style="color:#10b981;">Token: ₹2,000</strong>
+        <!-- Auto-Generated Real UPI QR Code -->
+        <div style="text-align:center; margin-bottom:0.75rem;">
+          <div style="background:#fff; border:2px solid #e2e8f0; border-radius:16px; display:inline-block; padding:10px; box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+            <img id="qr-code-img" src="" alt="UPI QR Code" width="200" height="200" style="display:block; border-radius:8px;" onerror="this.style.display='none'">
           </div>
-          <div class="form-group" style="margin-bottom:0.75rem;">
-            <label class="form-label" style="font-size:0.8rem;">Your Name *</label>
-            <input type="text" id="qr-tourist-name" class="form-control" placeholder="Rajesh Kumar" required>
+          <div style="margin-top:0.6rem;">
+            <span style="background:#e0f2fe; color:#0c4a6e; font-size:0.82rem; font-weight:700; padding:0.35rem 0.9rem; border-radius:20px; display:inline-block;">
+              💳 UPI ID: <span id="qr-upi-id-display">mithumithlaj007-1@okaxis</span>
+            </span>
           </div>
-          <div class="form-group" style="margin-bottom:0.75rem;">
-            <label class="form-label" style="font-size:0.8rem;">Your WhatsApp Phone *</label>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem;">Scan with Google Pay, PhonePe, Paytm or BHIM</div>
+        </div>
+
+        <!-- UPI Pay Button (Deep Link) -->
+        <div style="text-align:center; margin-bottom:1rem;">
+          <a id="upi-deeplink-btn" href="#" target="_blank" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.65rem 1.4rem; border-radius:10px; text-decoration:none; font-size:0.92rem;">
+            ⚡ Pay Now via UPI App &nbsp;<span id="qr-pay-amount-label" style="font-weight:900; font-size:1rem;">₹0</span>
+          </a>
+          <p style="font-size:0.72rem; color:#64748b; margin:0.3rem 0 0;">Opens your UPI app directly with amount pre-filled</p>
+        </div>
+
+        <!-- Details Form -->
+        <div style="background:#f8fafc; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+            <strong style="color:var(--ocean-deep);">Required Token Advance:</strong>
+            <strong id="qr-token-amount" style="color:#10b981; font-size:1.05rem;">₹0</strong>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0.65rem;">
+            <label class="form-label" style="font-size:0.8rem;">Your Full Name *</label>
+            <input type="text" id="qr-tourist-name" class="form-control" placeholder="e.g. Rajesh Kumar" required>
+          </div>
+          <div class="form-group" style="margin-bottom:0.65rem;">
+            <label class="form-label" style="font-size:0.8rem;">WhatsApp Phone *</label>
             <input type="tel" id="qr-tourist-phone" class="form-control" placeholder="+91 98765 43210" required>
           </div>
-          <div class="form-group" style="margin-bottom:0.75rem;">
-            <label class="form-label" style="font-size:0.8rem;">Target Date *</label>
+          <div class="form-group" style="margin-bottom:0.65rem;">
+            <label class="form-label" style="font-size:0.8rem;">Travel Date</label>
             <input type="date" id="qr-tourist-date" class="form-control">
           </div>
-          <div class="form-group">
-            <label class="form-label" style="font-size:0.8rem;">UPI Transaction ID / UTR Number</label>
-            <input type="text" id="qr-tourist-utr" class="form-control" placeholder="e.g. 428194829104">
+
+          <!-- Payment proof: UTR OR screenshot -->
+          <div style="background:#fef9ec; border:1px dashed #fbbf24; border-radius:8px; padding:0.75rem; margin-bottom:0.65rem;">
+            <p style="font-size:0.78rem; font-weight:700; color:#92400e; margin:0 0 0.5rem;">📎 Payment Proof — choose one:</p>
+            <div class="form-group" style="margin-bottom:0.5rem;">
+              <label class="form-label" style="font-size:0.78rem;">Option A: UPI Transaction ID / UTR Number</label>
+              <input type="text" id="qr-tourist-utr" class="form-control" placeholder="e.g. 428194829104" style="font-family:monospace;">
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.78rem;">Option B: Upload Payment Screenshot</label>
+              <input type="file" id="qr-screenshot-upload" class="form-control" accept="image/*" onchange="handleScreenshotUpload(this)" style="font-size:0.82rem; padding:0.4rem;">
+              <span id="qr-screenshot-status" style="font-size:0.75rem; color:#10b981; display:none; margin-top:0.3rem; display:block;">✅ Screenshot ready to send</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-whatsapp btn-lg" style="width:100%; margin-top:1rem; font-size:0.95rem;" onclick="confirmPaymentAndSendWhatsApp()">
+          💬 Confirm &amp; Send to WhatsApp (Admin Manual Verify)
+        </button>
+        <p style="font-size:0.73rem; color:var(--text-muted); margin-top:0.5rem; text-align:center;">
+          🛡️ Admin manually verifies every payment and confirms availability with island partner.
+        </p>
+      </div>
+    </div>
+  </div>
           </div>
         </div>
 
@@ -1519,7 +1554,7 @@
 
                 <div class="form-group">
                   <label class="form-label">Official UPI ID for Advance Payments</label>
-                  <input type="text" id="set-upi-id" class="form-control" value="9496924874@upi" required>
+                  <input type="text" id="set-upi-id" class="form-control" value="mithumithlaj007-1@okaxis" required>
                 </div>
 
                 <div class="form-group">
