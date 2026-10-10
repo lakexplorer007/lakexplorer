@@ -1148,83 +1148,288 @@
             </button>
           </div>
 
-          <!-- Package Add / Edit Form Box -->
-          <div id="admin-package-form-box" class="cms-form-box" style="display:none;">
-            <h4 id="pkg-form-title" style="margin-bottom:1rem; color:var(--ocean-deep);">Add New Island Package</h4>
+          <!-- Package Builder — Comprehensive Admin Form -->
+          <div id="admin-package-form-box" class="cms-form-box" style="display:none; border-color:#0284c7; background:#f0f9ff;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+              <h4 id="pkg-form-title" style="margin:0; color:#0c4a6e; font-size:1.1rem;">🌴 Build New Island Package</h4>
+              <div style="font-size:0.78rem; background:#dbeafe; color:#1e40af; padding:0.3rem 0.75rem; border-radius:20px; font-weight:600;">
+                💡 Total auto-calculates from all expense sections
+              </div>
+            </div>
+
             <form id="admin-package-form" onsubmit="handleSavePackage(event)">
               <input type="hidden" id="pkg-edit-id" value="">
-              
-              <div class="cms-form-grid">
-                <div class="form-group">
-                  <label class="form-label">Package Title *</label>
-                  <input type="text" id="pkg-input-title" class="form-control" placeholder="e.g. Bangaram Luxury Honeymoon Escape" required>
-                </div>
 
-                <div class="form-group">
-                  <label class="form-label">Category *</label>
-                  <select id="pkg-input-category" class="form-control">
-                    <option value="budget">Budget (from ₹14k)</option>
-                    <option value="adventure">Adventure & Scuba</option>
-                    <option value="luxury">Luxury & Honeymoon</option>
-                    <option value="family">Family & Cruise</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Island(s) Covered *</label>
-                  <input type="text" id="pkg-input-island" class="form-control" placeholder="e.g. Agatti, Bangaram, Kadmat" required>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Duration String *</label>
-                  <input type="text" id="pkg-input-duration" class="form-control" placeholder="e.g. 4 Days / 3 Nights" required>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Nights Count *</label>
-                  <input type="number" id="pkg-input-nights" class="form-control" placeholder="3" min="1" max="15" required>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Price per person (₹) *</label>
-                  <input type="number" id="pkg-input-price" class="form-control" placeholder="14000" min="5000" required>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Agency / Provider Name *</label>
-                  <input type="text" id="pkg-input-agency" class="form-control" placeholder="e.g. LakExplorer Direct OR Local Partner" required>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Your Commission per person (₹)</label>
-                  <input type="number" id="pkg-input-commission" class="form-control" placeholder="2000" value="2000">
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Ribbon Badge (Optional)</label>
-                  <input type="text" id="pkg-input-ribbon" class="form-control" placeholder="e.g. Top Rated, Best Seller">
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Featured Image Path / URL *</label>
-                  <input type="text" id="pkg-input-image" class="form-control" placeholder="assets/images/hero.jpg" value="assets/images/hero.jpg" required>
-                </div>
-
-                <div class="form-group cms-form-full">
-                  <label class="form-label">Highlights / Inclusions (1 per line) *</label>
-                  <textarea id="pkg-input-highlights" class="form-control" rows="3" placeholder="Beachfront Cottage Stay&#10;Speedboat transfers&#10;100% Entry Permit Assistance&#10;All Meals Included"></textarea>
+              <!-- SECTION 1: Basic Info -->
+              <div style="background:#fff; border:1px solid #bae6fd; border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                <p style="font-weight:700; color:#0c4a6e; margin:0 0 0.75rem; font-size:0.88rem;">📋 SECTION 1 — Basic Package Info</p>
+                <div class="cms-form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Package Title *</label>
+                    <input type="text" id="pkg-input-title" class="form-control" placeholder="e.g. Bangaram Luxury Honeymoon Escape" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Category *</label>
+                    <select id="pkg-input-category" class="form-control">
+                      <option value="budget">💚 Budget (from ₹14k)</option>
+                      <option value="adventure">🤿 Adventure &amp; Scuba</option>
+                      <option value="luxury">💎 Luxury &amp; Honeymoon</option>
+                      <option value="family">👨‍👩‍👧 Family &amp; Cruise</option>
+                      <option value="group">👥 Group &amp; Corporate</option>
+                      <option value="photography">📸 Photography Special</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Agency / Provider *</label>
+                    <input type="text" id="pkg-input-agency" class="form-control" placeholder="e.g. LakExplorer Direct / Partner Agency" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Ribbon Badge (Optional)</label>
+                    <input type="text" id="pkg-input-ribbon" class="form-control" placeholder="e.g. Best Seller, New, Top Rated">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Featured Image Path</label>
+                    <input type="text" id="pkg-input-image" class="form-control" placeholder="assets/images/hero.jpg" value="assets/images/hero.jpg">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Your Commission per person (₹)</label>
+                    <input type="number" id="pkg-input-commission" class="form-control" placeholder="2000" value="2000">
+                  </div>
                 </div>
               </div>
 
-              <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1.25rem;">
+              <!-- SECTION 2: Islands & Duration -->
+              <div style="background:#fff; border:1px solid #bbf7d0; border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                <p style="font-weight:700; color:#14532d; margin:0 0 0.75rem; font-size:0.88rem;">🏝️ SECTION 2 — Islands &amp; Duration</p>
+                <div class="cms-form-grid">
+                  <div class="form-group cms-form-full">
+                    <label class="form-label">Select Islands Covered (check all that apply) *</label>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:0.4rem; margin-top:0.4rem;">
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Agatti"> 🛬 Agatti</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Kadmat"> 🤿 Kadmat</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Kalpeni"> 🛶 Kalpeni</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Minicoy"> 🗼 Minicoy</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Kavaratti"> 🏛️ Kavaratti</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Bangaram"> 🏝️ Bangaram</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Amini"> 🎨 Amini</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Kiltan"> 🌊 Kiltan</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Chetlat"> ⛵ Chetlat</label>
+                      <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;cursor:pointer;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:0.4rem 0.6rem;"><input type="checkbox" name="pkg-islands" value="Andrott"> 🏖️ Andrott</label>
+                    </div>
+                    <input type="hidden" id="pkg-input-island" value="">
+                    <input type="text" id="pkg-input-island-custom" class="form-control" style="margin-top:0.5rem;" placeholder="Or type custom: e.g. Agatti + Bangaram (3-Island Combo)">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Number of Nights *</label>
+                    <input type="number" id="pkg-input-nights" class="form-control" placeholder="3" min="1" max="15" required oninput="pkgAutoCalcTotal()">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Duration Label</label>
+                    <input type="text" id="pkg-input-duration" class="form-control" placeholder="e.g. 4 Days / 3 Nights (auto-fills)">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Best Travel Season</label>
+                    <select id="pkg-input-season" class="form-control">
+                      <option value="Oct–May (Peak Season)">Oct–May (Peak Season)</option>
+                      <option value="Nov–Mar (Best Weather)">Nov–Mar (Best Weather)</option>
+                      <option value="Year Round">Year Round</option>
+                      <option value="Summer Special (Apr–May)">Summer Special (Apr–May)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 3: Travel Mode & Expense -->
+              <div style="background:#fff; border:1px solid #fed7aa; border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                <p style="font-weight:700; color:#7c2d12; margin:0 0 0.75rem; font-size:0.88rem;">✈️ SECTION 3 — Travel Mode &amp; Transport Cost</p>
+                <div class="cms-form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Primary Travel Mode *</label>
+                    <select id="pkg-input-travel-mode" class="form-control" onchange="pkgAutoCalcTotal()">
+                      <option value="flight" data-cost="5500">✈️ Flight (Kochi → Agatti) — ~₹5,500</option>
+                      <option value="ship" data-cost="3500">🚢 Passenger Ship — ~₹3,500</option>
+                      <option value="cruise" data-cost="6500">🛳️ Cruise Package — ~₹6,500</option>
+                      <option value="self" data-cost="0">🎫 Self-Arranged (No transport charge)</option>
+                      <option value="custom">⚙️ Custom transport expense (enter below)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Transport Expense per person (₹)</label>
+                    <input type="number" id="pkg-input-travel-cost" class="form-control" placeholder="5500" min="0" oninput="pkgAutoCalcTotal()">
+                    <small style="color:#64748b; font-size:0.72rem;">This gets added to total. 0 if included in package.</small>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Transport Details / Notes</label>
+                    <input type="text" id="pkg-input-travel-notes" class="form-control" placeholder="e.g. Flight booking assistance + airport pickup">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Inter-Island Transfer Mode</label>
+                    <select id="pkg-input-transfer-mode" class="form-control">
+                      <option value="Speedboat included">🚤 Speedboat (Included)</option>
+                      <option value="HSC feeder included">⛴️ HSC Feeder Craft (Included)</option>
+                      <option value="Speedboat at extra cost">🚤 Speedboat (Extra Cost)</option>
+                      <option value="Helicopter charter">🚁 Helicopter Charter</option>
+                      <option value="Not applicable">➖ Not Applicable (Single Island)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 4: Accommodation Style & Expense -->
+              <div style="background:#fff; border:1px solid #e9d5ff; border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                <p style="font-weight:700; color:#581c87; margin:0 0 0.75rem; font-size:0.88rem;">🏨 SECTION 4 — Accommodation Style &amp; Cost</p>
+                <div class="cms-form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Accommodation Style *</label>
+                    <select id="pkg-input-stay-type" class="form-control" onchange="pkgAutoCalcTotal()">
+                      <option value="Budget AC Homestay" data-nightly="3500">🏡 Budget AC Homestay — ₹3,500/night</option>
+                      <option value="Island Beach Cottage" data-nightly="6500">🌴 Island Beach Cottage — ₹6,500/night</option>
+                      <option value="Luxury Resort Cabin" data-nightly="12000">🏨 Luxury Resort Cabin — ₹12,000/night</option>
+                      <option value="Eco Glamping Tent" data-nightly="4500">⛺ Eco Glamping Tent — ₹4,500/night</option>
+                      <option value="Heritage Bungalow" data-nightly="8000">🏛️ Heritage Seafront Bungalow — ₹8,000/night</option>
+                      <option value="Premium Villa" data-nightly="18000">🌟 Premium Beachfront Villa — ₹18,000/night</option>
+                      <option value="Custom">⚙️ Custom (enter cost below)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Nightly Rate per person (₹) *</label>
+                    <input type="number" id="pkg-input-stay-cost" class="form-control" placeholder="3500" min="0" oninput="pkgAutoCalcTotal()">
+                    <small style="color:#64748b; font-size:0.72rem;">Nightly cost × nights = stay total</small>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Meals Included?</label>
+                    <select id="pkg-input-meals" class="form-control">
+                      <option value="All 3 meals included (Buffet)">🍽️ All 3 Meals (Buffet)</option>
+                      <option value="Breakfast + Dinner">🍳 Breakfast + Dinner Only</option>
+                      <option value="Breakfast only">☕ Breakfast Only</option>
+                      <option value="No meals included">❌ No Meals (Self-Arranged)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Room Occupancy Type</label>
+                    <select id="pkg-input-occupancy" class="form-control">
+                      <option value="Double Occupancy">👫 Double Occupancy (Per Person)</option>
+                      <option value="Single Occupancy">👤 Single Occupancy (Solo)</option>
+                      <option value="Triple Sharing">👥 Triple Sharing</option>
+                      <option value="Family Room (4 pax)">👨‍👩‍👧‍👦 Family Room (4 pax)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 5: Bucket List Activities & Add-ons -->
+              <div style="background:#fff; border:1px solid #fde68a; border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                <p style="font-weight:700; color:#713f12; margin:0 0 0.75rem; font-size:0.88rem;">🎯 SECTION 5 — Bucket List Activities &amp; Add-ons (Priced Individually)</p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:0.5rem; margin-bottom:0.75rem;">
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🤿 Scuba Diving (Discover)</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Scuba Diving" data-price="3500" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹3,500</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🐠 Snorkeling Tour</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Snorkeling Tour" data-price="800" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹800</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🚤 Speedboat Lagoon Ride</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Speedboat Lagoon Ride" data-price="1200" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹1,200</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🏄 Kayaking &amp; Paddleboarding</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Kayaking &amp; Paddleboarding" data-price="600" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹600</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🪁 Parasailing</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Parasailing" data-price="2200" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹2,200</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🎣 Deep Sea Fishing</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Deep Sea Fishing" data-price="2500" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹2,500</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🎥 Drone Aerial Reel</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Drone Aerial Reel" data-price="6000" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹6,000</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">📸 Photoshoot Session</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Photoshoot Session" data-price="4500" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹4,500</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🔦 Bioluminescence Walk</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Bioluminescence Night Walk" data-price="500" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹500</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🍖 Beach BBQ Night</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Beach BBQ Night" data-price="2200" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹2,200</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🏛️ Lighthouse Heritage Visit</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Lighthouse Heritage Visit" data-price="400" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹400</span></div>
+                  </label>
+                  <label style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;background:#fefce8;border:1px solid #fde68a;border-radius:7px;padding:0.5rem 0.7rem;cursor:pointer;">
+                    <span style="font-size:0.83rem;">🏄 Glass-Bottom Boat</span>
+                    <div style="display:flex;align-items:center;gap:0.3rem;"><input type="checkbox" name="pkg-bucket" value="Glass-Bottom Boat Ride" data-price="900" onchange="pkgAutoCalcTotal()"><span style="font-size:0.72rem;color:#92400e;">+₹900</span></div>
+                  </label>
+                </div>
+                <!-- Custom activity -->
+                <div style="background:#fef9ec; border:1px dashed #fbbf24; border-radius:7px; padding:0.65rem; margin-top:0.25rem;">
+                  <p style="font-size:0.78rem; font-weight:700; color:#92400e; margin:0 0 0.4rem;">➕ Add Custom Activity</p>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <input type="text" id="pkg-custom-activity-name" class="form-control" placeholder="Activity name" style="flex:1; min-width:150px;">
+                    <input type="number" id="pkg-custom-activity-price" class="form-control" placeholder="₹ Price" style="width:120px;" min="0">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="pkgAddCustomActivity()" style="white-space:nowrap;">➕ Add</button>
+                  </div>
+                  <div id="pkg-custom-activities-list" style="margin-top:0.5rem; display:flex; flex-wrap:wrap; gap:0.4rem;"></div>
+                </div>
+              </div>
+
+              <!-- SECTION 6: Pricing Summary & Final Details -->
+              <div style="background:#fff; border:2px solid #0284c7; border-radius:10px; padding:1rem; margin-bottom:1rem;">
+                <p style="font-weight:700; color:#0c4a6e; margin:0 0 0.75rem; font-size:0.88rem;">💰 SECTION 6 — Pricing Summary &amp; Package Total</p>
+                <div style="background:#f0f9ff; border-radius:8px; padding:0.85rem; margin-bottom:0.75rem; font-size:0.85rem;">
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.3rem 1rem;">
+                    <span style="color:#64748b;">🚢 Transport cost:</span> <strong id="pkg-calc-transport" style="color:#0284c7;">₹0</strong>
+                    <span style="color:#64748b;">🏨 Stay cost (nights × rate):</span> <strong id="pkg-calc-stay" style="color:#7c3aed;">₹0</strong>
+                    <span style="color:#64748b;">🎯 Activities &amp; add-ons:</span> <strong id="pkg-calc-activities" style="color:#92400e;">₹0</strong>
+                    <span style="color:#64748b; border-top:1px dashed #cbd5e1; padding-top:0.4rem;">📦 Package overhead:</span> <strong id="pkg-calc-overhead" style="color:#64748b; border-top:1px dashed #cbd5e1; padding-top:0.4rem;">₹0</strong>
+                  </div>
+                  <div style="border-top:2px solid #0284c7; margin-top:0.6rem; padding-top:0.6rem; display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:#0c4a6e; font-size:1rem;">💰 Total Per Person:</strong>
+                    <strong id="pkg-calc-total" style="color:#0284c7; font-size:1.4rem;">₹0</strong>
+                  </div>
+                </div>
+                <div class="cms-form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Override Total Price (₹) *</label>
+                    <input type="number" id="pkg-input-price" class="form-control" placeholder="Auto-calculated above" min="5000" required oninput="pkgSyncOverridePrice()">
+                    <small style="color:#0284c7; font-size:0.72rem;">Auto-filled from calculator. Edit to override.</small>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Package Overhead / Markup (₹)</label>
+                    <input type="number" id="pkg-input-overhead" class="form-control" placeholder="500" value="500" min="0" oninput="pkgAutoCalcTotal()">
+                    <small style="color:#64748b; font-size:0.72rem;">Admin margin added on top of costs</small>
+                  </div>
+                  <div class="form-group cms-form-full">
+                    <label class="form-label">Package Highlights / Inclusions (1 per line) *</label>
+                    <textarea id="pkg-input-highlights" class="form-control" rows="4" placeholder="Beachfront Cottage Stay&#10;Speedboat transfers included&#10;All Meals — Breakfast, Lunch &amp; Dinner&#10;100% Entry Permit Assistance&#10;Local island guide"></textarea>
+                  </div>
+                  <div class="form-group cms-form-full">
+                    <label class="form-label">Day-wise Itinerary (JSON — auto-generated, editable)</label>
+                    <textarea id="pkg-input-itinerary" class="form-control" rows="4" placeholder='[{"day":"Day 1","title":"Arrival &amp; Welcome","desc":"Check-in to resort..."},{"day":"Day 2","title":"Lagoon Day","desc":"Snorkeling, speedboat..."}]'></textarea>
+                    <button type="button" class="btn btn-outline btn-sm" style="margin-top:0.4rem;" onclick="pkgAutoFillItinerary()">✨ Auto-Generate Itinerary from Selections</button>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:0.5rem;">
                 <button type="button" class="btn btn-outline btn-sm" onclick="togglePackageForm()">Cancel</button>
-                <button type="submit" class="btn btn-primary btn-sm">💾 Save Package</button>
+                <button type="submit" class="btn btn-primary" style="padding:0.65rem 1.5rem;">💾 Save &amp; Publish Package Live</button>
               </div>
             </form>
           </div>
 
           <!-- Packages CRUD List -->
           <div class="cms-crud-grid" id="admin-packages-list-container"></div>
+        </div>
         </div>
 
         <!-- View 3: Marketplace Activities & Stays Manager -->
@@ -1254,11 +1459,14 @@
                 <div class="form-group">
                   <label class="form-label">Category *</label>
                   <select id="srv-input-category" class="form-control">
-                    <option value="activities">Water Activities</option>
-                    <option value="stays">Beach Stays & Tents</option>
-                    <option value="rentals">GoPro & Bike Rentals</option>
-                    <option value="food">Local Food & BBQ</option>
-                    <option value="photographers">Drone & Photographers</option>
+                    <option value="activities">🤿 Water Sports &amp; Activities</option>
+                    <option value="stays">🏨 Hotels, Resorts &amp; Homestays</option>
+                    <option value="photographers">📸 Photography &amp; Videography</option>
+                    <option value="food">🍱 Food, Cuisine &amp; BBQ</option>
+                    <option value="clothing">👗 Clothing, T-Shirts &amp; Crafts</option>
+                    <option value="jewels">💎 Jewelry &amp; Traditional Gifts</option>
+                    <option value="rentals">🚴 GoPro, Gear &amp; Bike Rentals</option>
+                  </select>
                   </select>
                 </div>
 

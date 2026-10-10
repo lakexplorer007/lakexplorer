@@ -3032,15 +3032,156 @@ function renderAdminPackagesList() {
   `).join('');
 }
 
+// Custom activities list (for new builder)
+let pkgCustomActivities = [];
+
+// Auto-calculate total from all builder sections
+function pkgAutoCalcTotal() {
+  const nights    = parseInt(document.getElementById('pkg-input-nights')?.value) || 0;
+  const stayType  = document.getElementById('pkg-input-stay-type');
+  const travelSel = document.getElementById('pkg-input-travel-mode');
+  const overhead  = parseInt(document.getElementById('pkg-input-overhead')?.value) || 0;
+
+  // Transport cost
+  let transportCost = parseInt(document.getElementById('pkg-input-travel-cost')?.value) || 0;
+  if (transportCost === 0 && travelSel) {
+    const opt = travelSel.options[travelSel.selectedIndex];
+    transportCost = parseInt(opt?.dataset?.cost) || 0;
+    if (document.getElementById('pkg-input-travel-cost'))
+      document.getElementById('pkg-input-travel-cost').placeholder = transportCost;
+  }
+
+  // Stay cost (nightly × nights)
+  let nightly = parseInt(document.getElementById('pkg-input-stay-cost')?.value) || 0;
+  if (nightly === 0 && stayType) {
+    const opt = stayType.options[stayType.selectedIndex];
+    nightly = parseInt(opt?.dataset?.nightly) || 0;
+    if (document.getElementById('pkg-input-stay-cost'))
+      document.getElementById('pkg-input-stay-cost').placeholder = nightly;
+  }
+  const stayCost = nightly * nights;
+
+  // Bucket list activities cost
+  let activitiesCost = 0;
+  document.querySelectorAll('input[name="pkg-bucket"]:checked').forEach(cb => {
+    activitiesCost += parseInt(cb.dataset.price) || 0;
+  });
+  pkgCustomActivities.forEach(a => activitiesCost += a.price);
+
+  const total = transportCost + stayCost + activitiesCost + overhead;
+
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = `₹${v.toLocaleString('en-IN')}`; };
+  set('pkg-calc-transport',   transportCost);
+  set('pkg-calc-stay',        stayCost);
+  set('pkg-calc-activities',  activitiesCost);
+  set('pkg-calc-overhead',    overhead);
+  set('pkg-calc-total',       total);
+
+  // Auto-fill price override if it's currently empty or 0
+  const priceInput = document.getElementById('pkg-input-price');
+  if (priceInput && (!priceInput.value || priceInput.value === '0')) {
+    priceInput.value = total || '';
+  }
+
+  // Auto-fill duration label
+  const durInput = document.getElementById('pkg-input-duration');
+  if (durInput && nights > 0 && !durInput.value) {
+    durInput.value = `${nights + 1} Days / ${nights} Nights`;
+  }
+}
+
+function pkgSyncOverridePrice() {
+  // User manually edited price — update calc total display
+  const val = parseInt(document.getElementById('pkg-input-price')?.value) || 0;
+  const el = document.getElementById('pkg-calc-total');
+  if (el && val > 0) el.textContent = `₹${val.toLocaleString('en-IN')} (Manual Override)`;
+}
+
+// Add a custom activity row
+function pkgAddCustomActivity() {
+  const name  = document.getElementById('pkg-custom-activity-name')?.value.trim();
+  const price = parseInt(document.getElementById('pkg-custom-activity-price')?.value) || 0;
+  if (!name) return;
+
+  pkgCustomActivities.push({ name, price });
+
+  const list = document.getElementById('pkg-custom-activities-list');
+  if (list) {
+    const tag = document.createElement('span');
+    tag.style.cssText = 'background:#fef3c7;border:1px solid #fbbf24;border-radius:20px;padding:0.25rem 0.6rem;font-size:0.78rem;display:inline-flex;align-items:center;gap:0.3rem;';
+    tag.innerHTML = `${name} +₹${price.toLocaleString('en-IN')} <button type="button" style="background:none;border:none;cursor:pointer;color:#dc2626;font-size:0.9rem;padding:0;" onclick="pkgRemoveCustomActivity('${name}',this)">✕</button>`;
+    list.appendChild(tag);
+  }
+
+  if (document.getElementById('pkg-custom-activity-name')) document.getElementById('pkg-custom-activity-name').value = '';
+  if (document.getElementById('pkg-custom-activity-price')) document.getElementById('pkg-custom-activity-price').value = '';
+  pkgAutoCalcTotal();
+}
+
+function pkgRemoveCustomActivity(name, btn) {
+  pkgCustomActivities = pkgCustomActivities.filter(a => a.name !== name);
+  btn?.parentElement?.remove();
+  pkgAutoCalcTotal();
+}
+
+// Auto-generate itinerary JSON from selections
+function pkgAutoFillItinerary() {
+  const nights = parseInt(document.getElementById('pkg-input-nights')?.value) || 3;
+  const islands = Array.from(document.querySelectorAll('input[name="pkg-islands"]:checked')).map(cb => cb.value);
+  const travelMode = document.getElementById('pkg-input-travel-mode')?.value || 'flight';
+  const activities = Array.from(document.querySelectorAll('input[name="pkg-bucket"]:checked')).map(cb => cb.value);
+  pkgCustomActivities.forEach(a => activities.push(a.name));
+
+  const arrivalMode = travelMode === 'flight' ? 'Agatti Airport' : 'Kochi Seaport → Island';
+  const itinerary = [];
+
+  itinerary.push({
+    day: 'Day 1',
+    title: `Arrival at ${islands[0] || 'Lakshadweep'} 🛬`,
+    desc: `Arrive via ${travelMode === 'flight' ? 'flight at ' + arrivalMode : 'passenger ship'}. Check-in to accommodation. Evening lagoon walk and welcome dinner.`
+  });
+
+  const actChunks = [];
+  for (let i = 0; i < activities.length; i += 2) actChunks.push(activities.slice(i, i + 2));
+
+  for (let n = 1; n < nights; n++) {
+    const islandDay = islands[Math.min(n - 1, islands.length - 1)] || 'Island';
+    const acts = actChunks[n - 1] || ['Lagoon swimming', 'Coral reef walk'];
+    itinerary.push({
+      day: `Day ${n + 1}`,
+      title: `${islandDay} Exploration 🏝️`,
+      desc: `Full day on ${islandDay}. ${acts.join(', ')}. Meals included. Evening sunset at the beach.`
+    });
+  }
+
+  itinerary.push({
+    day: `Day ${nights + 1}`,
+    title: 'Souvenirs & Departure 🛫',
+    desc: 'Morning breakfast. Pick up local island handicrafts and souvenirs. Transfer to airport/seaport for departure. Farewell from Lakshadweep!'
+  });
+
+  const itinEl = document.getElementById('pkg-input-itinerary');
+  if (itinEl) itinEl.value = JSON.stringify(itinerary, null, 2);
+  showToast('✨ Itinerary auto-generated!');
+}
+
 function togglePackageForm(show = null) {
   const box = document.getElementById('admin-package-form-box');
   if (!box) return;
   const isHidden = box.style.display === 'none';
-  box.style.display = (show !== null ? show : isHidden) ? 'block' : 'none';
-  if (box.style.display === 'block' && !document.getElementById('pkg-edit-id').value) {
+  const shouldShow = show !== null ? show : isHidden;
+  box.style.display = shouldShow ? 'block' : 'none';
+  if (shouldShow && !document.getElementById('pkg-edit-id').value) {
     document.getElementById('admin-package-form').reset();
-    document.getElementById('pkg-form-title').textContent = 'Add New Island Package';
+    document.getElementById('pkg-form-title').textContent = '🌴 Build New Island Package';
+    pkgCustomActivities = [];
+    const list = document.getElementById('pkg-custom-activities-list');
+    if (list) list.innerHTML = '';
+    ['pkg-calc-transport','pkg-calc-stay','pkg-calc-activities','pkg-calc-overhead','pkg-calc-total'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.textContent = '₹0';
+    });
   }
+  if (shouldShow) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function editAdminPackage(id) {
@@ -3048,20 +3189,44 @@ function editAdminPackage(id) {
   if (!pkg) return;
 
   document.getElementById('pkg-edit-id').value = pkg.id;
-  document.getElementById('pkg-input-title').value = pkg.title;
-  document.getElementById('pkg-input-category').value = pkg.category;
-  document.getElementById('pkg-input-island').value = pkg.island;
-  document.getElementById('pkg-input-duration').value = pkg.duration;
-  document.getElementById('pkg-input-nights').value = pkg.nights;
-  document.getElementById('pkg-input-price').value = pkg.price;
-  document.getElementById('pkg-input-agency').value = pkg.agency;
-  document.getElementById('pkg-input-commission').value = pkg.commission || 2000;
-  document.getElementById('pkg-input-ribbon').value = pkg.ribbon || '';
-  document.getElementById('pkg-input-image').value = pkg.image;
-  document.getElementById('pkg-input-highlights').value = (pkg.highlights || []).join('\n');
+  document.getElementById('pkg-input-title').value        = pkg.title;
+  document.getElementById('pkg-input-category').value     = pkg.category;
+  document.getElementById('pkg-input-duration').value     = pkg.duration;
+  document.getElementById('pkg-input-nights').value       = pkg.nights;
+  document.getElementById('pkg-input-price').value        = pkg.price;
+  document.getElementById('pkg-input-agency').value       = pkg.agency;
+  document.getElementById('pkg-input-commission').value   = pkg.commission || 2000;
+  document.getElementById('pkg-input-ribbon').value       = pkg.ribbon || '';
+  document.getElementById('pkg-input-image').value        = pkg.image;
+  document.getElementById('pkg-input-highlights').value  = (pkg.highlights || []).join('\n');
+  document.getElementById('pkg-input-itinerary').value   = pkg.itinerary ? JSON.stringify(pkg.itinerary, null, 2) : '';
 
-  document.getElementById('pkg-form-title').textContent = `Edit Package: ${pkg.title}`;
+  // Set island — check checkboxes + fill text
+  const islandCustom = document.getElementById('pkg-input-island-custom');
+  if (islandCustom) islandCustom.value = pkg.island || '';
+  document.querySelectorAll('input[name="pkg-islands"]').forEach(cb => {
+    cb.checked = (pkg.island || '').includes(cb.value);
+  });
+
+  // Restore travel and stay if stored
+  if (pkg.travelMode && document.getElementById('pkg-input-travel-mode'))
+    document.getElementById('pkg-input-travel-mode').value = pkg.travelMode;
+  if (pkg.travelCost && document.getElementById('pkg-input-travel-cost'))
+    document.getElementById('pkg-input-travel-cost').value = pkg.travelCost;
+  if (pkg.stayType && document.getElementById('pkg-input-stay-type'))
+    document.getElementById('pkg-input-stay-type').value = pkg.stayType;
+  if (pkg.stayCost && document.getElementById('pkg-input-stay-cost'))
+    document.getElementById('pkg-input-stay-cost').value = pkg.stayCost;
+  if (pkg.meals && document.getElementById('pkg-input-meals'))
+    document.getElementById('pkg-input-meals').value = pkg.meals;
+  if (pkg.occupancy && document.getElementById('pkg-input-occupancy'))
+    document.getElementById('pkg-input-occupancy').value = pkg.occupancy;
+  if (pkg.season && document.getElementById('pkg-input-season'))
+    document.getElementById('pkg-input-season').value = pkg.season;
+
+  document.getElementById('pkg-form-title').textContent = `✏️ Editing: ${pkg.title}`;
   togglePackageForm(true);
+  pkgAutoCalcTotal();
   document.getElementById('admin-package-form-box').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -3069,56 +3234,105 @@ function handleSavePackage(e) {
   e.preventDefault();
 
   const editId = document.getElementById('pkg-edit-id').value;
-  const title = document.getElementById('pkg-input-title').value.trim();
-  const category = document.getElementById('pkg-input-category').value;
-  const island = document.getElementById('pkg-input-island').value.trim();
-  const duration = document.getElementById('pkg-input-duration').value.trim();
-  const nights = parseInt(document.getElementById('pkg-input-nights').value) || 3;
-  const price = parseInt(document.getElementById('pkg-input-price').value) || 14000;
-  const agency = document.getElementById('pkg-input-agency').value.trim();
+
+  // Section 1: Basic
+  const title      = document.getElementById('pkg-input-title').value.trim();
+  const category   = document.getElementById('pkg-input-category').value;
+  const agency     = document.getElementById('pkg-input-agency').value.trim();
   const commission = parseInt(document.getElementById('pkg-input-commission').value) || 2000;
-  const ribbon = document.getElementById('pkg-input-ribbon').value.trim();
-  const image = document.getElementById('pkg-input-image').value.trim() || 'assets/images/hero.jpg';
+  const ribbon     = document.getElementById('pkg-input-ribbon').value.trim();
+  const image      = document.getElementById('pkg-input-image').value.trim() || 'assets/images/hero.jpg';
+
+  // Section 2: Islands & Duration
+  const checkedIslands = Array.from(document.querySelectorAll('input[name="pkg-islands"]:checked')).map(cb => cb.value);
+  const customIsland   = document.getElementById('pkg-input-island-custom')?.value.trim();
+  const island = customIsland || (checkedIslands.length > 0 ? checkedIslands.join(', ') : 'Lakshadweep');
+  const nights   = parseInt(document.getElementById('pkg-input-nights').value) || 3;
+  const duration = document.getElementById('pkg-input-duration').value.trim() || `${nights + 1} Days / ${nights} Nights`;
+  const season   = document.getElementById('pkg-input-season')?.value || 'Oct–May';
+
+  // Section 3: Travel
+  const travelMode  = document.getElementById('pkg-input-travel-mode')?.value || 'flight';
+  const travelCost  = parseInt(document.getElementById('pkg-input-travel-cost')?.value) || 0;
+  const travelNotes = document.getElementById('pkg-input-travel-notes')?.value.trim() || '';
+  const transferMode = document.getElementById('pkg-input-transfer-mode')?.value || 'Speedboat included';
+
+  // Section 4: Stay
+  const stayType  = document.getElementById('pkg-input-stay-type')?.value || 'Budget AC Homestay';
+  const stayCost  = parseInt(document.getElementById('pkg-input-stay-cost')?.value) || 0;
+  const meals     = document.getElementById('pkg-input-meals')?.value || 'All 3 meals included';
+  const occupancy = document.getElementById('pkg-input-occupancy')?.value || 'Double Occupancy';
+
+  // Section 5: Bucket list
+  const bucketItems = Array.from(document.querySelectorAll('input[name="pkg-bucket"]:checked')).map(cb => ({
+    name: cb.value, price: parseInt(cb.dataset.price) || 0
+  }));
+  const allActivities = [...bucketItems, ...pkgCustomActivities];
+  const activitiesCost = allActivities.reduce((s, a) => s + a.price, 0);
+
+  // Section 6: Pricing
+  const overhead   = parseInt(document.getElementById('pkg-input-overhead')?.value) || 0;
+  const price      = parseInt(document.getElementById('pkg-input-price').value) || (travelCost + (stayCost * nights) + activitiesCost + overhead);
   const highlights = document.getElementById('pkg-input-highlights').value.split('\n').map(s => s.trim()).filter(Boolean);
+
+  // Parse itinerary JSON
+  let itinerary = [];
+  try {
+    const raw = document.getElementById('pkg-input-itinerary')?.value.trim();
+    if (raw) itinerary = JSON.parse(raw);
+  } catch (err) {
+    itinerary = [
+      { day: 'Day 1', title: 'Arrival & Welcome', desc: 'Arrive at Lakshadweep. Check-in and orientation.' },
+      ...Array.from({ length: nights - 1 }, (_, i) => ({
+        day: `Day ${i + 2}`, title: `${island} Exploration`, desc: `Activities: ${allActivities.map(a => a.name).join(', ') || 'Lagoon swimming, snorkeling'}.`
+      })),
+      { day: `Day ${nights + 1}`, title: 'Souvenirs & Departure', desc: 'Morning checkout. Transfer to departure terminal.' }
+    ];
+  }
+
+  const pkgData = {
+    title, category, island, duration, nights, price, agency, commission, ribbon, image,
+    highlights, itinerary, season, travelMode, travelCost, travelNotes, transferMode,
+    stayType, stayCost, meals, occupancy, activities: allActivities, overhead,
+    featured: price >= 30000,
+    priceBreakdown: {
+      transport: travelCost,
+      stay: stayCost * nights,
+      activities: activitiesCost,
+      overhead
+    }
+  };
 
   if (editId) {
     const idx = PACKAGES_DATA.findIndex(p => p.id === editId);
     if (idx !== -1) {
-      PACKAGES_DATA[idx] = {
-        ...PACKAGES_DATA[idx],
-        title, category, island, duration, nights, price, agency, commission, ribbon, image, highlights
-      };
-      showToast(`✅ Updated package "${title}"!`);
+      PACKAGES_DATA[idx] = { ...PACKAGES_DATA[idx], ...pkgData };
+      showToast(`✅ Package "${title}" updated and live!`);
     }
+    document.getElementById('pkg-edit-id').value = '';
   } else {
-    const newPkg = {
-      id: 'pkg-custom-' + Date.now().toString().slice(-4),
-      title, category, island, duration, nights, price, agency, commission, ribbon, image, highlights,
-      itinerary: [
-        { day: 'Day 1', title: 'Arrival & Welcome', desc: 'Welcome at Lakshadweep airport / seaport. Check-in to accommodation.' },
-        { day: 'Day 2', title: 'Island Exploration & Water Sports', desc: 'Lagoon swimming, coral reef walk, and guided water activities.' },
-        { day: 'Day 3', title: 'Souvenirs & Departure', desc: 'Morning breakfast and transfer to departure port.' }
-      ]
-    };
-    PACKAGES_DATA.unshift(newPkg);
-    showToast(`🎉 New package "${title}" published!`);
+    pkgData.id = 'pkg-custom-' + Date.now().toString().slice(-6);
+    PACKAGES_DATA.unshift(pkgData);
+    showToast(`🎉 Package "${title}" published live!`);
   }
 
   localStorage.setItem('lak_custom_packages', JSON.stringify(PACKAGES_DATA));
   renderPackages('all');
   renderAdminPackagesList();
+  pkgCustomActivities = [];
   togglePackageForm(false);
 }
 
 function deleteAdminPackage(id) {
-  if (confirm('Are you sure you want to delete this package from the live site?')) {
+  if (confirm('Delete this package from the live site?')) {
     PACKAGES_DATA = PACKAGES_DATA.filter(p => p.id !== id);
     localStorage.setItem('lak_custom_packages', JSON.stringify(PACKAGES_DATA));
     renderPackages('all');
     renderAdminPackagesList();
-    showToast('Package removed.');
+    showToast('Package removed from live site.');
   }
 }
+
 
 // 2. Marketplace Services CMS Editor
 function renderAdminServicesList() {
