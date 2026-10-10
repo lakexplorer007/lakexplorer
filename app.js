@@ -2205,7 +2205,7 @@ function exportEnquiriesCSV() {
 // =============================================================================
 function renderAdminShipsEditor() {
   const container = document.getElementById('admin-ships-list-container');
-  
+
   // Pre-fill Release Date Manager form fields
   const releaseInput = document.getElementById('admin-release-date-input');
   const releaseStatus = document.getElementById('admin-release-status-select');
@@ -2216,86 +2216,146 @@ function renderAdminShipsEditor() {
     if (releaseUrl) releaseUrl.value = currentTicketReleaseData.officialUrl || 'https://lakshadweep.irctc.co.in/';
   }
 
-  // Attach dropzone listeners
   setupPdfDropzone();
-
   if (!container) return;
 
   if (currentShipSchedules.length === 0) {
     container.innerHTML = `
       <div style="text-align:center; padding:2rem; background:#f8fafc; border-radius:var(--radius-md);">
-        <p style="color:var(--text-muted); margin-bottom:1rem;">No ships configured in the database.</p>
-        <button class="btn btn-primary btn-sm" onclick="autoSyncIRCTCSchedules()">
-          🔄 Load Default IRCTC Schedules
-        </button>
+        <p style="color:var(--text-muted); margin-bottom:1rem;">No ships configured yet.</p>
+        <button class="btn btn-primary btn-sm" onclick="autoSyncIRCTCSchedules()">🔄 Load Default IRCTC Schedules</button>
       </div>
     `;
     return;
   }
 
-  container.innerHTML = currentShipSchedules.map(ship => `
+  container.innerHTML = currentShipSchedules.map(ship => {
+    const releaseIsPending = (ship.releaseDate || '').includes('Pending') || (ship.releaseDate || '').includes('TBD');
+    return `
     <div class="ship-edit-card" id="ship-card-${ship.id}">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
         <div>
           <strong style="font-size:1.05rem; color:var(--ocean-deep);">🚢 ${ship.vessel}</strong>
           <span style="font-size:0.8rem; color:var(--text-muted); display:block;">${ship.routes} • ${ship.capacity}</span>
         </div>
-        <div style="display:flex; gap:0.4rem;">
-          <a href="${ship.officialUrl || 'https://lakshadweep.irctc.co.in/'}" target="_blank" class="btn btn-outline btn-sm" style="padding:0.3rem 0.6rem; font-size:0.75rem;">
-            Test IRCTC ↗
-          </a>
-          <button class="btn btn-outline btn-sm" style="padding:0.3rem 0.6rem; font-size:0.75rem; color:#ef4444; border-color:#fca5a5;" onclick="deleteAdminShip('${ship.id}')">
-            🗑️ Delete
-          </button>
+        <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" style="padding:0.3rem 0.7rem; font-size:0.75rem;" onclick="editShipInForm('${ship.id}')">✏️ Edit</button>
+          <button class="btn btn-outline btn-sm" style="padding:0.3rem 0.6rem; font-size:0.75rem; color:#ef4444; border-color:#fca5a5;" onclick="deleteAdminShip('${ship.id}')">🗑️ Delete</button>
         </div>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.75rem; margin-bottom:1rem;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:0.75rem; margin-bottom:1rem;">
         <div class="form-group">
-          <label class="form-label" style="font-size:0.75rem;">Next Sailing Voyage Date(s) *</label>
+          <label class="form-label" style="font-size:0.73rem;">Next Sailing Date</label>
           <input type="text" id="edit-sailing-${ship.id}" class="form-control" style="padding:0.4rem 0.6rem; font-size:0.82rem;" value="${ship.nextSailing}">
         </div>
-
         <div class="form-group">
-          <label class="form-label" style="font-size:0.75rem;">Ticket Release Date Window *</label>
-          <input type="text" id="edit-release-${ship.id}" class="form-control" style="padding:0.4rem 0.6rem; font-size:0.82rem;" value="${ship.releaseDate}">
+          <label class="form-label" style="font-size:0.73rem;">Release Date / Status</label>
+          <input type="text" id="edit-release-${ship.id}" class="form-control" style="padding:0.4rem 0.6rem; font-size:0.82rem;" value="${ship.releaseDate}" placeholder="🔴 Pending or actual date/text">
         </div>
-
         <div class="form-group">
-          <label class="form-label" style="font-size:0.75rem;">First Class AC Fare *</label>
-          <input type="text" id="edit-first-${ship.id}" class="form-control" style="padding:0.4rem 0.6rem; font-size:0.82rem;" value="${ship.firstAc}">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" style="font-size:0.75rem;">Second Class AC Fare *</label>
-          <input type="text" id="edit-second-${ship.id}" class="form-control" style="padding:0.4rem 0.6rem; font-size:0.82rem;" value="${ship.secondAc}">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" style="font-size:0.75rem;">Bunk / Seating Fare *</label>
-          <input type="text" id="edit-bunk-${ship.id}" class="form-control" style="padding:0.4rem 0.6rem; font-size:0.82rem;" value="${ship.bunkClass}">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" style="font-size:0.75rem;">Booking Status *</label>
+          <label class="form-label" style="font-size:0.73rem;">Booking Status</label>
           <select id="edit-status-${ship.id}" class="form-control" style="padding:0.4rem 0.6rem; font-size:0.82rem; font-weight:700;">
-            <option value="Booking Open" ${ship.status === 'Booking Open' ? 'selected' : ''}>🟢 Booking Open</option>
-            <option value="Fast Filling" ${ship.status === 'Fast Filling' ? 'selected' : ''}>🟡 Fast Filling</option>
-            <option value="Releasing Soon" ${ship.status === 'Releasing Soon' ? 'selected' : ''}>🟣 Releasing Soon</option>
-            <option value="Daily Active" ${ship.status === 'Daily Active' ? 'selected' : ''}>⚡ Daily Active</option>
-            <option value="Waitlist" ${ship.status === 'Waitlist' ? 'selected' : ''}>🔴 Waitlist</option>
-            <option value="Sold Out" ${ship.status === 'Sold Out' ? 'selected' : ''}>⚪ Sold Out</option>
+            <option value="Booking Open" ${ship.status==='Booking Open'?'selected':''}>🟢 Booking Open</option>
+            <option value="Release Pending" ${ship.status==='Release Pending'?'selected':''}>🔴 Release Pending</option>
+            <option value="Releasing Soon" ${ship.status==='Releasing Soon'?'selected':''}>🟣 Releasing Soon</option>
+            <option value="Fast Filling" ${ship.status==='Fast Filling'?'selected':''}>🟡 Fast Filling</option>
+            <option value="Daily Active" ${ship.status==='Daily Active'?'selected':''}>⚡ Daily Active</option>
+            <option value="Waitlist" ${ship.status==='Waitlist'?'selected':''}>🔴 Waitlist</option>
+            <option value="Sold Out" ${ship.status==='Sold Out'?'selected':''}>⚪ Sold Out</option>
           </select>
         </div>
       </div>
 
+      <div style="background:#dbeafe; border-radius:8px; padding:0.5rem 0.75rem; margin-bottom:0.5rem; font-size:0.75rem; color:#1e40af;">
+        <strong>💰 Fares — Tourist | Islander | Permit</strong> &nbsp;(enter numbers only, ₹ added automatically)
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:0.5rem; margin-bottom:1rem;">
+        <div class="form-group">
+          <label class="form-label" style="color:#1e40af; font-size:0.72rem;">🔵 Tourist Bunk</label>
+          <input type="number" id="edit-t-bunk-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.tBunk || ''}" placeholder="950">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:#166534; font-size:0.72rem;">🟢 Islander Bunk</label>
+          <input type="number" id="edit-i-bunk-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.iBunk || ''}" placeholder="470">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:#6b21a8; font-size:0.72rem;">🟣 Permit Bunk</label>
+          <input type="number" id="edit-p-bunk-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.pBunk || ''}" placeholder="1450">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:#1e40af; font-size:0.72rem;">🔵 Tourist 2nd AC</label>
+          <input type="number" id="edit-t-2ac-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.t2ac || ''}" placeholder="2600">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:#166534; font-size:0.72rem;">🟢 Islander 2nd AC</label>
+          <input type="number" id="edit-i-2ac-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.i2ac || ''}" placeholder="850">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:#6b21a8; font-size:0.72rem;">🟣 Permit 2nd AC</label>
+          <input type="number" id="edit-p-2ac-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.p2ac || ''}" placeholder="2200">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:#1e40af; font-size:0.72rem;">🔵 Tourist 1st AC</label>
+          <input type="number" id="edit-t-1ac-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.t1ac || ''}" placeholder="4200">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:#166534; font-size:0.72rem;">🟢 Islander 1st AC</label>
+          <input type="number" id="edit-i-1ac-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.i1ac || ''}" placeholder="1200">
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:#6b21a8; font-size:0.72rem;">🟣 Permit 1st AC</label>
+          <input type="number" id="edit-p-1ac-${ship.id}" class="form-control" style="padding:0.4rem;" value="${ship.p1ac || ''}" placeholder="3800">
+        </div>
+      </div>
+
       <div style="display:flex; justify-content:flex-end;">
-        <button class="btn btn-primary btn-sm" onclick="saveAdminShipEdit('${ship.id}')">
-          💾 Save Voyage Updates
-        </button>
+        <button class="btn btn-primary btn-sm" onclick="saveAdminShipEdit('${ship.id}')">💾 Save &amp; Publish Live</button>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
+}
+
+// Pre-fill the Add form for editing an existing ship
+function editShipInForm(shipId) {
+  const ship = currentShipSchedules.find(s => s.id === shipId);
+  if (!ship) return;
+
+  document.getElementById('ship-edit-id').value = ship.id;
+  document.getElementById('ship-input-name').value = ship.vessel || '';
+  document.getElementById('ship-input-route').value = ship.routes || '';
+  document.getElementById('ship-input-capacity').value = ship.capacity || '';
+  document.getElementById('ship-input-sailing').value = ship.nextSailing || '';
+  document.getElementById('ship-input-status').value = ship.status || 'Booking Open';
+
+  const isPending = (ship.releaseDate || '').includes('Pending') || (ship.releaseDate || '').includes('TBD');
+  const pendingRadio = document.querySelector('input[name="ship-release-type"][value="pending"]');
+  const dateRadio = document.querySelector('input[name="ship-release-type"][value="date"]');
+  if (isPending) { if (pendingRadio) pendingRadio.checked = true; }
+  else { if (dateRadio) dateRadio.checked = true; }
+  const relInput = document.getElementById('ship-input-release-text');
+  if (relInput) { relInput.value = isPending ? '' : (ship.releaseDate || ''); }
+  toggleReleaseDateInput();
+
+  // Fill fares
+  ['t-bunk','i-bunk','p-bunk','t-2ac','i-2ac','p-2ac','t-1ac','i-1ac','p-1ac'].forEach(k => {
+    const el = document.getElementById(`ship-${k}`);
+    if (el) el.value = ship[k.replace('-','').replace('t','t').replace('i','i').replace('p','p')] || '';
+  });
+  // Map fields properly
+  document.getElementById('ship-t-bunk').value = ship.tBunk || '';
+  document.getElementById('ship-i-bunk').value = ship.iBunk || '';
+  document.getElementById('ship-p-bunk').value = ship.pBunk || '';
+  document.getElementById('ship-t-2ac').value  = ship.t2ac  || '';
+  document.getElementById('ship-i-2ac').value  = ship.i2ac  || '';
+  document.getElementById('ship-p-2ac').value  = ship.p2ac  || '';
+  document.getElementById('ship-t-1ac').value  = ship.t1ac  || '';
+  document.getElementById('ship-i-1ac').value  = ship.i1ac  || '';
+  document.getElementById('ship-p-1ac').value  = ship.p1ac  || '';
+
+  document.getElementById('ship-form-heading').textContent = `✏️ Editing: ${ship.vessel}`;
+  toggleAddShipForm(true);
 }
 
 function saveAdminShipEdit(shipId) {
@@ -2304,30 +2364,33 @@ function saveAdminShipEdit(shipId) {
 
   const nextSailing = document.getElementById(`edit-sailing-${shipId}`)?.value.trim();
   const releaseDate = document.getElementById(`edit-release-${shipId}`)?.value.trim();
-  const firstAc = document.getElementById(`edit-first-${shipId}`)?.value.trim();
-  const secondAc = document.getElementById(`edit-second-${shipId}`)?.value.trim();
-  const bunkClass = document.getElementById(`edit-bunk-${shipId}`)?.value.trim();
-  const status = document.getElementById(`edit-status-${shipId}`)?.value;
+  const status      = document.getElementById(`edit-status-${shipId}`)?.value;
 
-  if (!nextSailing || !firstAc) {
-    alert('Please enter valid sailing dates and fares.');
-    return;
-  }
+  // Fares
+  const tBunk = document.getElementById(`edit-t-bunk-${shipId}`)?.value;
+  const iBunk = document.getElementById(`edit-i-bunk-${shipId}`)?.value;
+  const pBunk = document.getElementById(`edit-p-bunk-${shipId}`)?.value;
+  const t2ac  = document.getElementById(`edit-t-2ac-${shipId}`)?.value;
+  const i2ac  = document.getElementById(`edit-i-2ac-${shipId}`)?.value;
+  const p2ac  = document.getElementById(`edit-p-2ac-${shipId}`)?.value;
+  const t1ac  = document.getElementById(`edit-t-1ac-${shipId}`)?.value;
+  const i1ac  = document.getElementById(`edit-i-1ac-${shipId}`)?.value;
+  const p1ac  = document.getElementById(`edit-p-1ac-${shipId}`)?.value;
 
-  currentShipSchedules[index].nextSailing = nextSailing;
-  currentShipSchedules[index].releaseDate = releaseDate;
-  currentShipSchedules[index].firstAc = firstAc;
-  currentShipSchedules[index].secondAc = secondAc;
-  currentShipSchedules[index].bunkClass = bunkClass;
-  currentShipSchedules[index].status = status;
+  if (!nextSailing) { alert('Please enter sailing dates.'); return; }
+
+  const fares = buildFareDisplay(tBunk, iBunk, pBunk, t2ac, i2ac, p2ac, t1ac, i1ac, p1ac);
+
+  Object.assign(currentShipSchedules[index], {
+    nextSailing, releaseDate, status, ...fares
+  });
 
   localStorage.setItem('lak_ship_schedules_v3', JSON.stringify(currentShipSchedules));
 
-  // Refresh both public table and admin list
+  // ✅ Live-sync public table
   renderTransportSchedules();
   renderAdminShipsEditor();
-
-  showToast(`✅ Updated ${currentShipSchedules[index].vessel} schedule & fares!`);
+  showToast(`✅ ${currentShipSchedules[index].vessel} updated and live!`);
 }
 
 function deleteAdminShip(shipId) {
@@ -2340,37 +2403,102 @@ function deleteAdminShip(shipId) {
   }
 }
 
-function openAddShipModal() {
-  const vessel = prompt('Enter Vessel Name (e.g. M.V. Lagoons Special Cruise):');
-  if (!vessel) return;
+// Toggle the Add/Edit Voyage inline form
+function toggleAddShipForm(show = null) {
+  const box = document.getElementById('admin-add-ship-form-box');
+  if (!box) return;
+  const shouldShow = show !== null ? show : box.style.display === 'none';
+  box.style.display = shouldShow ? 'block' : 'none';
+  if (shouldShow && !document.getElementById('ship-edit-id').value) {
+    document.getElementById('admin-add-ship-form').reset();
+    document.getElementById('ship-form-heading').textContent = '🚢 Add New Vessel / Voyage Card';
+    // Reset release date toggle
+    document.querySelector('input[name="ship-release-type"][value="pending"]').checked = true;
+    toggleReleaseDateInput();
+  }
+  if (shouldShow) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-  const routes = prompt('Enter Sectors / Route (e.g. Kochi ⇄ Kavaratti ⇄ Kadmat):') || 'Kochi ⇄ Lakshadweep';
-  const nextSailing = prompt('Enter Next Sailing Date (e.g. 24 Oct 2026):') || 'Upcoming Voyage';
-  const firstAc = prompt('Enter First Class AC Fare:', '₹3,800') || '₹3,800';
-  const secondAc = prompt('Enter Second Class AC Fare:', '₹2,400') || '₹2,400';
-  const bunkClass = prompt('Enter Bunk Fare:', '₹850') || '₹850';
+// Toggle release date input visibility based on radio
+function toggleReleaseDateInput() {
+  const selected = document.querySelector('input[name="ship-release-type"]:checked')?.value;
+  const input = document.getElementById('ship-input-release-text');
+  if (input) input.style.display = selected === 'date' ? 'block' : 'none';
+}
 
-  const newShip = {
-    id: 'ship-custom-' + Date.now().toString().slice(-4),
-    vessel: vessel,
-    capacity: 'Custom Voyage',
-    routes: routes,
-    nextSailing: nextSailing,
-    releaseDate: 'Official IRCTC Ticket Booking Open',
-    firstAc: firstAc,
-    secondAc: secondAc,
-    bunkClass: bunkClass,
-    status: 'Booking Open',
-    officialUrl: 'https://lakshadweep.irctc.co.in/'
+// Format fare display: Islander/Permit format per class
+function buildFareDisplay(tBunk, iBunk, pBunk, t2ac, i2ac, p2ac, t1ac, i1ac, p1ac) {
+  const fmt = (n) => n ? `₹${parseInt(n).toLocaleString('en-IN')}` : '—';
+  return {
+    touristFares: `Bunk: ${fmt(tBunk)} | 2AC: ${fmt(t2ac)} | 1AC: ${fmt(t1ac)}`,
+    islanderFare: `Islander/Permit — Bunk ${fmt(iBunk)}/${fmt(pBunk)} | 2AC ${fmt(i2ac)}/${fmt(p2ac)} | 1AC ${fmt(i1ac)}/${fmt(p1ac)}`,
+    // raw
+    tBunk: tBunk || '', iBunk: iBunk || '', pBunk: pBunk || '',
+    t2ac: t2ac || '',  i2ac: i2ac || '',  p2ac: p2ac || '',
+    t1ac: t1ac || '',  i1ac: i1ac || '',  p1ac: p1ac || '',
+    firstAc: fmt(t1ac), secondAc: fmt(t2ac), bunkClass: fmt(tBunk)
+  };
+}
+
+// Save new or edited ship from inline form → live-sync to public page
+function handleSaveNewShip(e) {
+  e.preventDefault();
+  const editId = document.getElementById('ship-edit-id').value;
+
+  const vessel   = document.getElementById('ship-input-name').value.trim();
+  const routes   = document.getElementById('ship-input-route').value.trim();
+  const capacity = document.getElementById('ship-input-capacity').value.trim() || 'Passenger Vessel';
+  const nextSailing = document.getElementById('ship-input-sailing').value.trim();
+  const status   = document.getElementById('ship-input-status').value;
+
+  const releaseType = document.querySelector('input[name="ship-release-type"]:checked')?.value;
+  const releaseText = document.getElementById('ship-input-release-text')?.value.trim();
+  const releaseDate = releaseType === 'pending'
+    ? '🔴 Release Date Pending — Check back soon'
+    : (releaseText || 'Official IRCTC Ticket Booking Open');
+
+  const fares = buildFareDisplay(
+    document.getElementById('ship-t-bunk').value,
+    document.getElementById('ship-i-bunk').value,
+    document.getElementById('ship-p-bunk').value,
+    document.getElementById('ship-t-2ac').value,
+    document.getElementById('ship-i-2ac').value,
+    document.getElementById('ship-p-2ac').value,
+    document.getElementById('ship-t-1ac').value,
+    document.getElementById('ship-i-1ac').value,
+    document.getElementById('ship-p-1ac').value
+  );
+
+  const shipData = {
+    vessel, routes, capacity, nextSailing, releaseDate, status,
+    officialUrl: 'https://lakshadweep.irctc.co.in/',
+    ...fares
   };
 
-  currentShipSchedules.unshift(newShip);
+  if (editId) {
+    const idx = currentShipSchedules.findIndex(s => s.id === editId);
+    if (idx !== -1) {
+      currentShipSchedules[idx] = { ...currentShipSchedules[idx], ...shipData };
+      showToast(`✅ Updated: ${vessel} — changes are live!`);
+    }
+    document.getElementById('ship-edit-id').value = '';
+  } else {
+    shipData.id = 'ship-custom-' + Date.now().toString().slice(-6);
+    currentShipSchedules.unshift(shipData);
+    showToast(`🚢 "${vessel}" added and published live!`);
+  }
+
   localStorage.setItem('lak_ship_schedules_v3', JSON.stringify(currentShipSchedules));
 
+  // ✅ Sync BOTH admin view AND public ship schedule table immediately
   renderTransportSchedules();
   renderAdminShipsEditor();
-  showToast(`🚢 Added ${vessel} to ship schedules!`);
+  toggleAddShipForm(false);
 }
+
+// Keep openAddShipModal alias for backward compat
+function openAddShipModal() { toggleAddShipForm(true); }
+
 
 // PDF Dropzone drag & drop setup
 function setupPdfDropzone() {
