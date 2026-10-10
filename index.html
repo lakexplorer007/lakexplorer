@@ -51,9 +51,6 @@
       </nav>
 
       <div class="nav-actions">
-        <button class="btn-admin-pill" onclick="openAdminModal()" title="Operator & Commission Dashboard">
-          🔒 <span>Admin CRM</span>
-        </button>
         <a href="https://wa.me/919496924874?text=Hi%20LakExplorer%2C%20I%20have%20an%20inquiry%20regarding%20Lakshadweep%20travel!" target="_blank" class="btn btn-whatsapp btn-sm" aria-label="Chat on WhatsApp">
           <span>💬 WhatsApp Desk</span>
         </a>
@@ -362,15 +359,15 @@
               <table class="ship-schedule-table">
                 <thead>
                   <tr>
-                    <th>Vessel Name</th>
-                    <th>Route & Sectors</th>
-                    <th>Next Sailing Date</th>
-                    <th>Ticket Release Window</th>
-                    <th>1st Class AC</th>
-                    <th>2nd Class AC</th>
-                    <th>Bunk / Semi-Sleeper</th>
+                    <th>Vessel</th>
+                    <th>Route</th>
+                    <th>Next Sailing</th>
+                    <th>Release Date</th>
+                    <th>Tourist Fare<br><small style="font-weight:400;font-size:0.72rem;opacity:0.8;">1AC / 2AC / Bunk</small></th>
+                    <th>Islander Fare<br><small style="font-weight:400;font-size:0.72rem;opacity:0.8;">Subsidised Rate</small></th>
+                    <th>Entry Permit<br><small style="font-weight:400;font-size:0.72rem;opacity:0.8;">Required?</small></th>
                     <th>Status</th>
-                    <th>Bookings</th>
+                    <th>Book</th>
                   </tr>
                 </thead>
                 <tbody id="ship-schedule-tbody">
@@ -1482,16 +1479,16 @@
     </a>
     <a href="#flights-ships" class="mobile-nav-item">
       <span class="m-icon">✈️</span>
-      <span>Schedules</span>
+      <span>Ships</span>
     </a>
     <a href="https://wa.me/919496924874?text=Hi%20LakExplorer%2C%20I%20am%20chatting%20from%20the%20website!" target="_blank" class="mobile-nav-item">
       <span class="m-icon">💬</span>
       <span>WhatsApp</span>
     </a>
-    <div class="mobile-nav-item" onclick="openAdminModal()">
-      <span class="m-icon">🔒</span>
-      <span>Admin</span>
-    </div>
+    <a href="#custom-trip-builder" class="mobile-nav-item">
+      <span class="m-icon">🗺️</span>
+      <span>Trip Plan</span>
+    </a>
   </nav>
 
   <!-- Footer (Phone digits hidden) -->
@@ -1527,7 +1524,6 @@
             <li><a href="https://lakport.gov.in" target="_blank">Lakport Ship Portal (lakport.gov.in)</a></li>
             <li><a href="#partner-register">List Your Travel Agency</a></li>
             <li><a href="#permits">e-Permit Checklist</a></li>
-            <li><a href="javascript:void(0)" onclick="openAdminModal()">Operator CRM Login</a></li>
           </ul>
         </div>
 

@@ -28,7 +28,12 @@ try {
 // =============================================================================
 // 1. PACKAGES DATABASE (All 8 Islands + Special Atolls, starting from ₹14,000/-)
 // =============================================================================
+// ============================================================
+// EXPANDED PACKAGES — All 8 Islands, all price ranges
+// (Admin can add/edit via admin panel without code)
+// ============================================================
 let PACKAGES_DATA = [
+  // ── AGATTI (Airport Gateway) ───────────────────────────────
   {
     id: 'agatti-backpacker',
     title: 'Agatti Backpacker Island Gateway',
@@ -56,6 +61,89 @@ let PACKAGES_DATA = [
     ]
   },
   {
+    id: 'agatti-premium',
+    title: 'Agatti Premium Lagoon Cottage',
+    category: 'luxury',
+    island: 'Agatti',
+    duration: '4 Days / 3 Nights',
+    nights: 3,
+    price: 28500,
+    featured: false,
+    ribbon: 'Premium Stay',
+    image: 'assets/images/hero.jpg',
+    agency: 'LakExplorer Direct',
+    commission: 3000,
+    highlights: [
+      'Beachfront AC Cottage with ocean-facing balcony',
+      'PADI Scuba Dive + Snorkel Safari combo',
+      'Glass-bottom boat coral reef tour',
+      'All 3 meals + evening coconut snacks',
+      'Entry Permit & All Transfers handled'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Premium Arrival & Sunset Bonfire', desc: 'Welcome at Agatti Airport with garland. Check-in to beachfront cottage. Private sunset bonfire.' },
+      { day: 'Day 2', title: 'Scuba Dive & Lagoon Exploration', desc: 'PADI discover scuba at Agatti house reef. Afternoon glass-bottom boat safari.' },
+      { day: 'Day 3', title: 'Bangaram Daytrip & Snorkel', desc: 'Half-day excursion to Bangaram sandbank. Turtle snorkel and beachside seafood lunch.' },
+      { day: 'Day 4', title: 'Leisurely Farewell', desc: 'Morning yoga on the beach, shopping for island crafts and transfer.' }
+    ]
+  },
+  // ── KADMAT (Watersports Capital) ────────────────────────────
+  {
+    id: 'kadmat-budget',
+    title: 'Kadmat Beach Budget Escape',
+    category: 'budget',
+    island: 'Kadmat',
+    duration: '3 Days / 2 Nights',
+    nights: 2,
+    price: 16000,
+    featured: false,
+    ribbon: 'Best Budget',
+    image: 'assets/images/resort.jpg',
+    agency: 'Kadmat Local Stays',
+    commission: 1800,
+    highlights: [
+      '8 km pristine white sand beach access',
+      'AC Cottage with full board meals',
+      'Lagoon snorkelling gear included',
+      'Entry Permit handled',
+      'Inter-island sea transfer from Agatti'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Agatti to Kadmat Sea Cruise', desc: 'Arrive at Agatti. Speed vessel transfer to Kadmat. Check-in and beach walk.' },
+      { day: 'Day 2', title: 'Snorkelling & Coral Gardens', desc: 'Morning snorkel tour, afternoon beach volleyball and lagoon kayaking.' },
+      { day: 'Day 3', title: 'Return Transfer', desc: 'Breakfast and return vessel to Agatti for connecting flight.' }
+    ]
+  },
+  {
+    id: 'kadmat-watersports-paradise',
+    title: 'Kadmat White Sands Watersports Sanctuary',
+    category: 'adventure',
+    island: 'Kadmat',
+    duration: '5 Days / 4 Nights',
+    nights: 4,
+    price: 34000,
+    featured: true,
+    ribbon: 'Top Adventure',
+    image: 'assets/images/resort.jpg',
+    agency: 'Kadmat Water Sports Hub',
+    commission: 3000,
+    highlights: [
+      'Longest white sand beach in Lakshadweep (8 km)',
+      '1 Scuba Dive, Kayaking trial & Snorkel gear',
+      'Beach Resort AC Cottage with panoramic sea views',
+      'Inter-island vessel transfers from Agatti',
+      '100% Entry Permit & Police Verification'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Agatti Arrival & Sea Cruise to Kadmat', desc: 'Arrive at Agatti airport and board high-speed vessel to Kadmat Island.' },
+      { day: 'Day 2', title: 'Scuba Dive & Lagoon Kayaking', desc: 'Discover Scuba diving with certified instructor. Afternoon kayaking on turquoise water.' },
+      { day: 'Day 3', title: 'Deep Sea Snorkelling & Marine Sanctuary', desc: 'Guided boat snorkel session along the outer barrier reef with sea turtles.' },
+      { day: 'Day 4', title: 'Island Cycling & Sunset Campfire', desc: 'Cycle down to the southern tip. Evening beach barbecue and folk music.' },
+      { day: 'Day 5', title: 'Transfer to Agatti & Flight Home', desc: 'Early transfer to Agatti Airport for your onward mainland flight.' }
+    ]
+  },
+  // ── KALPENI (Coral Lagoon) ──────────────────────────────────
+  {
     id: 'kalpeni-coral-kayak',
     title: 'Kalpeni Coral Lagoon & Kayaking Explorer',
     category: 'adventure',
@@ -82,139 +170,57 @@ let PACKAGES_DATA = [
     ]
   },
   {
-    id: 'amini-kadmat-heritage',
-    title: 'Amini & Kadmat Atoll Heritage Journey',
+    id: 'kalpeni-family',
+    title: 'Kalpeni Family Coral Island Holiday',
     category: 'family',
-    island: 'Amini & Kadmat',
+    island: 'Kalpeni',
     duration: '4 Days / 3 Nights',
     nights: 3,
-    price: 19800,
+    price: 22000,
     featured: false,
-    ribbon: 'Cultural Trail',
+    ribbon: 'Family Favourite',
     image: 'assets/images/resort.jpg',
-    agency: 'Amini Local Voyagers',
-    commission: 2200,
-    highlights: [
-      'Visit historic craft centers: tortoiseshell & stone carving',
-      'Island hopping between Amini and Kadmat sand beaches',
-      'Authentic Malabar coastal cuisine with fresh seafood',
-      'Permit processing with police verification desk',
-      'Guided island walking tour with local islander'
-    ],
-    itinerary: [
-      { day: 'Day 1', title: 'Arrival Amini & Historic Craft Center', desc: 'Disembark at Amini. Learn about the ancient stone carvers and famous coir crafters.' },
-      { day: 'Day 2', title: 'Boat Transfer to Kadmat Beach', desc: 'Speedboat cruise across the deep channel to Kadmat’s 8 km long white sand shore.' },
-      { day: 'Day 3', title: 'Coral Reef Exploration & Snorkeling', desc: 'Guided snorkel trip along Kadmat reef followed by evening beach games.' },
-      { day: 'Day 4', title: 'Return Transfer', desc: 'Departure cruise back to Agatti for connecting flights.' }
-    ]
-  },
-  {
-    id: 'kiltan-chetlat-expedition',
-    title: 'Kiltan & Chetlat Northern Reefs Expedition',
-    category: 'adventure',
-    island: 'Kiltan & Chetlat',
-    duration: '4 Days / 3 Nights',
-    nights: 3,
-    price: 21500,
-    featured: false,
-    ribbon: 'Untouched North',
-    image: 'assets/images/hero.jpg',
-    agency: 'Northern Atolls Cooperative',
+    agency: 'Kalpeni Lagoon Escapes',
     commission: 2500,
     highlights: [
-      'Discover the raw, least-visited northern islands',
-      'Kiltan lighthouse & Chetlat traditional boat building',
-      'Virgin coral reefs teeming with pelagic fish',
-      'All local meals & boat transfers included',
-      'Full government entry permit handling'
+      'Shallow safe lagoon — ideal for children & seniors',
+      'Glass-bottom boat safari for whole family',
+      'Spacious cottage with attached kitchen',
+      'Guided lagoon walk & birdwatching',
+      'Full permit & transfer assistance'
     ],
     itinerary: [
-      { day: 'Day 1', title: 'Arrival at Kiltan Island', desc: 'Arrive at the peaceful island of Kiltan. Visit the northern lighthouse and sunset beach.' },
-      { day: 'Day 2', title: 'Chetlat Island Day Cruise', desc: 'Cruise to neighboring Chetlat, famous for handcrafted sailing craft and caps.' },
-      { day: 'Day 3', title: 'Reef Snorkeling & Dolphin Spotting', desc: 'Morning dolphin watch cruise outside the lagoon barrier reef.' },
-      { day: 'Day 4', title: 'Departure', desc: 'Return transfer to main transport terminal.' }
+      { day: 'Day 1', title: 'Family Arrival & Coconut Welcome', desc: 'Arrive at Kalpeni. Kids get complimentary coconut drink and seashell activity kit.' },
+      { day: 'Day 2', title: 'Glass-Bottom Boat & Lagoon Paddling', desc: 'Morning glass-boat safari, afternoon safe paddling in 0.5m shallow lagoon area.' },
+      { day: 'Day 3', title: 'Bird Watch Walk & Island Games', desc: 'Island Nature Trail, bird watching tour with local guide, bonfire evening.' },
+      { day: 'Day 4', title: 'Farewell & Return', desc: 'Family breakfast, packaged island snacks, return vessel.' }
     ]
   },
+  // ── MINICOY (Heritage & Lighthouse) ────────────────────────
   {
-    id: 'kavaratti-capital-marine',
-    title: 'Kavaratti Marine Capital & Dolphin Safari',
-    category: 'family',
-    island: 'Kavaratti',
-    duration: '4 Days / 3 Nights',
-    nights: 3,
-    price: 24500,
+    id: 'minicoy-budget',
+    title: 'Minicoy Lighthouse Budget Trip',
+    category: 'budget',
+    island: 'Minicoy',
+    duration: '3 Days / 2 Nights',
+    nights: 2,
+    price: 18000,
     featured: false,
-    ribbon: 'Capital Classic',
-    image: 'assets/images/hero.jpg',
-    agency: 'Kavaratti Marine Tours',
+    ribbon: 'Cultural Pick',
+    image: 'assets/images/minicoy.jpg',
+    agency: 'Minicoy Marine Voyagers',
     commission: 2000,
     highlights: [
-      'Visit famous Lakshadweep Marine Aquarium & Museum',
-      'Ujra Mosque with exquisite wooden architectural carvings',
-      'Glass-bottom boat lagoon ride & dolphin watch safari',
-      'AC Beach Cottage stay with full board buffet',
-      'Complete e-Permit processing'
+      'Climb the British-era 1885 Lighthouse (300 steps)',
+      'Mahl language & Maldivian culture experience',
+      'Budget AC guesthouse with all meals',
+      'Southernmost coral lagoon in India',
+      'Entry Permit fully handled'
     ],
     itinerary: [
-      { day: 'Day 1', title: 'Arrival at Capital Kavaratti', desc: 'Speedboat or flight transfer to Kavaratti. Check-in to AC Beach Cottage. Sunset tea.' },
-      { day: 'Day 2', title: 'Aquarium & Cultural Heritage Tour', desc: 'Visit Marine Aquarium and 17th-century Ujra Mosque. Afternoon glass-bottom boat tour.' },
-      { day: 'Day 3', title: 'Watersports & Coral Safari', desc: 'Kayaking and snorkeling in the expansive lagoon. Evening dolphin watch cruise.' },
-      { day: 'Day 4', title: 'Departure', desc: 'Transfer to embarkation terminal for your return journey.' }
-    ]
-  },
-  {
-    id: 'kadmat-watersports-paradise',
-    title: 'Kadmat White Sands Watersports Sanctuary',
-    category: 'adventure',
-    island: 'Kadmat',
-    duration: '5 Days / 4 Nights',
-    nights: 4,
-    price: 34000,
-    featured: true,
-    ribbon: 'Top Adventure',
-    image: 'assets/images/resort.jpg',
-    agency: 'Kadmat Water Sports Hub',
-    commission: 3000,
-    highlights: [
-      'Longest white sand beach in Lakshadweep (8 km)',
-      '1 Scuba Dive, Kayaking trial & Snorkel gear',
-      'Beach Resort AC Cottage with panoramic sea views',
-      'Inter-island vessel transfers from Agatti',
-      '100% Entry Permit & Police Verification'
-    ],
-    itinerary: [
-      { day: 'Day 1', title: 'Agatti Arrival & Sea Cruise to Kadmat', desc: 'Arrive at Agatti airport and board high-speed vessel to Kadmat Island.' },
-      { day: 'Day 2', title: 'Scuba Dive & Lagoon Kayaking', desc: 'Discover Scuba diving with certified instructor. Afternoon kayaking on turquoise water.' },
-      { day: 'Day 3', title: 'Deep Sea Snorkeling & Marine Sanctuary', desc: 'Guided boat snorkel session along the outer barrier reef with sea turtles.' },
-      { day: 'Day 4', title: 'Island Cycling & Sunset Campfire', desc: 'Cycle down to the southern tip. Evening beach barbecue and folk music.' },
-      { day: 'Day 5', title: 'Transfer to Agatti & Flight Home', desc: 'Early transfer to Agatti Airport for your onward mainland flight.' }
-    ]
-  },
-  {
-    id: 'bangaram-royal-atoll',
-    title: 'Bangaram Royal Lagoon & Sandbank Retreat',
-    category: 'luxury',
-    island: 'Bangaram & Agatti',
-    duration: '4 Days / 3 Nights',
-    nights: 3,
-    price: 38500,
-    featured: true,
-    ribbon: 'Most Popular',
-    image: 'assets/images/bangaram.jpg',
-    agency: 'Bangaram Premium Travels',
-    commission: 3500,
-    highlights: [
-      'Beachfront AC Cottage on uninhabited Bangaram Island',
-      'Speedboat transfers from Agatti Airport directly to resort',
-      'Private Sandbank excursion & Thinnakara tour',
-      'Authorized island bar facility available on Bangaram',
-      'All meals (Buffet breakfast, lunch, dinner)'
-    ],
-    itinerary: [
-      { day: 'Day 1', title: 'Flight Arrival Agatti & Speedboat to Bangaram', desc: 'Land in Agatti. Speedboat transfer across emerald lagoon to Bangaram. Check-in.' },
-      { day: 'Day 2', title: 'House Reef Snorkel & Virgin Sandbank Picnic', desc: 'Snorkel with green turtles at house reef. Private afternoon sandbank excursion.' },
-      { day: 'Day 3', title: 'Thinnakara Castaway Island & Shipwreck', desc: 'Boat hop to neighboring Thinnakara island and vintage shipwreck coral garden.' },
-      { day: 'Day 4', title: 'Speedboat Return to Agatti & Departure', desc: 'Scenic morning boat ride back to Agatti for departure flight.' }
+      { day: 'Day 1', title: 'Minicoy Arrival', desc: 'Arrive by ship. Village walk and traditional welcome.' },
+      { day: 'Day 2', title: 'Lighthouse Climb & Cultural Tour', desc: 'Climb 300-step lighthouse, explore village clusters (Avas), Lava dance evening.' },
+      { day: 'Day 3', title: 'Lagoon Swim & Departure', desc: 'Morning dip in southernmost lagoon. Return vessel boarding.' }
     ]
   },
   {
@@ -244,6 +250,199 @@ let PACKAGES_DATA = [
       { day: 'Day 4', title: 'Departure', desc: 'Souvenir shopping (Minicoy halwa & crafts) and transfer to port.' }
     ]
   },
+  // ── AMINI (Artisan Heritage) ────────────────────────────────
+  {
+    id: 'amini-heritage-budget',
+    title: 'Amini Artisan Village Budget Tour',
+    category: 'budget',
+    island: 'Amini',
+    duration: '3 Days / 2 Nights',
+    nights: 2,
+    price: 15000,
+    featured: false,
+    ribbon: 'Artisan Experience',
+    image: 'assets/images/hero.jpg',
+    agency: 'Amini Local Voyagers',
+    commission: 1800,
+    highlights: [
+      'Famous stone carving & tortoiseshell craft center visit',
+      'Budget homestay with authentic island cuisine',
+      'Lagoon walk with local islander guide',
+      'All entry permits handled'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Arrival at Amini', desc: 'Disembark. Village orientation walk and craft center visit.' },
+      { day: 'Day 2', title: 'Craft Workshop & Lagoon Tour', desc: 'Participate in coir-making workshop. Afternoon lagoon swimming.' },
+      { day: 'Day 3', title: 'Departure', desc: 'Farewell breakfast. Transfer to vessel for return.' }
+    ]
+  },
+  {
+    id: 'amini-kadmat-heritage',
+    title: 'Amini & Kadmat Atoll Heritage Journey',
+    category: 'family',
+    island: 'Amini & Kadmat',
+    duration: '4 Days / 3 Nights',
+    nights: 3,
+    price: 19800,
+    featured: false,
+    ribbon: 'Cultural Trail',
+    image: 'assets/images/resort.jpg',
+    agency: 'Amini Local Voyagers',
+    commission: 2200,
+    highlights: [
+      'Visit historic craft centers: tortoiseshell & stone carving',
+      'Island hopping between Amini and Kadmat sand beaches',
+      'Authentic Malabar coastal cuisine with fresh seafood',
+      'Permit processing with police verification desk',
+      'Guided island walking tour with local islander'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Arrival Amini & Historic Craft Center', desc: 'Disembark at Amini. Learn about the ancient stone carvers and famous coir crafters.' },
+      { day: 'Day 2', title: 'Boat Transfer to Kadmat Beach', desc: 'Speedboat cruise across the deep channel to Kadmat’s 8 km long white sand shore.' },
+      { day: 'Day 3', title: 'Coral Reef Exploration & Snorkeling', desc: 'Guided snorkel trip along Kadmat reef followed by evening beach games.' },
+      { day: 'Day 4', title: 'Return Transfer', desc: 'Departure cruise back to Agatti for connecting flights.' }
+    ]
+  },
+  // ── KILTAN & CHETLAT (Northern Unexplored) ─────────────────
+  {
+    id: 'kiltan-chetlat-expedition',
+    title: 'Kiltan & Chetlat Northern Reefs Expedition',
+    category: 'adventure',
+    island: 'Kiltan & Chetlat',
+    duration: '4 Days / 3 Nights',
+    nights: 3,
+    price: 21500,
+    featured: false,
+    ribbon: 'Untouched North',
+    image: 'assets/images/hero.jpg',
+    agency: 'Northern Atolls Cooperative',
+    commission: 2500,
+    highlights: [
+      'Discover the raw, least-visited northern islands',
+      'Kiltan lighthouse & Chetlat traditional boat building',
+      'Virgin coral reefs teeming with pelagic fish',
+      'All local meals & boat transfers included',
+      'Full government entry permit handling'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Arrival at Kiltan Island', desc: 'Arrive at the peaceful island of Kiltan. Visit the northern lighthouse and sunset beach.' },
+      { day: 'Day 2', title: 'Chetlat Island Day Cruise', desc: 'Cruise to neighboring Chetlat, famous for handcrafted sailing craft and caps.' },
+      { day: 'Day 3', title: 'Reef Snorkeling & Dolphin Spotting', desc: 'Morning dolphin watch cruise outside the lagoon barrier reef.' },
+      { day: 'Day 4', title: 'Departure', desc: 'Return transfer to main transport terminal.' }
+    ]
+  },
+  // ── KAVARATTI (Capital Island) ──────────────────────────────
+  {
+    id: 'kavaratti-budget',
+    title: 'Kavaratti Capital Day Explorer',
+    category: 'budget',
+    island: 'Kavaratti',
+    duration: '3 Days / 2 Nights',
+    nights: 2,
+    price: 17500,
+    featured: false,
+    ribbon: 'Capital Budget',
+    image: 'assets/images/hero.jpg',
+    agency: 'Kavaratti Marine Tours',
+    commission: 2000,
+    highlights: [
+      'Marine Aquarium & Museum visit',
+      'Ujra Mosque cultural heritage tour',
+      'Glass-bottom boat lagoon ride',
+      'Budget AC guesthouse with meals',
+      'Full e-Permit processing'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Arrive Kavaratti Capital', desc: 'Island transfer. Check-in to guesthouse. Evening marine museum visit.' },
+      { day: 'Day 2', title: 'Mosque, Aquarium & Glass-Boat', desc: 'Ujra Mosque tour, Marine Aquarium, and glass-bottom boat lagoon safari.' },
+      { day: 'Day 3', title: 'Departure', desc: 'Breakfast and return vessel or flight.' }
+    ]
+  },
+  {
+    id: 'kavaratti-capital-marine',
+    title: 'Kavaratti Marine Capital & Dolphin Safari',
+    category: 'family',
+    island: 'Kavaratti',
+    duration: '4 Days / 3 Nights',
+    nights: 3,
+    price: 24500,
+    featured: false,
+    ribbon: 'Capital Classic',
+    image: 'assets/images/hero.jpg',
+    agency: 'Kavaratti Marine Tours',
+    commission: 2000,
+    highlights: [
+      'Visit famous Lakshadweep Marine Aquarium & Museum',
+      'Ujra Mosque with exquisite wooden architectural carvings',
+      'Glass-bottom boat lagoon ride & dolphin watch safari',
+      'AC Beach Cottage stay with full board buffet',
+      'Complete e-Permit processing'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Arrival at Capital Kavaratti', desc: 'Speedboat or flight transfer to Kavaratti. Check-in to AC Beach Cottage. Sunset tea.' },
+      { day: 'Day 2', title: 'Aquarium & Cultural Heritage Tour', desc: 'Visit Marine Aquarium and 17th-century Ujra Mosque. Afternoon glass-bottom boat tour.' },
+      { day: 'Day 3', title: 'Watersports & Coral Safari', desc: 'Kayaking and snorkeling in the expansive lagoon. Evening dolphin watch cruise.' },
+      { day: 'Day 4', title: 'Departure', desc: 'Transfer to embarkation terminal for your return journey.' }
+    ]
+  },
+  // ── BANGARAM (Luxury Uninhabited Atoll) ─────────────────────
+  {
+    id: 'bangaram-royal-atoll',
+    title: 'Bangaram Royal Lagoon & Sandbank Retreat',
+    category: 'luxury',
+    island: 'Bangaram & Agatti',
+    duration: '4 Days / 3 Nights',
+    nights: 3,
+    price: 38500,
+    featured: true,
+    ribbon: 'Most Popular',
+    image: 'assets/images/bangaram.jpg',
+    agency: 'Bangaram Premium Travels',
+    commission: 3500,
+    highlights: [
+      'Beachfront AC Cottage on uninhabited Bangaram Island',
+      'Speedboat transfers from Agatti Airport directly to resort',
+      'Private Sandbank excursion & Thinnakara tour',
+      'Authorized island bar facility available on Bangaram',
+      'All meals (Buffet breakfast, lunch, dinner)'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Flight Arrival Agatti & Speedboat to Bangaram', desc: 'Land in Agatti. Speedboat transfer across emerald lagoon to Bangaram. Check-in.' },
+      { day: 'Day 2', title: 'House Reef Snorkel & Virgin Sandbank Picnic', desc: 'Snorkel with green turtles at house reef. Private afternoon sandbank excursion.' },
+      { day: 'Day 3', title: 'Thinnakara Castaway Island & Shipwreck', desc: 'Boat hop to neighboring Thinnakara island and vintage shipwreck coral garden.' },
+      { day: 'Day 4', title: 'Speedboat Return to Agatti & Departure', desc: 'Scenic morning boat ride back to Agatti for departure flight.' }
+    ]
+  },
+  {
+    id: 'bangaram-honeymoon',
+    title: 'Bangaram Honeymoon Bliss Package',
+    category: 'luxury',
+    island: 'Bangaram',
+    duration: '5 Days / 4 Nights',
+    nights: 4,
+    price: 55000,
+    featured: true,
+    ribbon: 'Honeymoon Special',
+    image: 'assets/images/bangaram.jpg',
+    agency: 'Bangaram Premium Travels',
+    commission: 5000,
+    highlights: [
+      'Exclusive beachfront cottage for two',
+      'Candlelit private beach dinner setup',
+      'Couple scuba dive & underwater photo shoot',
+      'Sandbank picnic with champagne & fresh fruits',
+      'Drone aerial video reel of your romantic trip',
+      'All transfers & entry permits handled'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Private Welcome Arrival', desc: 'Garland welcome at Agatti. Speedboat with flower-decorated bow to Bangaram. Rose petals in cottage.' },
+      { day: 'Day 2', title: 'Couple Scuba & Turtle Reef', desc: 'Certified couple discover scuba dive. Underwater photos of you swimming with turtles.' },
+      { day: 'Day 3', title: 'Private Sandbank Picnic', desc: 'Exclusive private sandbank with champagne, tropical fruit platter, and hammock.' },
+      { day: 'Day 4', title: 'Drone Shoot & Thinnakara Visit', desc: 'Cinematic 4K drone aerial reel of the couple. Evening at Thinnakara beach.' },
+      { day: 'Day 5', title: 'Farewell Sunrise & Departure', desc: 'Sunrise walk on white sands, breakfast in cottage, speedboat to Agatti.' }
+    ]
+  },
+  // ── CRUISE PACKAGES ─────────────────────────────────────────
   {
     id: 'samudram-cruise-deluxe',
     title: 'M.V. Kavaratti Samudram 3-Island Ship Cruise',
@@ -271,8 +470,38 @@ let PACKAGES_DATA = [
       { day: 'Day 4', title: 'Island 3: Minicoy Cultural Gem', desc: 'Visit the historic 1885 lighthouse, cultural village tour, and pristine southern lagoon.' },
       { day: 'Day 5', title: 'Arrival Back in Kochi Harbour', desc: 'Morning arrival at Kochi port after breakfast. Disembark with treasured memories.' }
     ]
+  },
+  // ── MULTI-ISLAND (Budget Multi-Hop) ─────────────────────────
+  {
+    id: 'multi-island-budget',
+    title: 'Lakshadweep Budget 3-Island Hop',
+    category: 'budget',
+    island: 'Agatti, Amini & Kalpeni',
+    duration: '5 Days / 4 Nights',
+    nights: 4,
+    price: 22000,
+    featured: false,
+    ribbon: 'Multi-Island Value',
+    image: 'assets/images/hero.jpg',
+    agency: 'LakExplorer Direct',
+    commission: 2500,
+    highlights: [
+      'Visit 3 different islands in one trip',
+      'Budget homestays on each island',
+      'Lagoon snorkel & glass-bottom boat',
+      'All inter-island vessels coordinated',
+      'Entry Permits for all 3 islands handled'
+    ],
+    itinerary: [
+      { day: 'Day 1', title: 'Agatti Arrival', desc: 'Fly in to Agatti. Settle in and explore the airport island.' },
+      { day: 'Day 2', title: 'Agatti Lagoon & Transfer to Amini', desc: 'Morning swim, afternoon vessel to Amini.' },
+      { day: 'Day 3', title: 'Amini Craft Village', desc: 'Artisan craft workshops and village walk on Amini.' },
+      { day: 'Day 4', title: 'Transfer to Kalpeni & Lagoon Day', desc: 'Vessel to Kalpeni. Kayaking in the famous coral lagoon.' },
+      { day: 'Day 5', title: 'Return to Agatti & Departure', desc: 'Return vessel, airport departure.' }
+    ]
   }
 ];
+
 
 // =============================================================================
 // 2. MULTI-VENDOR MARKETPLACE SERVICES (Activities, Stays, Rentals, Food, Photographers)
@@ -471,38 +700,7 @@ let MARKETPLACE_SERVICES = [
   }
 ];
 
-// =============================================================================
-// 3. FLIGHT & SHIP SCHEDULES & FARES
-// =============================================================================
-const FLIGHT_SCHEDULES = [
-  {
-    airline: 'Alliance Air (9I-505)',
-    route: 'Kochi (COK) ➔ Agatti (AGX)',
-    dep: '08:50 AM',
-    arr: '10:15 AM',
-    days: 'Daily (Mon to Sun)',
-    aircraft: 'ATR 72-600',
-    fareRange: '₹5,490 - ₹7,850'
-  },
-  {
-    airline: 'IndiGo (6E-7281)',
-    route: 'Kochi (COK) ➔ Agatti (AGX)',
-    dep: '10:45 AM',
-    arr: '12:10 PM',
-    days: 'Daily (Mon to Sun)',
-    aircraft: 'ATR 72-600',
-    fareRange: '₹5,890 - ₹8,200'
-  },
-  {
-    airline: 'Alliance Air (9I-506)',
-    route: 'Agatti (AGX) ➔ Kochi (COK)',
-    dep: '10:40 AM',
-    arr: '12:05 PM',
-    days: 'Daily (Mon to Sun)',
-    aircraft: 'ATR 72-600',
-    fareRange: '₹5,490 - ₹7,850'
-  }
-];
+
 
 // =============================================================================
 // 3. FLIGHT & PASSENGER SHIP SCHEDULES (Synced with https://lakshadweep.irctc.co.in/)
@@ -568,12 +766,14 @@ function computeDynamicIRCTCSchedules() {
       id: 'ship-kavaratti-samudram',
       vessel: 'M.V. Kavaratti (Flagship Samudram Cruise)',
       capacity: '700 Passengers • All-Island Cruise',
-      routes: 'Kochi ⇄ Kavaratti ➔ Kalpeni ➔ Minicoy (5D/4N)',
+      routes: 'Kochi ⇄ Kavaratti ➤ Kalpeni ➤ Minicoy (5D/4N)',
       nextSailing: `${formatDate(nextFriday)} & ${formatDate(followingFriday)}`,
       releaseDate: `Open for ${currentMonthYear} (30-day advance window on lakshadweep.irctc.co.in)`,
-      firstAc: '₹4,200 (₹39,500 Full Package)',
-      secondAc: '₹2,600 (₹31,500 Full Package)',
-      bunkClass: '₹950',
+      // Tourist fares
+      firstAc: '₹4,200', secondAc: '₹2,600', bunkClass: '₹950',
+      // Islander fares (subsidised by UT Govt)
+      islanderFare: '₹Free – ₹850 (subsidised)',
+      permitRequired: '✅ Required (Tourist) | ❌ Not Required (Islander)',
       status: 'Booking Open',
       officialUrl: 'https://lakshadweep.irctc.co.in/'
     },
@@ -584,9 +784,9 @@ function computeDynamicIRCTCSchedules() {
       routes: 'Kochi ⇄ Agatti / Kadmat / Amini',
       nextSailing: `${formatDate(nextTuesday)} (Weekly Twice)`,
       releaseDate: 'Released 15-20 days prior on IRCTC & Lakport',
-      firstAc: '₹3,800',
-      secondAc: '₹2,400',
-      bunkClass: '₹850',
+      firstAc: '₹3,800', secondAc: '₹2,400', bunkClass: '₹850',
+      islanderFare: '₹Free – ₹600 (subsidised)',
+      permitRequired: '✅ Required (Tourist) | ❌ Not Required (Islander)',
       status: 'Booking Open',
       officialUrl: 'https://lakshadweep.irctc.co.in/'
     },
@@ -597,9 +797,9 @@ function computeDynamicIRCTCSchedules() {
       routes: 'Kochi ⇄ Kiltan / Chetlat / Bitra / Kadmat',
       nextSailing: `${formatDate(nextThursday)} (Bi-Weekly)`,
       releaseDate: 'Released 15 days prior to sailing',
-      firstAc: '₹3,500',
-      secondAc: '₹2,200',
-      bunkClass: '₹750',
+      firstAc: '₹3,500', secondAc: '₹2,200', bunkClass: '₹750',
+      islanderFare: '₹Free – ₹550 (subsidised)',
+      permitRequired: '✅ Required (Tourist) | ❌ Not Required (Islander)',
       status: 'Fast Filling',
       officialUrl: 'https://lakshadweep.irctc.co.in/'
     },
@@ -610,14 +810,16 @@ function computeDynamicIRCTCSchedules() {
       routes: 'Agatti ⇄ Bangaram ⇄ Kadmat ⇄ Kavaratti',
       nextSailing: 'Daily Morning & Evening Feeder Trips',
       releaseDate: 'Daily booking & 7 days advance e-tickets',
-      firstAc: '₹1,500 (Executive)',
-      secondAc: '₹850 (AC Chair Car)',
-      bunkClass: '₹650',
+      firstAc: '₹1,500 (Executive)', secondAc: '₹850 (AC Chair Car)', bunkClass: '₹650',
+      islanderFare: '₹Concessional (Registered Islanders only)',
+      permitRequired: '✅ Required (Tourist) | ❌ Not Required (Islander)',
       status: 'Daily Active',
       officialUrl: 'https://lakshadweep.irctc.co.in/'
     }
   ];
 }
+
+
 
 let currentShipSchedules = [];
 
@@ -1086,6 +1288,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   updateBuilderPrice();
+
+  // 🔐 SECRET ADMIN ACCESS: Ctrl+Shift+A (not visible to public)
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+      e.preventDefault();
+      openAdminModal();
+    }
+  });
+
+  // Also allow secret URL param: ?admin=1
+  if (new URLSearchParams(window.location.search).get('admin') === '1') {
+    setTimeout(() => openAdminModal(), 800);
+  }
 });
 
 // =============================================================================
@@ -1311,24 +1526,32 @@ function renderTransportSchedules() {
           <strong style="color:var(--ocean-deep);">🚢 ${s.vessel}</strong><br>
           <span style="font-size:0.75rem; color:var(--text-muted);">${s.capacity}</span>
         </td>
-        <td>
-          <strong style="color:var(--ocean-dark); font-size:0.88rem;">${s.routes}</strong>
-        </td>
-        <td>
-          <div style="font-weight:700; color:#0284c7; font-size:0.88rem;">📅 ${s.nextSailing}</div>
-        </td>
+        <td><strong style="color:var(--ocean-dark); font-size:0.88rem;">${s.routes}</strong></td>
+        <td><div style="font-weight:700; color:#0284c7; font-size:0.88rem;">📅 ${s.nextSailing}</div></td>
         <td>
           <span style="font-size:0.78rem; background:#f1f5f9; padding:0.25rem 0.5rem; border-radius:4px; color:#334155; display:inline-block;">
             ℹ️ ${s.releaseDate}
           </span>
         </td>
-        <td><strong style="color:#0284c7; font-size:0.9rem;">${s.firstAc}</strong></td>
-        <td><strong style="font-size:0.9rem;">${s.secondAc}</strong></td>
-        <td><span style="font-weight:700; color:#10b981; font-size:0.9rem;">${s.bunkClass}</span></td>
+        <td>
+          <div style="font-size:0.82rem;">
+            <span style="color:#0284c7; font-weight:700; display:block;">1AC: ${s.firstAc}</span>
+            <span style="font-weight:600; display:block;">2AC: ${s.secondAc}</span>
+            <span style="color:#10b981; font-weight:700; display:block;">Bunk: ${s.bunkClass}</span>
+          </div>
+        </td>
+        <td>
+          <span style="font-size:0.82rem; background:#dcfce7; color:#166534; padding:0.25rem 0.45rem; border-radius:4px; font-weight:700; display:inline-block;">
+            ${s.islanderFare || '🏝️ Concessional'}
+          </span>
+        </td>
+        <td>
+          <span style="font-size:0.78rem; line-height:1.5; display:block;">${s.permitRequired || '✅ Tourist: Required'}</span>
+        </td>
         <td>${getStatusBadge(s.status)}</td>
         <td>
           <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-            <a href="${s.officialUrl || 'https://lakshadweep.irctc.co.in/'}" target="_blank" class="btn btn-outline btn-sm" style="padding:0.35rem 0.6rem; font-size:0.75rem;" title="Open official IRCTC ticketing portal">
+            <a href="${s.officialUrl || 'https://lakshadweep.irctc.co.in/'}" target="_blank" class="btn btn-outline btn-sm" style="padding:0.35rem 0.6rem; font-size:0.75rem;">
               IRCTC ↗
             </a>
             <button class="btn btn-whatsapp btn-sm" style="padding:0.35rem 0.6rem; font-size:0.75rem;" onclick="requestShipTicketWhatsApp('${s.id}')">
