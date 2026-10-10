@@ -2315,6 +2315,16 @@ function switchAdminTab(tab) {
   } else {
     renderAdminTable();
   }
+
+  // Always scroll modal body back to top on tab switch
+  const body = document.querySelector('.admin-modal-body');
+  if (body) body.scrollTop = 0;
+
+  // Close any open form boxes when switching tabs
+  ['admin-package-form-box', 'admin-service-form-box', 'admin-add-ship-form'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
 }
 
 function renderAdminTable() {
