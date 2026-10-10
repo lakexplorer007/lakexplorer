@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>LakExplorer — Lakshadweep Tourism Marketplace, Packages & Permits</title>
+  <meta name="description" content="Discover Lakshadweep packages starting from ₹14,000/-. Book island stays, scuba diving, rentals, ship schedules, flights and get 100% entry permit support on WhatsApp.">
+  <meta name="keywords" content="Lakshadweep tourism packages, Agatti, Kadmat, Kalpeni, Minicoy, Amini, Kiltan, Chetlat, Kavaratti, scuba diving, ship tickets lakport, entry permit">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PDF.js library for client-side schedule PDF parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ==========================================================
+       Header / Navbar (Phone digits hidden from public view)
+       ========================================================== -->
+  <header class="site-header" id="header">
+    <div class="container nav-container">
+      <a href="#hero" class="brand-logo" aria-label="LakExplorer Home">
+        <div class="brand-logo-icon">🏝️</div>
+        <span>Lak<span class="highlight">Explorer</span></span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#packages" class="nav-link">Packages</a></li>
+          <li><a href="#marketplace" class="nav-link">Activities & Stays</a></li>
+          <li><a href="#flights-ships" class="nav-link">Flights & Ships</a></li>
+          <li><a href="#custom-trip-builder" class="nav-link">Trip Builder</a></li>
+          <li><a href="#partner-register" class="nav-link">List Your Agency</a></li>
+          <li><a href="#permits" class="nav-link">Permits</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-admin-pill" onclick="openAdminModal()" title="Operator & Commission Dashboard">
+          🔒 <span>Admin CRM</span>
+        </button>
+        <a href="https://wa.me/919496924874?text=Hi%20LakExplorer%2C%20I%20have%20an%20inquiry%20regarding%20Lakshadweep%20travel!" target="_blank" class="btn btn-whatsapp btn-sm" aria-label="Chat on WhatsApp">
+          <span>💬 WhatsApp Desk</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================
+         Hero Section (Minimum package starting from ₹14,000/-)
+         ========================================================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          <span>Packages Starting from ₹14,000/- • 100% Entry Permits Handled</span>
+        </div>
+        <h1 class="hero-title">
+          Explore Lakshadweep <br>
+          <span class="gradient-text">India's Coral Paradise</span>
+        </h1>
+        <p class="hero-subtitle">
+          Book ready-made packages across all 8 islands (Agatti, Kadmat, Kalpeni, Minicoy, Amini, Kiltan, Chetlat, Kavaratti) or book scuba, beach stays, drone shoots and rentals. Instant confirmation via WhatsApp & secure QR.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#packages" class="btn btn-coral btn-lg">
+            🌴 Packages from ₹14,000/-
+          </a>
+          <a href="#marketplace" class="btn btn-glass btn-lg">
+            🤿 Activities & Stays
+          </a>
+          <a href="#flights-ships" class="btn btn-glass btn-lg">
+            ✈️ Flight & Ship Fares
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h3>₹14,000</h3>
+            <p>Starting Tour Package</p>
+          </div>
+          <div class="stat-item">
+            <h3>8 Islands</h3>
+            <p>Full Atoll Coverage</p>
+          </div>
+          <div class="stat-item">
+            <h3>100%</h3>
+            <p>Permit Approval Support</p>
+          </div>
+          <div class="stat-item">
+            <h3>Instant</h3>
+            <p>WhatsApp Confirmation</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         Trust Badges Bar
+         ========================================================== -->
+    <section class="trust-bar" aria-label="Trust Badges">
+      <div class="container">
+        <div class="trust-grid">
+          <div class="trust-item">
+            <div class="trust-icon">🏛️</div>
+            <div>
+              <h4>Government Authorized</h4>
+              <p>Official permits & verified resort partners</p>
+            </div>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon">🛡️</div>
+            <div>
+              <h4>Manual Admin Verification</h4>
+              <p>Bookings & QR payments verified manually</p>
+            </div>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon">🤝</div>
+            <div>
+              <h4>Local Agency Network</h4>
+              <p>Agencies & rental operators across all islands</p>
+            </div>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon">🚢</div>
+            <div>
+              <h4>Ship & Flight Desk</h4>
+              <p>Live schedule updates & ticket booking assistance</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         Ready-Made Packages Section (Starting ₹14,000/-)
+         ========================================================== -->
+    <section class="section-padding packages-section" id="packages">
+      <div class="container">
+        <div class="text-center">
+          <span class="section-tag">All 8 Islands Covered</span>
+          <h2 class="section-title">Island Holiday Packages</h2>
+          <p class="section-desc">
+            Explore authentic local island tourism packages starting from just <strong>₹14,000/-</strong>. Includes accommodation, meals, transfers, and complete police clearance permit assistance.
+          </p>
+
+          <!-- Category filter buttons -->
+          <div class="filter-pills" role="tablist">
+            <button class="filter-btn active" data-filter="all">All Packages</button>
+            <button class="filter-btn" data-filter="budget">Budget (from ₹14k)</button>
+            <button class="filter-btn" data-filter="adventure">Adventure & Scuba</button>
+            <button class="filter-btn" data-filter="luxury">Luxury & Honeymoon</button>
+            <button class="filter-btn" data-filter="family">Cruise & Family</button>
+          </div>
+        </div>
+
+        <!-- Dynamic packages container populated by app.js -->
+        <div class="packages-grid" id="packages-container"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         Marketplace: Activities, Stays, Rentals, Food, Photographers
+         ========================================================== -->
+    <section class="section-padding" id="marketplace" style="background: #ffffff;">
+      <div class="container">
+        <div class="text-center">
+          <span class="section-tag">Island Services Directory</span>
+          <h2 class="section-title">Activities, Stays, Rentals & Photographers</h2>
+          <p class="section-desc">
+            Book certified divemasters, cozy homestays, GoPro gear, island scooters, fresh seafood platters, and professional drone shoots across Lakshadweep.
+          </p>
+
+          <!-- Marketplace Category Navigation -->
+          <div class="marketplace-tabs" role="tablist">
+            <button class="market-tab-btn active" data-category="activities">🤿 Water Activities</button>
+            <button class="market-tab-btn" data-category="stays">🏡 Beach Stays & Tents</button>
+            <button class="market-tab-btn" data-category="rentals">🚴 GoPro & Bike Rentals</button>
+            <button class="market-tab-btn" data-category="food">🥘 Local Food & BBQ</button>
+            <button class="market-tab-btn" data-category="photographers">📸 Drone & Photographers</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Services Grid -->
+        <div class="services-grid" id="marketplace-services-container"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         Flight & Ship Live Schedules & Fares Portal
+         ========================================================== -->
+    <section class="section-padding trans-portal-section" id="flights-ships">
+      <div class="container">
+        <div class="text-center">
+          <span class="section-tag">Real-Time Travel Guide</span>
+          <h2 class="section-title">Flights & Passenger Ship Programs</h2>
+          <p class="section-desc">
+            Check current flight schedules from Kochi to Agatti, official ship ticket fares, and direct links to live booking platforms.
+          </p>
+        </div>
+
+        <!-- Flights Card -->
+        <div class="trans-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1rem;">
+            <div>
+              <h3 style="color:var(--ocean-deep); font-size:1.45rem;">✈️ Flight Connectivity: Kochi (COK) ⇄ Agatti (AGX)</h3>
+              <p style="margin:0; font-size:0.9rem;">Operated by Alliance Air & IndiGo (ATR 72-600 aircraft). Travel duration: 1h 20m.</p>
+            </div>
+            <span class="status-badge status-confirmed">Daily Flights Active</span>
+          </div>
+
+          <!-- Dynamic Flight Schedule Boxes -->
+          <div class="flight-live-grid" id="flight-schedules-grid"></div>
+
+          <!-- Deep Search Links to Free Live Flight Portals -->
+          <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border-light);">
+            <h4 style="font-size:1rem; color:var(--ocean-deep); margin-bottom:0.75rem;">🔍 Check Real-Time Live Fares & Availability:</h4>
+            <div class="external-links-grid">
+              <a href="https://www.google.com/travel/flights?q=flights%20from%20COK%20to%20AGX" target="_blank" class="btn btn-outline btn-sm">
+                🌐 Google Flights (COK ⇄ AGX)
+              </a>
+              <a href="https://www.skyscanner.co.in/transport/flights/cok/agx/" target="_blank" class="btn btn-outline btn-sm">
+                🔎 Skyscanner Live Checker
+              </a>
+              <a href="https://www.makemytrip.com/flights/" target="_blank" class="btn btn-outline btn-sm">
+                🎫 MakeMyTrip Search
+              </a>
+              <a href="https://allianceair.in" target="_blank" class="btn btn-outline btn-sm">
+                ✈️ Alliance Air Official Portal
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ships Card & Monthly Voyage Timetable -->
+        <div class="trans-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+            <div>
+              <h3 style="color:var(--ocean-deep); font-size:1.45rem;">🚢 Official Passenger Ships & Voyage Schedules</h3>
+              <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">
+                Timetables, vessel routes & ticket release dates synced with Cochin Port Authority & 
+                <a href="https://lakshadweep.irctc.co.in/" target="_blank" style="color:var(--lagoon-cyan); font-weight:700; text-decoration:underline;">lakshadweep.irctc.co.in</a>
+              </p>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.6rem;">
+              <span class="status-badge status-confirmed">🟢 Active IRCTC Feeder</span>
+              <button class="btn btn-outline btn-sm" onclick="autoSyncIRCTCSchedules()" title="Recalculate upcoming sailing dates from IRCTC calendar">
+                🔄 Refresh Timetable
+              </button>
+            </div>
+          </div>
+
+          <!-- Schedule Navigation Tabs -->
+          <div class="schedule-nav-tabs">
+            <button class="schedule-nav-btn active" id="tab-btn-monthly" onclick="switchScheduleView('monthly')">
+              📅 Monthly Voyage Timetable <span class="badge" style="background:#0284c7; color:#fff; font-size:0.7rem; padding:0.15rem 0.45rem; border-radius:10px;">Official PDF</span>
+            </button>
+            <button class="schedule-nav-btn" id="tab-btn-overview" onclick="switchScheduleView('overview')">
+              🚢 Vessels & Cabin Fares
+            </button>
+            <button class="schedule-nav-btn" id="tab-btn-rules" onclick="switchScheduleView('rules')">
+              📋 Boarding & No-Show Guidelines
+            </button>
+          </div>
+
+          <!-- VIEW 1: Monthly Voyage Timetable (From Cochin Port Authority PDF) -->
+          <div id="sched-view-monthly">
+            <!-- Official Header Banner -->
+            <div class="voyage-official-banner" id="voyage-official-banner">
+              <div>
+                <h4>🏛️ Cochin Port Authority & UTLAS Voyage Schedule</h4>
+                <div class="voyage-meta-tags">
+                  <span class="voyage-meta-tag" id="banner-file-no">📄 File: DCM/UTLAS/Voyage Schedule/ Passenger/2023 – S</span>
+                  <span class="voyage-meta-tag" id="banner-period">🗓️ Period: 19/09/2026 to 18/10/2026</span>
+                  <span class="voyage-meta-tag" id="banner-vessels">🚢 Vessels: MV Lakshadweep Sea & MV Lagoons</span>
+                </div>
+              </div>
+              <a href="https://lakshadweep.irctc.co.in/" target="_blank" class="btn btn-secondary btn-sm" style="white-space:nowrap; background:#ffffff; color:var(--ocean-deep); font-weight:800;">
+                Book at IRCTC ↗
+              </a>
+            </div>
+
+            <!-- Prominent IRCTC Ticket Release Date Card (Admin Controlled) -->
+            <div class="ticket-release-card" id="public-ticket-release-card">
+              <div class="ticket-release-info">
+                <div class="release-pulse-dot"></div>
+                <div>
+                  <strong style="font-size:0.95rem; color:#92400e; display:block;">🎟️ IRCTC Ticket Release Date & Window:</strong>
+                  <span id="public-release-date-text" style="font-size:0.9rem; font-weight:700; color:#1e293b;">
+                    Tickets expected to open on lakshadweep.irctc.co.in (30 to 15 days advance window)
+                  </span>
+                </div>
+              </div>
+              <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                <span id="public-release-badge" class="status-badge status-confirmed">🟢 Booking Live / Releasing Soon</span>
+                <button class="btn btn-whatsapp btn-sm" onclick="requestReleaseAlertWhatsApp()">
+                  🔔 Alert Me on WhatsApp
+                </button>
+              </div>
+            </div>
+
+            <!-- Search & Vessel Filter Toolbar -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
+              <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <button class="btn btn-sm btn-outline active" id="vessel-filter-all" onclick="filterVoyageTable('ALL')">All Vessels</button>
+                <button class="btn btn-sm btn-outline" id="vessel-filter-lsea" onclick="filterVoyageTable('LSEA')">MV Lakshadweep Sea</button>
+                <button class="btn btn-sm btn-outline" id="vessel-filter-lagoons" onclick="filterVoyageTable('LAGOONS')">MV Lagoons</button>
+              </div>
+              <div style="position:relative; min-width:240px; flex-grow:1; max-width:360px;">
+                <input type="text" id="voyage-search-input" oninput="handleVoyageSearch(this.value)" class="form-control" placeholder="🔍 Search Island (e.g. Kalpeni, Kadmat, Minicoy)..." style="padding:0.45rem 0.85rem; font-size:0.85rem;">
+              </div>
+            </div>
+
+            <!-- Matrix Table -->
+            <div class="voyage-table-wrapper">
+              <table class="voyage-matrix-table">
+                <thead>
+                  <tr>
+                    <th style="width:130px;">Date & Day</th>
+                    <th>MV Lakshadweep Sea (Route & Port Timings)</th>
+                    <th>MV Lagoons (Route & Port Timings)</th>
+                    <th style="width:110px; text-align:center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="monthly-voyage-tbody">
+                  <!-- Populated dynamically by app.js -->
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-top:0.75rem; font-size:0.78rem; color:var(--text-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+              <span>💡 Port Codes: KVT = Kavaratti, AGT = Agatti, KDM = Kadmat, AMN = Amini, KLP = Kalpeni, AND = Andrott, MCY = Minicoy, KLT = Kiltan, CHT = Chetlat, BTR = Bitra, KOCHI = Cochin Port</span>
+              <span id="voyage-total-count">Showing 30 voyage dates</span>
+            </div>
+          </div>
+
+          <!-- VIEW 2: Vessels & Cabin Fares Overview -->
+          <div id="sched-view-overview" style="display:none;">
+            <div style="overflow-x:auto;">
+              <table class="ship-schedule-table">
+                <thead>
+                  <tr>
+                    <th>Vessel Name</th>
+                    <th>Route & Sectors</th>
+                    <th>Next Sailing Date</th>
+                    <th>Ticket Release Window</th>
+                    <th>1st Class AC</th>
+                    <th>2nd Class AC</th>
+                    <th>Bunk / Semi-Sleeper</th>
+                    <th>Status</th>
+                    <th>Bookings</th>
+                  </tr>
+                </thead>
+                <tbody id="ship-schedule-tbody">
+                  <!-- Dynamically populated by app.js from lak_ship_schedules_v3 -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- VIEW 3: Official Boarding & No-Show Guidelines -->
+          <div id="sched-view-rules" style="display:none;">
+            <div class="guidelines-grid" id="guidelines-container">
+              <!-- Dynamically populated from PDF rules -->
+            </div>
+          </div>
+
+          <!-- External Ticketing Portal Links -->
+          <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border-light);">
+            <h4 style="font-size:1rem; color:var(--ocean-deep); margin-bottom:0.75rem;">🌐 Official Online Ticket Booking Platforms:</h4>
+            <div class="external-links-grid">
+              <a href="https://lakshadweep.irctc.co.in/" target="_blank" class="btn btn-primary btn-sm">
+                🚢 Official IRCTC Ship Ticketing (lakshadweep.irctc.co.in)
+              </a>
+              <a href="https://lakport.gov.in" target="_blank" class="btn btn-outline btn-sm">
+                🎫 Official Lakport Portal (lakport.gov.in)
+              </a>
+              <a href="https://lakshadweep.gov.in" target="_blank" class="btn btn-outline btn-sm">
+                🏛️ Lakshadweep Administration Transport
+              </a>
+              <button class="btn btn-whatsapp btn-sm" onclick="openBookingPaymentFlow('package', 'samudram-cruise-deluxe')">
+                💬 Book Ship Cabin on WhatsApp (Manual Confirm)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         Custom Trip Builder Section (All 8 Islands)
+         ========================================================== -->
+    <section class="section-padding builder-section" id="custom-trip-builder">
+      <div class="container">
+        <div class="text-center">
+          <span class="section-tag">Interactive Planner</span>
+          <h2 class="section-title">Design Your Custom Island Itinerary</h2>
+          <p class="section-desc">
+            Select your favorite islands from the 8 available destinations, pick your dates, choose water sports, and get a live dynamic cost estimate.
+          </p>
+        </div>
+
+        <div class="builder-layout">
+          <!-- Left: Builder Controls Form -->
+          <div class="builder-card">
+            <form id="trip-builder-form">
+
+              <!-- Step 1: Islands Selection -->
+              <div class="builder-step">
+                <div class="step-header">
+                  <div class="step-number">1</div>
+                  <div>
+                    <h3 class="step-title">Choose Your Destination Islands</h3>
+                    <span class="step-hint">Click one or multiple islands to hop between</span>
+                  </div>
+                </div>
+
+                <div class="island-select-grid">
+                  <div class="select-card active" data-island="Agatti">
+                    <div class="card-icon">🛬</div>
+                    <span class="card-name">Agatti</span>
+                    <span class="card-badge">Airport Hub</span>
+                  </div>
+                  <div class="select-card" data-island="Kadmat">
+                    <div class="card-icon">🤿</div>
+                    <span class="card-name">Kadmat</span>
+                    <span class="card-badge">Watersports</span>
+                  </div>
+                  <div class="select-card" data-island="Kalpeni">
+                    <div class="card-icon">🛶</div>
+                    <span class="card-name">Kalpeni</span>
+                    <span class="card-badge">Coral Lagoon</span>
+                  </div>
+                  <div class="select-card" data-island="Minicoy">
+                    <div class="card-icon">🗼</div>
+                    <span class="card-name">Minicoy</span>
+                    <span class="card-badge">1885 Lighthouse</span>
+                  </div>
+                  <div class="select-card" data-island="Amini">
+                    <div class="card-icon">🎨</div>
+                    <span class="card-name">Amini</span>
+                    <span class="card-badge">Artisan Heritage</span>
+                  </div>
+                  <div class="select-card" data-island="Kiltan">
+                    <div class="card-icon">🌊</div>
+                    <span class="card-name">Kiltan</span>
+                    <span class="card-badge">Northern Atoll</span>
+                  </div>
+                  <div class="select-card" data-island="Chetlat">
+                    <div class="card-icon">⛵</div>
+                    <span class="card-name">Chetlat</span>
+                    <span class="card-badge">Traditional Craft</span>
+                  </div>
+                  <div class="select-card" data-island="Kavaratti">
+                    <div class="card-icon">🏛️</div>
+                    <span class="card-name">Kavaratti</span>
+                    <span class="card-badge">Marine Capital</span>
+                  </div>
+                  <div class="select-card active" data-island="Bangaram">
+                    <div class="card-icon">🏝️</div>
+                    <span class="card-name">Bangaram</span>
+                    <span class="card-badge">Luxury Sandbank</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2: Dates, Nights & Travelers -->
+              <div class="builder-step">
+                <div class="step-header">
+                  <div class="step-number">2</div>
+                  <div>
+                    <h3 class="step-title">Dates, Duration & Travelers</h3>
+                    <span class="step-hint">Permits typically require 7-10 days advance processing</span>
+                  </div>
+                </div>
+
+                <div class="form-row form-row-3" style="margin-bottom: 1.25rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="trip-date">Target Travel Date</label>
+                    <input type="date" id="trip-date" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="trip-nights">Duration (Nights)</label>
+                    <select id="trip-nights" class="form-control">
+                      <option value="2">2 Nights / 3 Days (Weekend Gateway)</option>
+                      <option value="3">3 Nights / 4 Days</option>
+                      <option value="4" selected>4 Nights / 5 Days (Recommended)</option>
+                      <option value="5">5 Nights / 6 Days</option>
+                      <option value="6">6 Nights / 7 Days</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="travelers-adults">Adult Travelers</label>
+                    <select id="travelers-adults" class="form-control">
+                      <option value="1">1 Adult (Solo)</option>
+                      <option value="2" selected>2 Adults (Couple)</option>
+                      <option value="3">3 Adults</option>
+                      <option value="4">4 Adults</option>
+                      <option value="5">5 Adults</option>
+                      <option value="6">6+ Adults</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row form-row-2">
+                  <div class="form-group">
+                    <label class="form-label" for="travelers-kids">Children (Below 11 yrs)</label>
+                    <select id="travelers-kids" class="form-control">
+                      <option value="0" selected>0 Children</option>
+                      <option value="1">1 Child</option>
+                      <option value="2">2 Children</option>
+                      <option value="3">3+ Children</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="cust-city">Departure City</label>
+                    <input type="text" id="cust-city" class="form-control" placeholder="e.g. Kochi, Mumbai, Delhi, Bengaluru" value="Kochi">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3: Transport Mode -->
+              <div class="builder-step">
+                <div class="step-header">
+                  <div class="step-number">3</div>
+                  <div>
+                    <h3 class="step-title">Travel Mode from Mainland</h3>
+                    <span class="step-hint">How will you reach the archipelago?</span>
+                  </div>
+                </div>
+
+                <div class="options-grid">
+                  <label class="option-radio-card active">
+                    <input type="radio" name="transport-mode" value="flight" data-price="5500" checked>
+                    <div class="option-info">
+                      <span class="option-title">✈️ Flight Assistance (Kochi ➔ Agatti)</span>
+                      <span class="option-desc">Fast 1h 20m flight with aerial turquoise lagoon views</span>
+                      <span class="option-price-tag">+ Flight Coordination</span>
+                    </div>
+                  </label>
+
+                  <label class="option-radio-card">
+                    <input type="radio" name="transport-mode" value="cruise" data-price="3500">
+                    <div class="option-info">
+                      <span class="option-title">🚢 Passenger Ship / Cruise Cabin</span>
+                      <span class="option-desc">Overnight sailing from Kochi Willingdon port</span>
+                      <span class="option-price-tag">+ Ship Cabin Assistance</span>
+                    </div>
+                  </label>
+
+                  <label class="option-radio-card">
+                    <input type="radio" name="transport-mode" value="self" data-price="0">
+                    <div class="option-info">
+                      <span class="option-title">🎫 Self-Booked Flight/Ship</span>
+                      <span class="option-desc">You arrange your own mainland tickets; island package only</span>
+                      <span class="option-price-tag">No mainland transport charge</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Step 4: Accommodation Style -->
+              <div class="builder-step">
+                <div class="step-header">
+                  <div class="step-number">4</div>
+                  <div>
+                    <h3 class="step-title">Accommodation Style</h3>
+                    <span class="step-hint">All stays include daily breakfast, lunch & dinner buffets</span>
+                  </div>
+                </div>
+
+                <div class="options-grid">
+                  <label class="option-radio-card active">
+                    <input type="radio" name="stay-class" value="budget-homestay" data-price="3500" checked>
+                    <div class="option-info">
+                      <span class="option-title">🏡 Budget AC Homestay / Tent</span>
+                      <span class="option-desc">Comfortable AC room steps from lagoon (Enables ₹14,000 packages)</span>
+                      <span class="option-price-tag">₹3,500 / night / person</span>
+                    </div>
+                  </label>
+
+                  <label class="option-radio-card">
+                    <input type="radio" name="stay-class" value="standard-cottage" data-price="6000">
+                    <div class="option-info">
+                      <span class="option-title">🌅 Standard Beach Cottage</span>
+                      <span class="option-desc">Beachfront wooden cottage on Agatti, Kadmat, or Kalpeni</span>
+                      <span class="option-price-tag">₹6,000 / night / person</span>
+                    </div>
+                  </label>
+
+                  <label class="option-radio-card">
+                    <input type="radio" name="stay-class" value="luxury-resort" data-price="14000">
+                    <div class="option-info">
+                      <span class="option-title">👑 Luxury Bangaram Island Resort</span>
+                      <span class="option-desc">Uninhabited atoll luxury, authorized bar & private sandbank</span>
+                      <span class="option-price-tag">₹14,000 / night / person</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Step 5: Experiences -->
+              <div class="builder-step">
+                <div class="step-header">
+                  <div class="step-number">5</div>
+                  <div>
+                    <h3 class="step-title">Add Bucket-List Experiences</h3>
+                    <span class="step-hint">Select activities to bundle into your package</span>
+                  </div>
+                </div>
+
+                <div class="activities-grid">
+                  <label class="activity-check-card active">
+                    <input type="checkbox" name="activities" value="scuba" data-price="3500" checked>
+                    <div>
+                      <strong>🤿 PADI Scuba Diving</strong>
+                      <p style="font-size:0.8rem; margin:0; color:var(--text-muted);">Tandem dive with certified divemaster & GoPro (+₹3,500)</p>
+                    </div>
+                  </label>
+
+                  <label class="activity-check-card active">
+                    <input type="checkbox" name="activities" value="snorkel" data-price="1500" checked>
+                    <div>
+                      <strong>🐠 Shipwreck & Turtle Snorkel</strong>
+                      <p style="font-size:0.8rem; margin:0; color:var(--text-muted);">Guided coral safari with mask & fins (+₹1,500)</p>
+                    </div>
+                  </label>
+
+                  <label class="activity-check-card">
+                    <input type="checkbox" name="activities" value="glass-boat" data-price="1200">
+                    <div>
+                      <strong>🚤 Glass-Bottom Boat Safari</strong>
+                      <p style="font-size:0.8rem; margin:0; color:var(--text-muted);">Underwater coral viewing for families (+₹1,200)</p>
+                    </div>
+                  </label>
+
+                  <label class="activity-check-card">
+                    <input type="checkbox" name="activities" value="drone" data-price="2500">
+                    <div>
+                      <strong>📸 4K Drone Beach Shoot</strong>
+                      <p style="font-size:0.8rem; margin:0; color:var(--text-muted);">Aerial 4K video reel over turquoise lagoon (+₹2,500)</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Step 6: Tourist Contact Info -->
+              <div class="builder-step">
+                <div class="step-header">
+                  <div class="step-number">6</div>
+                  <div>
+                    <h3 class="step-title">Your Contact & WhatsApp Details</h3>
+                    <span class="step-hint">We will connect on WhatsApp to confirm resort availability & permits</span>
+                  </div>
+                </div>
+
+                <div class="form-row form-row-2" style="margin-bottom: 1.25rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="cust-name">Full Name *</label>
+                    <input type="text" id="cust-name" class="form-control" placeholder="e.g. Rajesh Kumar" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="cust-phone">WhatsApp Number *</label>
+                    <input type="tel" id="cust-phone" class="form-control" placeholder="e.g. +91 98765 43210" required>
+                  </div>
+                </div>
+
+                <div class="form-row form-row-2" style="margin-bottom: 1.25rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="cust-email">Email Address</label>
+                    <input type="email" id="cust-email" class="form-control" placeholder="rajesh@example.com">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="cust-notes">Special Preferences</label>
+                    <input type="text" id="cust-notes" class="form-control" placeholder="e.g. Pure Veg/Jain meal, Anniversary">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-whatsapp btn-lg" style="width: 100%; font-size: 1.15rem; padding: 1.1rem;">
+                  <span>💬 Submit Custom Trip on WhatsApp</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- Right: Live Trip Summary Sticky Box -->
+          <aside class="builder-summary-sticky" aria-label="Trip Summary">
+            <div class="summary-header">
+              <h3 class="summary-title">Live Trip Estimate</h3>
+              <span class="summary-badge">Real-time Calc</span>
+            </div>
+
+            <ul class="summary-list">
+              <li class="summary-item">
+                <span class="label">Destination(s):</span>
+                <span class="value" id="sum-islands">Agatti, Bangaram</span>
+              </li>
+              <li class="summary-item">
+                <span class="label">Duration:</span>
+                <span class="value" id="sum-nights">4 Nights / 5 Days</span>
+              </li>
+              <li class="summary-item">
+                <span class="label">Travelers:</span>
+                <span class="value" id="sum-travelers">2 Adults</span>
+              </li>
+              <li class="summary-item">
+                <span class="label">Accommodation:</span>
+                <span class="value" id="sum-stay">Budget AC Homestay</span>
+              </li>
+              <li class="summary-item">
+                <span class="label">e-Permit Support:</span>
+                <span class="value" style="color:var(--emerald-green);">100% Handled</span>
+              </li>
+            </ul>
+
+            <div class="summary-pricing-box">
+              <div class="price-row-per-person">
+                <span>Estimated per person:</span>
+                <strong id="sum-per-person">₹14,000</strong>
+              </div>
+              <div class="price-row-total">
+                <span class="total-label">Total Trip Estimate:</span>
+                <span class="total-amount" id="sum-total-price">₹28,000</span>
+              </div>
+            </div>
+
+            <p class="summary-disclaimer">
+              💡 <em>*Packages starting at ₹14,000/-. Every booking is confirmed manually by our team on WhatsApp after verifying room availability and permit deadlines. Advance payments are accepted via our official QR code.</em>
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         Partner & Local Agencies Registration Form
+         ========================================================== -->
+    <section class="section-padding partner-section" id="partner-register">
+      <div class="container">
+        <div class="partner-card">
+          <div class="text-center" style="margin-bottom:2rem;">
+            <span class="section-tag">Partner With LakExplorer</span>
+            <h2 class="section-title" style="font-size:2.2rem;">List Your Agency, Stay or Activities</h2>
+            <p class="section-desc" style="margin-bottom:1rem;">
+              Are you a local travel agency, scuba operator, homestay owner, boat captain, or photographer in Lakshadweep? Partner with us to receive tourist bookings. We manage payments via our official QR code and coordinate bookings with you.
+            </p>
+          </div>
+
+          <form id="partner-registration-form">
+            <div class="form-row form-row-2" style="margin-bottom:1.25rem;">
+              <div class="form-group">
+                <label class="form-label" for="part-agency-name">Venture / Agency / Business Name *</label>
+                <input type="text" id="part-agency-name" class="form-control" placeholder="e.g. Coral Sands Tours, Agatti Divers" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="part-service-type">Service Category *</label>
+                <select id="part-service-type" class="form-control">
+                  <option value="Travel Agency">Local Travel Agency (Holiday Packages)</option>
+                  <option value="Water Sports">Water Activities & Scuba Diving</option>
+                  <option value="Homestay / Resort">Island Stay / Homestay / Tents</option>
+                  <option value="Rentals">GoPro, Scooter, Snorkel Gear Rental</option>
+                  <option value="Drone & Photography">Drone Video & Photography</option>
+                  <option value="Food & Culinary">Local Food & Beach Barbecue</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row form-row-2" style="margin-bottom:1.25rem;">
+              <div class="form-group">
+                <label class="form-label" for="part-islands">Islands You Operate On *</label>
+                <input type="text" id="part-islands" class="form-control" placeholder="e.g. Agatti, Kadmat, Kalpeni, Minicoy" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="part-phone">WhatsApp Contact Number *</label>
+                <input type="tel" id="part-phone" class="form-control" placeholder="e.g. +91 94471 23456" required>
+              </div>
+            </div>
+
+            <div class="form-row form-row-2" style="margin-bottom:1.25rem;">
+              <div class="form-group">
+                <label class="form-label" for="part-commission">Commission Offered to Us (Per Person / Booking) *</label>
+                <input type="text" id="part-commission" class="form-control" placeholder="e.g. ₹2,000 per person OR 10%" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="part-details">Brief Details of What You Provide</label>
+                <input type="text" id="part-details" class="form-control" placeholder="e.g. 5 AC Cottages on Kadmat beach, 2 Speedboats">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%; padding:1rem;">
+              🤝 Submit Partnership Application on WhatsApp
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         Mandatory Permit Guide Section
+         ========================================================== -->
+    <section class="section-padding permit-section" id="permits">
+      <div class="container">
+        <div class="text-center">
+          <span class="section-tag">Important Travel Rule</span>
+          <h2 class="section-title">Lakshadweep Entry Permit (100% Handled)</h2>
+          <p class="section-desc">
+            Entry into Lakshadweep requires an official administration e-Permit. We coordinate all police verification and documentation on your behalf.
+          </p>
+        </div>
+
+        <div class="permit-steps-grid">
+          <div class="permit-step-card">
+            <div class="step-num-badge">1</div>
+            <h3>Government ID & Police Clearance (PCC)</h3>
+            <p>
+              Aadhaar Card / Passport and a simple Police Clearance Certificate (PCC) from your local police station.
+            </p>
+          </div>
+
+          <div class="permit-step-card">
+            <div class="step-num-badge">2</div>
+            <h3>Confirmed Island Resort Slot</h3>
+            <p>
+              Permits are issued against verified bookings across Agatti, Kadmat, Kalpeni, Minicoy, Kavaratti, Bangaram, etc.
+            </p>
+          </div>
+
+          <div class="permit-step-card">
+            <div class="step-num-badge">3</div>
+            <h3>e-Permit Generation (7-10 Days)</h3>
+            <p>
+              Our local desk submits your file to the Collectorate and sends your approved e-Permit directly to WhatsApp before you fly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================
+       Payment QR Code Modal & Manual Booking Workflow
+       ========================================================== -->
+  <div class="qr-modal-overlay" id="qr-modal-overlay">
+    <div class="qr-modal">
+      <div class="qr-modal-header">
+        <h3 style="margin:0; font-size:1.25rem;">🔒 Pay Advance Token via Official QR</h3>
+        <button class="admin-close-btn" onclick="closeQrModal()">✕</button>
+      </div>
+
+      <div class="qr-modal-body">
+        <div style="margin-bottom:1rem;">
+          <h4 id="qr-item-title" style="color:var(--ocean-deep); font-size:1.2rem; margin-bottom:0.25rem;">Tour Booking</h4>
+          <span id="qr-item-vendor" style="font-size:0.85rem; color:var(--text-muted); display:block;">Provided by Partner</span>
+          <strong id="qr-item-total" style="font-size:1.1rem; color:#0284c7; display:block; margin-top:0.35rem;">Total: ₹0</strong>
+        </div>
+
+        <!-- QR Code Frame (Generated SVG QR representation) -->
+        <div class="qr-code-frame">
+          <svg width="180" height="180" viewBox="0 0 180 180" style="display:block; margin:0 auto;">
+            <!-- Outer border & background -->
+            <rect width="180" height="180" fill="#ffffff" rx="8" />
+            <!-- Corner Finder 1 (Top-Left) -->
+            <rect x="15" y="15" width="45" height="45" fill="#031926" rx="4" />
+            <rect x="23" y="23" width="29" height="29" fill="#ffffff" rx="2" />
+            <rect x="29" y="29" width="17" height="17" fill="#0284c7" rx="2" />
+            <!-- Corner Finder 2 (Top-Right) -->
+            <rect x="120" y="15" width="45" height="45" fill="#031926" rx="4" />
+            <rect x="128" y="23" width="29" height="29" fill="#ffffff" rx="2" />
+            <rect x="134" y="29" width="17" height="17" fill="#0284c7" rx="2" />
+            <!-- Corner Finder 3 (Bottom-Left) -->
+            <rect x="15" y="120" width="45" height="45" fill="#031926" rx="4" />
+            <rect x="23" y="128" width="29" height="29" fill="#ffffff" rx="2" />
+            <rect x="29" y="134" width="17" height="17" fill="#0284c7" rx="2" />
+            <!-- Sample QR Grid Data Pixels -->
+            <rect x="70" y="20" width="12" height="12" fill="#072a40" />
+            <rect x="90" y="20" width="18" height="12" fill="#072a40" />
+            <rect x="70" y="40" width="15" height="15" fill="#072a40" />
+            <rect x="95" y="45" width="12" height="12" fill="#0284c7" />
+            <rect x="20" y="70" width="14" height="14" fill="#072a40" />
+            <rect x="42" y="75" width="12" height="12" fill="#072a40" />
+            <rect x="65" y="70" width="16" height="16" fill="#0284c7" />
+            <rect x="90" y="75" width="22" height="14" fill="#072a40" />
+            <rect x="125" y="70" width="15" height="15" fill="#072a40" />
+            <rect x="150" y="75" width="14" height="14" fill="#0284c7" />
+            <rect x="70" y="100" width="18" height="18" fill="#072a40" />
+            <rect x="100" y="105" width="15" height="15" fill="#072a40" />
+            <rect x="130" y="100" width="18" height="18" fill="#072a40" />
+            <rect x="70" y="130" width="16" height="16" fill="#0284c7" />
+            <rect x="95" y="125" width="22" height="14" fill="#072a40" />
+            <rect x="125" y="135" width="18" height="18" fill="#072a40" />
+            <rect x="150" y="125" width="15" height="15" fill="#072a40" />
+            <!-- Center UPI Symbol icon -->
+            <circle cx="90" cy="90" r="14" fill="#00b4d8" />
+            <text x="90" y="95" font-size="12" text-anchor="middle" fill="#ffffff" font-weight="bold">UPI</text>
+          </svg>
+        </div>
+
+        <div>
+          <span class="upi-id-badge">UPI ID: 9496924874@upi</span>
+        </div>
+
+        <div class="upi-apps-icons">
+          <span>Google Pay</span> • <span>PhonePe</span> • <span>Paytm</span> • <span>BHIM UPI</span>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:1rem; margin-bottom:1.25rem; text-align:left;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem;">
+            <strong style="color:var(--ocean-deep);">Required Advance:</strong>
+            <strong id="qr-token-amount" style="color:#10b981;">Token: ₹2,000</strong>
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem;">
+            <label class="form-label" style="font-size:0.8rem;">Your Name *</label>
+            <input type="text" id="qr-tourist-name" class="form-control" placeholder="Rajesh Kumar" required>
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem;">
+            <label class="form-label" style="font-size:0.8rem;">Your WhatsApp Phone *</label>
+            <input type="tel" id="qr-tourist-phone" class="form-control" placeholder="+91 98765 43210" required>
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem;">
+            <label class="form-label" style="font-size:0.8rem;">Target Date *</label>
+            <input type="date" id="qr-tourist-date" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size:0.8rem;">UPI Transaction ID / UTR Number</label>
+            <input type="text" id="qr-tourist-utr" class="form-control" placeholder="e.g. 428194829104">
+          </div>
+        </div>
+
+        <button class="btn btn-whatsapp btn-lg" style="width:100%;" onclick="confirmPaymentAndSendWhatsApp()">
+          💬 Confirm & Notify on WhatsApp
+        </button>
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.75rem;">
+          *We verify payments manually and confirm availability with the island resort/vendor.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       Admin / Operator CRM Modal with Multi-Vendor Commission
+       ========================================================== -->
+  <!-- ==========================================================
+       Admin Login Gate Modal (Protected with lakexplorer / mj@010701#)
+       ========================================================== -->
+  <div class="admin-login-overlay" id="admin-login-overlay">
+    <div class="admin-login-card">
+      <button class="login-close-corner" onclick="closeAdminLoginModal()">✕</button>
+      <div class="login-icon-badge">🔒</div>
+      <h3 class="login-title">Admin CMS Login</h3>
+      <p class="login-subtitle">Enter your operator credentials to manage packages, bookings, and site settings without code.</p>
+      
+      <div class="login-error-msg" id="admin-login-error">
+        ⚠️ Invalid Login ID or Password. Please try again!
+      </div>
+
+      <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
+        <div class="login-field">
+          <label for="admin-login-id">Admin Login ID</label>
+          <input type="text" id="admin-login-id" placeholder="lakexplorer" required autocomplete="username" value="lakexplorer">
+        </div>
+        <div class="login-field">
+          <label for="admin-login-password">Password</label>
+          <input type="password" id="admin-login-password" placeholder="••••••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:0.85rem; font-size:1rem; margin-top:0.5rem;">
+          🔓 Unlock Admin Panel
+        </button>
+      </form>
+      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:1.25rem;">
+        Credentials: <code>lakexplorer</code> / <code>mj@010701#</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       Admin / Operator CMS Control Panel (WordPress-style No-Code)
+       ========================================================== -->
+  <div class="admin-modal-overlay" id="admin-modal-overlay">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 style="margin:0; font-size:1.35rem; display:flex; align-items:center; gap:0.5rem;">
+          <span>⚙️</span> LakExplorer Admin CMS
+        </h3>
+        <div class="admin-header-actions">
+          <button class="btn btn-outline btn-sm" style="color:#ffffff; border-color:rgba(255,255,255,0.4);" onclick="exportFullWebsiteBackup()" title="Download full website content backup">
+            💾 Backup JSON
+          </button>
+          <button class="btn btn-outline btn-sm" style="color:#ffffff; border-color:rgba(255,255,255,0.4);" onclick="document.getElementById('import-backup-file').click()" title="Restore website content from backup">
+            📂 Import
+          </button>
+          <input type="file" id="import-backup-file" style="display:none;" onchange="importFullWebsiteBackup(event)" accept=".json">
+          <button class="btn-admin-logout" onclick="adminLogout()">
+            🚪 Logout
+          </button>
+          <button class="admin-close-btn" onclick="closeAdminModal()">✕</button>
+        </div>
+      </div>
+
+      <div class="admin-modal-body">
+        <!-- Top Stats Row -->
+        <div class="admin-stats-row">
+          <div class="admin-stat-card">
+            <div class="num" id="admin-stat-total">0</div>
+            <div class="lbl">Total Bookings</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="num" id="admin-stat-commission" style="color:#10b981;">₹0</div>
+            <div class="lbl">Total Commission</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="num" id="admin-stat-permit" style="color:#7c3aed;">0</div>
+            <div class="lbl">Permits Pending</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="num" id="admin-stat-confirmed" style="color:#0284c7;">0</div>
+            <div class="lbl">Confirmed Tours</div>
+          </div>
+        </div>
+
+        <!-- WordPress-style Navigation Tabs -->
+        <div class="admin-tab-nav">
+          <button class="admin-nav-tab active" id="admin-tab-btn-enquiries" onclick="switchAdminTab('enquiries')">
+            📑 Tourist Bookings & CRM
+          </button>
+          <button class="admin-nav-tab" id="admin-tab-btn-packages" onclick="switchAdminTab('packages')">
+            🌴 Packages Manager (No-Code)
+          </button>
+          <button class="admin-nav-tab" id="admin-tab-btn-marketplace" onclick="switchAdminTab('marketplace')">
+            🤿 Activities & Stays
+          </button>
+          <button class="admin-nav-tab" id="admin-tab-btn-ships" onclick="switchAdminTab('ships')">
+            🚢 Ships & IRCTC Fares
+          </button>
+          <button class="admin-nav-tab" id="admin-tab-btn-partners" onclick="switchAdminTab('partners')">
+            🤝 Partner Agencies
+          </button>
+          <button class="admin-nav-tab" id="admin-tab-btn-settings" onclick="switchAdminTab('settings')">
+            ⚙️ Site Settings & Info
+          </button>
+        </div>
+
+        <!-- View 1: Tourist Bookings Table -->
+        <div id="admin-view-enquiries">
+          <div class="admin-toolbar">
+            <div style="font-size:0.9rem; font-weight:700; color:var(--ocean-deep);">
+              Tourist Leads & QR Advance Payments:
+            </div>
+            <div style="display:flex; gap:0.6rem;">
+              <button class="btn btn-outline btn-sm" onclick="exportEnquiriesCSV()">
+                📥 Export CSV
+              </button>
+              <a href="https://wa.me/919496924874" target="_blank" class="btn btn-whatsapp btn-sm">
+                💬 Open WhatsApp Web
+              </a>
+            </div>
+          </div>
+
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID & Date</th>
+                  <th>Customer</th>
+                  <th>Tour / Service</th>
+                  <th>Price & Commission</th>
+                  <th>Status</th>
+                  <th>Manual Follow-up</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="admin-enquiries-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- View 2: Packages Manager (No-Code Visual Editor) -->
+        <div id="admin-view-packages" style="display:none;">
+          <div class="admin-toolbar">
+            <div>
+              <strong style="color:var(--ocean-deep); font-size:1rem; display:block;">🌴 Holiday Packages Content Manager</strong>
+              <span style="font-size:0.8rem; color:var(--text-muted);">Add, edit, or delete tour packages without touching any code.</span>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="togglePackageForm()">
+              ➕ Add New Package
+            </button>
+          </div>
+
+          <!-- Package Add / Edit Form Box -->
+          <div id="admin-package-form-box" class="cms-form-box" style="display:none;">
+            <h4 id="pkg-form-title" style="margin-bottom:1rem; color:var(--ocean-deep);">Add New Island Package</h4>
+            <form id="admin-package-form" onsubmit="handleSavePackage(event)">
+              <input type="hidden" id="pkg-edit-id" value="">
+              
+              <div class="cms-form-grid">
+                <div class="form-group">
+                  <label class="form-label">Package Title *</label>
+                  <input type="text" id="pkg-input-title" class="form-control" placeholder="e.g. Bangaram Luxury Honeymoon Escape" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Category *</label>
+                  <select id="pkg-input-category" class="form-control">
+                    <option value="budget">Budget (from ₹14k)</option>
+                    <option value="adventure">Adventure & Scuba</option>
+                    <option value="luxury">Luxury & Honeymoon</option>
+                    <option value="family">Family & Cruise</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Island(s) Covered *</label>
+                  <input type="text" id="pkg-input-island" class="form-control" placeholder="e.g. Agatti, Bangaram, Kadmat" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Duration String *</label>
+                  <input type="text" id="pkg-input-duration" class="form-control" placeholder="e.g. 4 Days / 3 Nights" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Nights Count *</label>
+                  <input type="number" id="pkg-input-nights" class="form-control" placeholder="3" min="1" max="15" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Price per person (₹) *</label>
+                  <input type="number" id="pkg-input-price" class="form-control" placeholder="14000" min="5000" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Agency / Provider Name *</label>
+                  <input type="text" id="pkg-input-agency" class="form-control" placeholder="e.g. LakExplorer Direct OR Local Partner" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Your Commission per person (₹)</label>
+                  <input type="number" id="pkg-input-commission" class="form-control" placeholder="2000" value="2000">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Ribbon Badge (Optional)</label>
+                  <input type="text" id="pkg-input-ribbon" class="form-control" placeholder="e.g. Top Rated, Best Seller">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Featured Image Path / URL *</label>
+                  <input type="text" id="pkg-input-image" class="form-control" placeholder="assets/images/hero.jpg" value="assets/images/hero.jpg" required>
+                </div>
+
+                <div class="form-group cms-form-full">
+                  <label class="form-label">Highlights / Inclusions (1 per line) *</label>
+                  <textarea id="pkg-input-highlights" class="form-control" rows="3" placeholder="Beachfront Cottage Stay&#10;Speedboat transfers&#10;100% Entry Permit Assistance&#10;All Meals Included"></textarea>
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1.25rem;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="togglePackageForm()">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm">💾 Save Package</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Packages CRUD List -->
+          <div class="cms-crud-grid" id="admin-packages-list-container"></div>
+        </div>
+
+        <!-- View 3: Marketplace Activities & Stays Manager -->
+        <div id="admin-view-marketplace" style="display:none;">
+          <div class="admin-toolbar">
+            <div>
+              <strong style="color:var(--ocean-deep); font-size:1rem; display:block;">🤿 Activities, Stays & Rentals Manager</strong>
+              <span style="font-size:0.8rem; color:var(--text-muted);">Manage water sports, stays, equipment rentals, dining, and drone photo shoots.</span>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="toggleServiceForm()">
+              ➕ Add New Service
+            </button>
+          </div>
+
+          <!-- Service Add Form Box -->
+          <div id="admin-service-form-box" class="cms-form-box" style="display:none;">
+            <h4 id="srv-form-title" style="margin-bottom:1rem; color:var(--ocean-deep);">Add New Marketplace Item</h4>
+            <form id="admin-service-form" onsubmit="handleSaveService(event)">
+              <input type="hidden" id="srv-edit-id" value="">
+              
+              <div class="cms-form-grid">
+                <div class="form-group">
+                  <label class="form-label">Service Title *</label>
+                  <input type="text" id="srv-input-title" class="form-control" placeholder="e.g. Guided Sea Turtle Snorkel" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Category *</label>
+                  <select id="srv-input-category" class="form-control">
+                    <option value="activities">Water Activities</option>
+                    <option value="stays">Beach Stays & Tents</option>
+                    <option value="rentals">GoPro & Bike Rentals</option>
+                    <option value="food">Local Food & BBQ</option>
+                    <option value="photographers">Drone & Photographers</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Island *</label>
+                  <input type="text" id="srv-input-island" class="form-control" placeholder="e.g. Agatti, Bangaram, Kadmat" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Local Vendor / Operator *</label>
+                  <input type="text" id="srv-input-vendor" class="form-control" placeholder="e.g. Ocean Blue Dive Center" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Price (₹) *</label>
+                  <input type="number" id="srv-input-price" class="form-control" placeholder="1500" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Price Unit *</label>
+                  <input type="text" id="srv-input-unit" class="form-control" placeholder="per person / per day" value="per person" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Owner Commission (₹) *</label>
+                  <input type="number" id="srv-input-commission" class="form-control" placeholder="300" value="300" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Image Path *</label>
+                  <input type="text" id="srv-input-image" class="form-control" value="assets/images/scuba.jpg" required>
+                </div>
+
+                <div class="form-group cms-form-full">
+                  <label class="form-label">Description *</label>
+                  <input type="text" id="srv-input-desc" class="form-control" placeholder="Brief description of the experience or rental..." required>
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1.25rem;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="toggleServiceForm()">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm">💾 Save Service</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Services List -->
+          <div class="cms-crud-grid" id="admin-services-list-container"></div>
+        </div>
+
+        <!-- View 4: Ship Schedule & Fares Manager -->
+        <div id="admin-view-ships" style="display:none;">
+          
+          <!-- 1. PDF Upload & Smart Schedule Analyzer -->
+          <div class="cms-form-box" style="margin-bottom:1.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
+              <div>
+                <h4 style="margin:0 0 0.25rem 0; color:var(--ocean-deep);">📄 Monthly Ship Schedule PDF Upload & Auto-Parser</h4>
+                <p style="margin:0; font-size:0.82rem; color:var(--text-muted);">
+                  Upload the official Cochin Port Authority / UTLAS voyage notification PDF to automatically parse 30-day routes, stops, and port timings into the site.
+                </p>
+              </div>
+              <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                <button class="btn btn-secondary btn-sm" onclick="loadPreloadedCochinPortSchedule()">
+                  📥 Load Official Cochin Port Schedule (19 Sep – 18 Oct 2026)
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="togglePasteNoticeDrawer()">
+                  📝 Paste OCR / Text
+                </button>
+              </div>
+            </div>
+
+            <!-- Drag and drop zone -->
+            <div class="pdf-upload-dropzone" id="pdf-dropzone" onclick="document.getElementById('pdf-file-input').click()">
+              <input type="file" id="pdf-file-input" accept=".pdf,.txt" style="display:none;" onchange="handlePDFUpload(this)">
+              <div class="pdf-drop-icon">📑</div>
+              <strong style="color:var(--ocean-deep); font-size:1rem; display:block; margin-bottom:0.25rem;">
+                Click to browse or Drag & Drop Monthly Schedule PDF
+              </strong>
+              <span style="font-size:0.82rem; color:var(--text-muted);">
+                Supports Cochin Port Authority / LDCL Passenger Ship voyage circulars (.pdf, .txt)
+              </span>
+            </div>
+
+            <!-- OCR / Raw Text Drawer (collapsible) -->
+            <div id="paste-notice-drawer" style="display:none; margin-bottom:1rem; background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:1rem;">
+              <label class="form-label" style="font-size:0.8rem;">Paste Official Voyage Circular Text / OCR:</label>
+              <textarea id="notice-text-input" class="form-control" rows="6" placeholder="Paste the text from the Cochin Port Authority voyage schedule notice or circular here..."></textarea>
+              <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.75rem;">
+                <button class="btn btn-outline btn-sm" onclick="togglePasteNoticeDrawer()">Close</button>
+                <button class="btn btn-primary btn-sm" onclick="parseManualNoticeText()">⚡ Parse Pasted Text</button>
+              </div>
+            </div>
+
+            <!-- Parser Feedback Alert -->
+            <div id="pdf-parse-status" style="display:none;"></div>
+          </div>
+
+          <!-- 2. Manual Ticket Release Date Controller (Admin Only) -->
+          <div class="cms-form-box" style="margin-bottom:1.5rem; border-color:#f59e0b; background:#fffbeb;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.75rem;">
+              <div>
+                <h4 style="margin:0 0 0.2rem 0; color:#92400e;">🎟️ IRCTC Ticket Release Date & Window Manager</h4>
+                <p style="margin:0; font-size:0.82rem; color:#78350f;">
+                  Set or update the official ticket release date and booking availability notice. This displays prominently on the public ship calendar with direct links to lakshadweep.irctc.co.in.
+                </p>
+              </div>
+            </div>
+
+            <form id="admin-release-date-form" onsubmit="handleSaveReleaseDate(event)">
+              <div class="cms-form-grid">
+                <div class="form-group cms-form-full">
+                  <label class="form-label" style="color:#78350f;">Official Ticket Release Announcement / Window *</label>
+                  <input type="text" id="admin-release-date-input" class="form-control" placeholder="e.g. Booking Open on lakshadweep.irctc.co.in (30-day window) or Expected: 25 Sep 2026 at 10:00 AM" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" style="color:#78350f;">Live Booking Status Badge *</label>
+                  <select id="admin-release-status-select" class="form-control" style="font-weight:700;">
+                    <option value="🟢 Booking Open on IRCTC">🟢 Booking Open on IRCTC</option>
+                    <option value="🟡 Releasing Soon / Date Announced">🟡 Releasing Soon / Date Announced</option>
+                    <option value="🔴 Release Date Pending">🔴 Release Date Pending</option>
+                    <option value="🟣 Fast Filling - Limited Cabins">🟣 Fast Filling - Limited Cabins</option>
+                    <option value="⚪ Sold Out - No-Show Window Only">⚪ Sold Out - No-Show Window Only</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" style="color:#78350f;">Official IRCTC Booking Portal URL</label>
+                  <input type="url" id="admin-release-url-input" class="form-control" value="https://lakshadweep.irctc.co.in/" required>
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1rem;">
+                <button type="submit" class="btn btn-primary btn-sm" style="background:#d97706; border-color:#d97706;">
+                  💾 Save & Publish Release Date to Website
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- 3. Vessels List & Fares Toolbar -->
+          <div class="admin-toolbar">
+            <div>
+              <strong style="color:var(--ocean-deep); font-size:1rem; display:block;">🚢 Passenger Vessels & Fare Classes</strong>
+              <span style="font-size:0.8rem; color:var(--text-muted);">Manage 1st AC, 2nd AC, Bunk fares and individual ship route cards</span>
+            </div>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" onclick="autoSyncIRCTCSchedules()">
+                🔄 Auto-Sync IRCTC Dates
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="openAddShipModal()">
+                ➕ Add New Voyage Card
+              </button>
+            </div>
+          </div>
+
+          <div id="admin-ships-list-container"></div>
+        </div>
+
+        <!-- View 5: Registered Agencies & Vendors -->
+        <div id="admin-view-partners" style="display:none;">
+          <div class="admin-toolbar">
+            <div style="font-size:0.9rem; font-weight:700; color:var(--ocean-deep);">
+              Local Agencies, Dive Operators & Homestay Partners:
+            </div>
+          </div>
+
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Venture / Agency</th>
+                  <th>Category</th>
+                  <th>Islands</th>
+                  <th>Contact</th>
+                  <th>Commission Offered</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="admin-partners-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- View 6: General Site Settings (No-Code Customization) -->
+        <div id="admin-view-settings" style="display:none;">
+          <div class="cms-form-box">
+            <h4 style="margin-bottom:1rem; color:var(--ocean-deep);">⚙️ Website Branding & Contact Details</h4>
+            <form id="admin-settings-form" onsubmit="handleSaveSettings(event)">
+              <div class="cms-form-grid">
+                <div class="form-group">
+                  <label class="form-label">WhatsApp Booking Number (With Country Code)</label>
+                  <input type="text" id="set-whatsapp-num" class="form-control" value="919496924874" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Official UPI ID for Advance Payments</label>
+                  <input type="text" id="set-upi-id" class="form-control" value="9496924874@upi" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Brand Name</label>
+                  <input type="text" id="set-brand-name" class="form-control" value="LakExplorer">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Top Banner Announcement Text</label>
+                  <input type="text" id="set-announcement" class="form-control" value="Packages Starting from ₹14,000/- • 100% Entry Permits Handled">
+                </div>
+
+                <div class="form-group cms-form-full">
+                  <label class="form-label">Hero Title Heading</label>
+                  <input type="text" id="set-hero-title" class="form-control" value="India's Coral Paradise Lakshadweep">
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:flex-end; margin-top:1.5rem;">
+                <button type="submit" class="btn btn-primary">💾 Save All Settings</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Itinerary Modal -->
+  <div class="itinerary-modal-overlay" id="itinerary-modal-overlay">
+    <div class="itinerary-modal" id="itinerary-modal-content"></div>
+  </div>
+
+  <!-- Floating WhatsApp Quick Button (Number digits hidden) -->
+  <a href="https://wa.me/919496924874?text=Hi%20LakExplorer%2C%20I%20want%20to%20plan%20a%20trip%20to%20Lakshadweep!" target="_blank" class="whatsapp-floating" aria-label="Instant WhatsApp Booking">
+    <span class="wa-icon">💬</span>
+    <span>WhatsApp Booking Desk</span>
+  </a>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-nav-bar" aria-label="Mobile Navigation">
+    <a href="#hero" class="mobile-nav-item active">
+      <span class="m-icon">🏠</span>
+      <span>Home</span>
+    </a>
+    <a href="#packages" class="mobile-nav-item">
+      <span class="m-icon">🌴</span>
+      <span>Packages</span>
+    </a>
+    <a href="#marketplace" class="mobile-nav-item">
+      <span class="m-icon">🤿</span>
+      <span>Activities</span>
+    </a>
+    <a href="#flights-ships" class="mobile-nav-item">
+      <span class="m-icon">✈️</span>
+      <span>Schedules</span>
+    </a>
+    <a href="https://wa.me/919496924874?text=Hi%20LakExplorer%2C%20I%20am%20chatting%20from%20the%20website!" target="_blank" class="mobile-nav-item">
+      <span class="m-icon">💬</span>
+      <span>WhatsApp</span>
+    </a>
+    <div class="mobile-nav-item" onclick="openAdminModal()">
+      <span class="m-icon">🔒</span>
+      <span>Admin</span>
+    </div>
+  </nav>
+
+  <!-- Footer (Phone digits hidden) -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo" style="color: #ffffff;">
+            <div class="brand-logo-icon">🏝️</div>
+            <span>Lak<span class="highlight">Explorer</span></span>
+          </div>
+          <p>
+            Official Lakshadweep Tourism Booking Marketplace. Offering packages starting from ₹14,000/-, water sports, homestays, inter-island boat logistics, and 100% entry permit clearance.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">All 8 Islands</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="openIslandModal('agatti')">Agatti Island</a></li>
+            <li><a href="javascript:void(0)" onclick="openIslandModal('kadmat')">Kadmat Island</a></li>
+            <li><a href="javascript:void(0)" onclick="openIslandModal('kalpeni')">Kalpeni Island</a></li>
+            <li><a href="javascript:void(0)" onclick="openIslandModal('minicoy')">Minicoy Island</a></li>
+            <li><a href="javascript:void(0)" onclick="openIslandModal('kavaratti')">Kavaratti Island</a></li>
+            <li><a href="javascript:void(0)" onclick="openIslandModal('amini')">Amini & Kiltan</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Official Portals</h4>
+          <ul class="footer-links">
+            <li><a href="https://lakshadweep.irctc.co.in/" target="_blank">IRCTC Lakshadweep (lakshadweep.irctc.co.in)</a></li>
+            <li><a href="https://lakport.gov.in" target="_blank">Lakport Ship Portal (lakport.gov.in)</a></li>
+            <li><a href="#partner-register">List Your Travel Agency</a></li>
+            <li><a href="#permits">e-Permit Checklist</a></li>
+            <li><a href="javascript:void(0)" onclick="openAdminModal()">Operator CRM Login</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Official WhatsApp Desk</h4>
+          <p style="color:rgba(255,255,255,0.75); font-size:0.9rem; margin-bottom:1rem;">
+            Click below to connect directly with our local booking desk for permit processing, resort verification, and instant answers.
+          </p>
+          <a href="https://wa.me/919496924874?text=Hi%20LakExplorer%2C%20I%20want%20to%20plan%20my%20trip%20now!" target="_blank" class="btn btn-whatsapp btn-sm">
+            💬 Connect on WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 LakExplorer Marketplace. Payments processed securely via official UPI QR Code.
+        </div>
+        <div style="display:flex; gap:1.25rem;">
+          <a href="#permits" style="color:rgba(255,255,255,0.7);">Permit Policy</a>
+          <a href="#partner-register" style="color:rgba(255,255,255,0.7);">Partner Listing</a>
+          <a href="javascript:void(0)" onclick="openAdminModal()" style="color:var(--lagoon-light);">Admin Portal</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
