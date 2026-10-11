@@ -1593,13 +1593,11 @@ button, input, select, textarea {
   max-width: 1100px;
   height: 92vh;
   height: 92dvh;
-  max-height: 92vh;
-  max-height: 92dvh;
   border-radius: var(--radius-xl);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* hidden clips border-radius visually without blocking inner scroll */
+  overflow: hidden;
   transform: scale(0.96);
   transition: transform 0.25s ease;
 }
@@ -1607,6 +1605,7 @@ button, input, select, textarea {
 .admin-modal-overlay.active .admin-modal {
   transform: scale(1);
 }
+
 
 .admin-modal-header {
   padding: 1.5rem 2rem;
@@ -1646,15 +1645,17 @@ button, input, select, textarea {
 
 .admin-modal-body {
   padding: 1.5rem 2rem;
-  overflow-y: scroll;          /* always show scrollbar track — prevents layout shift */
+  overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain; /* stop scroll chaining to page */
-  flex: 1 1 auto;     /* flex-grow:1, flex-shrink:1, flex-basis:auto */
-  min-height: 0;      /* critical: allows flex child to shrink and scroll */
-  height: 0;          /* forces the flex child to honour max-height of parent */
-  padding-bottom: 4rem;
+  overscroll-behavior: contain;
+  flex: 1 1 auto;      /* grow to fill available height in the flex column */
+  min-height: 0;       /* CRITICAL: allows flex child to shrink so scroll engages */
+  /* Fallback: explicit max-height ensures scrollable area even if flex calc fails */
+  max-height: calc(92dvh - 260px);
+  padding-bottom: 5rem;
   scroll-behavior: smooth;
+  position: relative;
 }
 
 /* Stats + Tab nav — fixed top bar, never scrolls away */
@@ -3163,6 +3164,7 @@ button, input, select, textarea {
   .admin-modal-body {
     padding: 1rem;
     padding-bottom: 3.5rem;
+    max-height: calc(97dvh - 230px);
   }
 
   .admin-modal-header {
