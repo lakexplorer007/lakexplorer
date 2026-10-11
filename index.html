@@ -843,14 +843,51 @@
               </div>
             </div>
 
-            <div class="form-row form-row-2" style="margin-bottom:1.25rem;">
-              <div class="form-group">
-                <label class="form-label" for="part-commission">Commission Offered (Per Booking) *</label>
-                <input type="text" id="part-commission" class="form-control" placeholder="e.g. ₹2,000 per person OR 10%" required>
+            <div style="margin-bottom:1.25rem;">
+              <!-- Commission section — private, NOT shown on public site -->
+              <div style="background:#fef9ec; border:1.5px dashed #fbbf24; border-radius:10px; padding:1rem;">
+                <p style="font-size:0.82rem; font-weight:800; color:#92400e; margin:0 0 0.75rem; display:flex; align-items:center; gap:0.4rem;">
+                  🔒 Commission Details — <span style="color:#dc2626;">Private (Admin Only, Not Shown Publicly)</span>
+                </p>
+                <div class="form-row form-row-2">
+                  <div class="form-group">
+                    <label class="form-label" for="part-commission-type">Commission Type *</label>
+                    <select id="part-commission-type" class="form-control" onchange="partnerCommissionTypeChange()" required>
+                      <option value="fixed">💰 Fixed Amount per Booking (₹)</option>
+                      <option value="percent">📊 Percentage of Booking Value (%)</option>
+                      <option value="per_person">👤 Fixed Amount per Person (₹)</option>
+                      <option value="negotiable">🤝 Negotiable (Admin decides)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="part-commission-value">Commission Amount / Percentage *</label>
+                    <div style="display:flex; align-items:center; gap:0.4rem;">
+                      <input type="number" id="part-commission-value" class="form-control" placeholder="e.g. 1500 or 10" min="0" step="0.5">
+                      <span id="part-commission-unit" style="font-weight:700; color:#0284c7; font-size:1rem; white-space:nowrap;">₹</span>
+                    </div>
+                    <small style="color:#64748b; font-size:0.72rem;">Enter ₹ amount OR % value based on type selected above</small>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="part-commission-notes">Commission Notes (optional)</label>
+                    <input type="text" id="part-commission-notes" class="form-control" placeholder="e.g. Paid after confirmed delivery, monthly settlement">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="part-min-booking">Minimum Booking Value (₹)</label>
+                    <input type="number" id="part-min-booking" class="form-control" placeholder="e.g. 2000" min="0">
+                    <small style="color:#64748b; font-size:0.72rem;">Commission applies only if booking exceeds this</small>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div class="form-row form-row-2" style="margin-bottom:1.25rem;">
               <div class="form-group">
                 <label class="form-label" for="part-details">Brief Description of Your Services</label>
                 <input type="text" id="part-details" class="form-control" placeholder="e.g. Drone + portrait shoots, Full-day packages">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="part-payment-terms">Other Payment Terms (optional)</label>
+                <input type="text" id="part-payment-terms" class="form-control" placeholder="e.g. Net 7 days after delivery, UPI payment">
               </div>
             </div>
 
@@ -1498,9 +1535,32 @@
                   <input type="text" id="srv-input-unit" class="form-control" placeholder="per person / per day" value="per person" required>
                 </div>
 
-                <div class="form-group">
-                  <label class="form-label">Owner Commission (₹) *</label>
-                  <input type="number" id="srv-input-commission" class="form-control" placeholder="300" value="300" required>
+                <div class="form-group" style="grid-column:1/-1;">
+                  <!-- Commission block — admin only, never shown on public cards -->
+                  <div style="background:#fef9ec; border:1.5px dashed #fbbf24; border-radius:9px; padding:0.85rem;">
+                    <p style="font-size:0.78rem; font-weight:800; color:#92400e; margin:0 0 0.6rem;">🔒 Commission — Admin Only (Hidden from public)</p>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:0.6rem;">
+                      <div class="form-group" style="margin:0;">
+                        <label class="form-label" style="font-size:0.76rem;">Commission Type</label>
+                        <select id="srv-input-commission-type" class="form-control" onchange="srvUpdateCommissionUnit()">
+                          <option value="fixed">💰 Fixed per Booking (₹)</option>
+                          <option value="percent">📊 Percentage of Price (%)</option>
+                          <option value="per_person">👤 Fixed per Person (₹)</option>
+                        </select>
+                      </div>
+                      <div class="form-group" style="margin:0;">
+                        <label class="form-label" style="font-size:0.76rem;">Commission Amount *</label>
+                        <div style="display:flex; align-items:center; gap:0.35rem;">
+                          <input type="number" id="srv-input-commission" class="form-control" placeholder="300" value="300" min="0" step="0.5" oninput="srvPreviewCommission()" required>
+                          <span id="srv-commission-unit" style="font-weight:800; color:#0284c7; white-space:nowrap;">₹</span>
+                        </div>
+                      </div>
+                      <div class="form-group" style="margin:0;">
+                        <label class="form-label" style="font-size:0.76rem;">Preview on ₹1,000 booking</label>
+                        <div id="srv-commission-preview" style="background:#d1fae5; border:1px solid #6ee7b7; border-radius:6px; padding:0.4rem 0.6rem; font-size:0.82rem; font-weight:700; color:#065f46;">Admin earns: ₹300</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="form-group">

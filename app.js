@@ -1817,6 +1817,8 @@ function openBookingPaymentFlow(type, id) {
   let vendor = '';
   let price = 0;
   let commission = 0;
+  let commissionType = 'fixed';
+  let commissionRate = 0;
 
   if (type === 'package') {
     const pkg = PACKAGES_DATA.find(p => p.id === id);
@@ -1825,7 +1827,9 @@ function openBookingPaymentFlow(type, id) {
     island = pkg.island;
     vendor = pkg.agency;
     price = pkg.price;
-    commission = pkg.commission;
+    commissionRate = pkg.commission || 0;
+    commissionType = 'per_person';
+    commission = pkg.commission || 0;
   } else {
     const s = MARKETPLACE_SERVICES.find(item => item.id === id);
     if (!s) return;
@@ -1833,12 +1837,14 @@ function openBookingPaymentFlow(type, id) {
     island = s.island;
     vendor = s.vendor;
     price = s.price;
-    commission = s.commission;
+    commissionType = s.commissionType || 'fixed';
+    commissionRate = s.commission || 0;
+    commission = calcCommissionAmount(commissionType, commissionRate, s.price);
   }
 
   const advanceToken = type === 'package' ? 3000 : 1000;
 
-  activeBookingSession = { type, id, title, island, vendor, price, commission, advanceToken };
+  activeBookingSession = { type, id, title, island, vendor, price, commission, commissionType, commissionRate, advanceToken };
 
   const modalOverlay = document.getElementById('qr-modal-overlay');
   if (!modalOverlay) return;
@@ -1920,6 +1926,12 @@ function confirmPaymentAndSendWhatsApp() {
     ? `UTR / Transaction ID: ${utr}`
     : (hasScreenshot ? 'Payment screenshot uploaded (sent separately on WhatsApp)' : '⚠️ Payment proof not yet provided');
 
+  const commTypeLabel = activeBookingSession.commissionType === 'percent'
+    ? `${activeBookingSession.commissionRate}% of booking`
+    : activeBookingSession.commissionType === 'per_person'
+    ? `₹${(activeBookingSession.commissionRate || 0).toLocaleString('en-IN')} / person`
+    : `₹${(activeBookingSession.commissionRate || 0).toLocaleString('en-IN')} fixed`;
+
   const waMessage = `🌴 *LAKEXPLORER BOOKING & PAYMENT NOTIFICATION* 🌴
 ----------------------------------------
 👤 *Customer:* ${touristName}
@@ -1934,7 +1946,7 @@ function confirmPaymentAndSendWhatsApp() {
 🏦 *UPI ID Paid To:* ${ADMIN_UPI_ID}
 🧾 *Payment Proof:* ${paymentProof}
 ----------------------------------------
-💼 *Owner Commission:* ₹${activeBookingSession.commission.toLocaleString('en-IN')}
+💼 *Commission Credited to Admin:* ₹${(activeBookingSession.commission || 0).toLocaleString('en-IN')} (${commTypeLabel})
 ----------------------------------------
 Please verify payment manually and confirm slot availability. Initiate entry permit after confirmation.`;
 
@@ -1960,6 +1972,8 @@ Please verify payment manually and confirm slot availability. Initiate entry per
     dates: touristDate,
     totalPrice: `₹${activeBookingSession.price.toLocaleString('en-IN')}`,
     commission: activeBookingSession.commission,
+    commissionType: activeBookingSession.commissionType,
+    commissionRate: activeBookingSession.commissionRate,
     paidToken: `₹${activeBookingSession.advanceToken.toLocaleString('en-IN')}`,
     paymentStatus: utr ? 'Paid via UPI QR (Pending Verify)' : (hasScreenshot ? 'Screenshot Uploaded' : 'Awaiting Payment'),
     bookingStatus: 'New',
@@ -1987,17 +2001,34 @@ function setupPartnerForm() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const name = document.getElementById('part-agency-name')?.value.trim();
-    const type = document.getElementById('part-service-type')?.value;
-    const islands = document.getElementById('part-islands')?.value.trim();
-    const contact = document.getElementById('part-phone')?.value.trim();
-    const commission = document.getElementById('part-commission')?.value.trim();
-    const details = document.getElementById('part-details')?.value.trim();
+    const name            = document.getElementById('part-agency-name')?.value.trim();
+    const type            = document.getElementById('part-service-type')?.value;
+    const islands         = document.getElementById('part-islands')?.value.trim();
+    const contact         = document.getElementById('part-phone')?.value.trim();
+    const commissionType  = document.getElementById('part-commission-type')?.value || 'fixed';
+    const commissionVal   = document.getElementById('part-commission-value')?.value.trim() || '0';
+    const commissionNotes = document.getElementById('part-commission-notes')?.value.trim() || '';
+    const minBooking      = document.getElementById('part-min-booking')?.value.trim() || '';
+    const details         = document.getElementById('part-details')?.value.trim();
+    const paymentTerms    = document.getElementById('part-payment-terms')?.value.trim() || '';
 
-    if (!name || !contact || !commission) {
-      alert('Please fill out all required partner details.');
+    if (!name || !contact) {
+      alert('Please fill out your business/venture name and WhatsApp contact number.');
       return;
     }
+
+    let commissionSummary = '';
+    if (commissionType === 'percent') {
+      commissionSummary = `${commissionVal}% of booking value`;
+    } else if (commissionType === 'per_person') {
+      commissionSummary = `₹${commissionVal} per person`;
+    } else if (commissionType === 'negotiable') {
+      commissionSummary = `Negotiable / Admin Decides`;
+    } else {
+      commissionSummary = `₹${commissionVal} per booking`;
+    }
+    if (minBooking) commissionSummary += ` (Min booking: ₹${minBooking})`;
+    if (commissionNotes) commissionSummary += ` [Note: ${commissionNotes}]`;
 
     const newPartner = {
       id: 'PT-' + (partnerRegistry.length + 1),
@@ -2005,25 +2036,37 @@ function setupPartnerForm() {
       type,
       islands,
       contact,
-      commissionOffer: commission,
-      status: 'Approved'
+      commissionType,
+      commissionValue: commissionVal,
+      commissionNotes,
+      minBooking,
+      commissionOffer: commissionSummary,
+      paymentTerms,
+      status: 'Pending Verification',
+      registeredDate: new Date().toLocaleDateString('en-IN')
     };
 
     partnerRegistry.unshift(newPartner);
     localStorage.setItem('lak_partners_v2', JSON.stringify(partnerRegistry));
     renderAdminTable();
 
-    // Notify you on WhatsApp
-    const waMessage = `🤝 *NEW PARTNER AGENCY REGISTRATION* 🤝
+    // Notify Admin on WhatsApp with private commission terms
+    const waMessage = `🤝 *NEW PARTNER VENTURE REGISTRATION* 🤝
 ----------------------------------------
-🏢 *Agency / Venture Name:* ${name}
+🏢 *Business / Venture:* ${name}
 📂 *Category:* ${type}
 🏝️ *Islands Served:* ${islands}
-📞 *Contact Number:* ${contact}
-💰 *Commission Offered to You:* ${commission}
-📝 *Offerings Summary:* ${details || 'None'}
+📞 *WhatsApp:* ${contact}
 ----------------------------------------
-Please approve listing on LakExplorer.`;
+🔒 *PRIVATE COMMISSION OFFERED TO ADMIN:*
+💰 *Structure:* ${commissionSummary}
+💵 *Type:* ${commissionType.toUpperCase()}
+📝 *Notes:* ${commissionNotes || 'None'}
+🏷️ *Payment Terms:* ${paymentTerms || 'Standard'}
+----------------------------------------
+📝 *Services Summary:* ${details || 'None'}
+----------------------------------------
+Please review & approve listing on LakExplorer.`;
 
     const url = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`;
     window.open(url, '_blank');
@@ -2330,12 +2373,12 @@ function switchAdminTab(tab) {
 function renderAdminTable() {
   // 1. Stats Calculation
   const totalLeads = currentEnquiries.length;
-  const totalCommission = currentEnquiries.reduce((acc, curr) => acc + (parseInt(curr.commission) || 0), 0);
+  const totalCommission = currentEnquiries.reduce((acc, curr) => acc + (parseFloat(curr.commission) || 0), 0);
   const confirmedCount = currentEnquiries.filter(e => e.bookingStatus === 'Confirmed').length;
   const pendingPermits = currentEnquiries.filter(e => e.bookingStatus === 'Permit Applied').length;
 
   document.getElementById('admin-stat-total').textContent = totalLeads;
-  document.getElementById('admin-stat-commission').textContent = `₹${totalCommission.toLocaleString('en-IN')}`;
+  document.getElementById('admin-stat-commission').textContent = `₹${Math.round(totalCommission).toLocaleString('en-IN')}`;
   document.getElementById('admin-stat-permit').textContent = pendingPermits;
   document.getElementById('admin-stat-confirmed').textContent = confirmedCount;
 
@@ -2362,7 +2405,10 @@ function renderAdminTable() {
           </td>
           <td>
             <strong>${item.totalPrice}</strong><br>
-            <span style="font-size:0.78rem; color:#10b981; font-weight:700;">Comm: ₹${(item.commission || 0).toLocaleString('en-IN')}</span><br>
+            <span style="font-size:0.78rem; color:#065f46; font-weight:800; background:#d1fae5; border:1px solid #6ee7b7; border-radius:4px; padding:0.15rem 0.35rem; display:inline-block; margin-top:2px;">
+              💰 Comm: ₹${(parseFloat(item.commission) || 0).toLocaleString('en-IN')}
+              ${item.commissionType === 'percent' ? ` (${item.commissionRate}%)` : ''}
+            </span><br>
             <span style="font-size:0.75rem; color:#64748b;">Token: ${item.paidToken}</span>
           </td>
           <td>
@@ -2396,12 +2442,20 @@ function renderAdminTable() {
   if (partnersTbody) {
     partnersTbody.innerHTML = partnerRegistry.map(p => `
       <tr>
-        <td><strong>${p.name}</strong></td>
+        <td>
+          <strong>${p.name}</strong>
+          ${p.registeredDate ? `<br><span style="font-size:0.72rem; color:#64748b;">📅 ${p.registeredDate}</span>` : ''}
+        </td>
         <td><span class="status-badge status-permit">${p.type}</span></td>
         <td>${p.islands}</td>
-        <td>${p.contact}</td>
-        <td><strong style="color:#10b981;">${p.commissionOffer}</strong></td>
-        <td><span class="status-badge status-confirmed">${p.status}</span></td>
+        <td><a href="https://wa.me/${(p.contact || '').replace(/[^0-9]/g,'')}" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">📞 ${p.contact}</a></td>
+        <td>
+          <div style="background:#fef9ec; border:1px solid #fcd34d; border-radius:6px; padding:0.3rem 0.5rem; display:inline-block;">
+            <strong style="color:#92400e; font-size:0.8rem;">🔒 ${p.commissionOffer || (p.commissionValue ? `₹${p.commissionValue}` : 'N/A')}</strong>
+            ${p.paymentTerms ? `<div style="font-size:0.72rem; color:#78350f;">Terms: ${p.paymentTerms}</div>` : ''}
+          </div>
+        </td>
+        <td><span class="status-badge status-confirmed">${p.status || 'Approved'}</span></td>
       </tr>
     `).join('');
   }
@@ -3034,9 +3088,16 @@ function renderAdminPackagesList() {
           <span style="font-size:0.82rem; color:var(--text-muted);">Starting: <strong>₹${pkg.price.toLocaleString('en-IN')}</strong> • Agency: ${pkg.agency}</span>
         </div>
       </div>
-      <div class="cms-item-actions">
-        <button class="btn btn-outline btn-sm" onclick="editAdminPackage('${pkg.id}')">✏️ Edit</button>
-        <button class="btn btn-outline btn-sm" style="color:#ef4444; border-color:#fca5a5;" onclick="deleteAdminPackage('${pkg.id}')">🗑️ Delete</button>
+      <div class="cms-item-actions" style="flex-direction:column; align-items:flex-end; gap:0.4rem;">
+        <!-- ADMIN-ONLY commission badge — never rendered on public pages -->
+        <div style="background:#fef9ec; border:1px solid #fbbf24; border-radius:8px; padding:0.35rem 0.65rem; font-size:0.75rem; text-align:right;">
+          <div style="font-weight:800; color:#92400e;">🔒 Commission (Admin Only)</div>
+          <div style="color:#065f46; font-weight:700;">₹${(pkg.commission || 0).toLocaleString('en-IN')} per person</div>
+        </div>
+        <div style="display:flex; gap:0.4rem;">
+          <button class="btn btn-outline btn-sm" onclick="editAdminPackage('${pkg.id}')">✏️ Edit</button>
+          <button class="btn btn-outline btn-sm" style="color:#ef4444; border-color:#fca5a5;" onclick="deleteAdminPackage('${pkg.id}')">🗑️ Delete</button>
+        </div>
       </div>
     </div>
   `).join('');
@@ -3359,9 +3420,23 @@ function renderAdminServicesList() {
           <span style="font-size:0.82rem; color:var(--text-muted);">Rate: <strong>₹${srv.price.toLocaleString('en-IN')}</strong> (${srv.priceUnit}) • Vendor: ${srv.vendor}</span>
         </div>
       </div>
-      <div class="cms-item-actions">
-        <button class="btn btn-outline btn-sm" onclick="editAdminService('${srv.id}')">✏️ Edit</button>
-        <button class="btn btn-outline btn-sm" style="color:#ef4444; border-color:#fca5a5;" onclick="deleteAdminService('${srv.id}')">🗑️ Delete</button>
+      <div class="cms-item-actions" style="flex-direction:column; align-items:flex-end; gap:0.4rem;">
+        <!-- ADMIN-ONLY commission badge — never rendered on public pages -->
+        <div style="background:#fef9ec; border:1px solid #fbbf24; border-radius:8px; padding:0.35rem 0.65rem; font-size:0.75rem; text-align:right;">
+          <div style="font-weight:800; color:#92400e;">🔒 Commission (Admin Only)</div>
+          <div style="color:#065f46; font-weight:700;">
+            ${srv.commissionType === 'percent'
+              ? `${srv.commission}% of booking = ₹${Math.round(srv.price * srv.commission / 100).toLocaleString('en-IN')} on ₹${srv.price.toLocaleString('en-IN')} sale`
+              : srv.commissionType === 'per_person'
+              ? `₹${srv.commission?.toLocaleString('en-IN')} per person`
+              : `₹${srv.commission?.toLocaleString('en-IN')} per booking`
+            }
+          </div>
+        </div>
+        <div style="display:flex; gap:0.4rem;">
+          <button class="btn btn-outline btn-sm" onclick="editAdminService('${srv.id}')">✏️ Edit</button>
+          <button class="btn btn-outline btn-sm" style="color:#ef4444; border-color:#fca5a5;" onclick="deleteAdminService('${srv.id}')">🗑️ Delete</button>
+        </div>
       </div>
     </div>
   `).join('');
@@ -3378,20 +3453,63 @@ function toggleServiceForm(show = null) {
   }
 }
 
+// ---- Commission UI helpers ----
+function srvUpdateCommissionUnit() {
+  const type = document.getElementById('srv-input-commission-type')?.value;
+  const unit = document.getElementById('srv-commission-unit');
+  if (unit) unit.textContent = type === 'percent' ? '%' : '₹';
+  srvPreviewCommission();
+}
+
+function srvPreviewCommission() {
+  const type  = document.getElementById('srv-input-commission-type')?.value || 'fixed';
+  const val   = parseFloat(document.getElementById('srv-input-commission')?.value) || 0;
+  const price = parseFloat(document.getElementById('srv-input-price')?.value) || 1000;
+  const preview = document.getElementById('srv-commission-preview');
+  if (!preview) return;
+  let earned = 0;
+  if (type === 'percent')    earned = Math.round(price * val / 100);
+  else if (type === 'per_person') earned = val;
+  else                            earned = val;
+  preview.textContent = `Admin earns: ₹${earned.toLocaleString('en-IN')} on ₹${price.toLocaleString('en-IN')} booking`;
+}
+
+// Update unit symbol when partner registration type changes
+function partnerCommissionTypeChange() {
+  const type = document.getElementById('part-commission-type')?.value;
+  const unit = document.getElementById('part-commission-unit');
+  if (!unit) return;
+  unit.textContent = type === 'percent' ? '%' : '₹';
+}
+
+// Calculate actual ₹ commission from stored type+value+booking price
+function calcCommissionAmount(commissionType, commissionValue, bookingPrice) {
+  const val = parseFloat(commissionValue) || 0;
+  const price = parseFloat(bookingPrice) || 0;
+  if (commissionType === 'percent')    return Math.round(price * val / 100);
+  if (commissionType === 'per_person') return val;
+  return val; // fixed
+}
+
 function editAdminService(id) {
   const srv = MARKETPLACE_SERVICES.find(s => s.id === id);
   if (!srv) return;
 
-  document.getElementById('srv-edit-id').value = srv.id;
-  document.getElementById('srv-input-title').value = srv.title;
-  document.getElementById('srv-input-category').value = srv.category;
-  document.getElementById('srv-input-island').value = srv.island;
-  document.getElementById('srv-input-vendor').value = srv.vendor;
-  document.getElementById('srv-input-price').value = srv.price;
-  document.getElementById('srv-input-unit').value = srv.priceUnit;
-  document.getElementById('srv-input-commission').value = srv.commission;
-  document.getElementById('srv-input-image').value = srv.image;
-  document.getElementById('srv-input-desc').value = srv.desc;
+  document.getElementById('srv-edit-id').value           = srv.id;
+  document.getElementById('srv-input-title').value       = srv.title;
+  document.getElementById('srv-input-category').value    = srv.category;
+  document.getElementById('srv-input-island').value      = srv.island;
+  document.getElementById('srv-input-vendor').value      = srv.vendor;
+  document.getElementById('srv-input-price').value       = srv.price;
+  document.getElementById('srv-input-unit').value        = srv.priceUnit;
+  document.getElementById('srv-input-commission').value  = srv.commission;
+  document.getElementById('srv-input-image').value       = srv.image;
+  document.getElementById('srv-input-desc').value        = srv.desc;
+
+  // Restore commission type
+  const typeEl = document.getElementById('srv-input-commission-type');
+  if (typeEl && srv.commissionType) typeEl.value = srv.commissionType;
+  srvUpdateCommissionUnit();
 
   document.getElementById('srv-form-title').textContent = `Edit Service: ${srv.title}`;
   toggleServiceForm(true);
@@ -3401,33 +3519,35 @@ function editAdminService(id) {
 function handleSaveService(e) {
   e.preventDefault();
 
-  const editId = document.getElementById('srv-edit-id').value;
-  const title = document.getElementById('srv-input-title').value.trim();
-  const category = document.getElementById('srv-input-category').value;
-  const island = document.getElementById('srv-input-island').value.trim();
-  const vendor = document.getElementById('srv-input-vendor').value.trim();
-  const price = parseInt(document.getElementById('srv-input-price').value) || 1000;
-  const priceUnit = document.getElementById('srv-input-unit').value.trim();
-  const commission = parseInt(document.getElementById('srv-input-commission').value) || 200;
-  const image = document.getElementById('srv-input-image').value.trim() || 'assets/images/scuba.jpg';
-  const desc = document.getElementById('srv-input-desc').value.trim();
+  const editId        = document.getElementById('srv-edit-id').value;
+  const title         = document.getElementById('srv-input-title').value.trim();
+  const category      = document.getElementById('srv-input-category').value;
+  const island        = document.getElementById('srv-input-island').value.trim();
+  const vendor        = document.getElementById('srv-input-vendor').value.trim();
+  const price         = parseInt(document.getElementById('srv-input-price').value) || 1000;
+  const priceUnit     = document.getElementById('srv-input-unit').value.trim();
+  const commissionType = document.getElementById('srv-input-commission-type')?.value || 'fixed';
+  const commission    = parseFloat(document.getElementById('srv-input-commission').value) || 200;
+  const image         = document.getElementById('srv-input-image').value.trim() || 'assets/images/scuba.jpg';
+  const desc          = document.getElementById('srv-input-desc').value.trim();
+
+  // Calculate the actual ₹ commission for booking records
+  const commissionAmt = calcCommissionAmount(commissionType, commission, price);
+
+  const srvData = { title, category, island, vendor, price, priceUnit, commission, commissionType, commissionAmt, image, desc };
 
   if (editId) {
     const idx = MARKETPLACE_SERVICES.findIndex(s => s.id === editId);
     if (idx !== -1) {
-      MARKETPLACE_SERVICES[idx] = {
-        ...MARKETPLACE_SERVICES[idx],
-        title, category, island, vendor, price, priceUnit, commission, image, desc
-      };
+      MARKETPLACE_SERVICES[idx] = { ...MARKETPLACE_SERVICES[idx], ...srvData };
       showToast(`✅ Updated service "${title}"!`);
     }
   } else {
-    const newSrv = {
+    MARKETPLACE_SERVICES.unshift({
       id: 'srv-custom-' + Date.now().toString().slice(-4),
-      title, category, island, vendor, price, priceUnit, commission, image, desc,
+      ...srvData,
       features: ['Verified Island Provider', 'Advance QR Protection', 'Manual Coordinator Approval']
-    };
-    MARKETPLACE_SERVICES.unshift(newSrv);
+    });
     showToast(`🎉 New service "${title}" listed!`);
   }
 
