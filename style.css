@@ -1578,6 +1578,8 @@ button, input, select, textarea {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
+  overscroll-behavior: contain; /* stop page background from scrolling while modal is open */
+  overflow: hidden;
 }
 
 .admin-modal-overlay.active {
@@ -1589,13 +1591,15 @@ button, input, select, textarea {
   background: #ffffff;
   width: 100%;
   max-width: 1100px;
-  max-height: 90vh;
-  max-height: 90dvh;
+  height: 92vh;
+  height: 92dvh;
+  max-height: 92vh;
+  max-height: 92dvh;
   border-radius: var(--radius-xl);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
-  overflow: clip; /* clips visually for border-radius without blocking inner scroll */
+  overflow: hidden; /* hidden clips border-radius visually without blocking inner scroll */
   transform: scale(0.96);
   transition: transform 0.25s ease;
 }
@@ -1642,12 +1646,14 @@ button, input, select, textarea {
 
 .admin-modal-body {
   padding: 1.5rem 2rem;
-  overflow-y: auto;
+  overflow-y: scroll;          /* always show scrollbar track — prevents layout shift */
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  flex: 1 1 0;        /* flex-grow:1, flex-shrink:1, flex-basis:0 */
+  overscroll-behavior: contain; /* stop scroll chaining to page */
+  flex: 1 1 auto;     /* flex-grow:1, flex-shrink:1, flex-basis:auto */
   min-height: 0;      /* critical: allows flex child to shrink and scroll */
-  padding-bottom: 3rem;
+  height: 0;          /* forces the flex child to honour max-height of parent */
+  padding-bottom: 4rem;
   scroll-behavior: smooth;
 }
 
@@ -1656,8 +1662,10 @@ button, input, select, textarea {
   background: #fff;
   padding: 1.5rem 2rem 0;
   border-bottom: 1px solid var(--border-light);
-  flex-shrink: 0;
+  flex-shrink: 0;   /* never shrink the sticky header */
   z-index: 10;
+  /* Note: position:sticky doesn't work inside a flex column with overflow:hidden
+     Instead we keep it as a flex sibling ABOVE admin-modal-body, which achieves the same effect */
 }
 
 .admin-sticky-top .admin-stats-row {
@@ -3140,8 +3148,10 @@ button, input, select, textarea {
   }
 
   .admin-modal {
-    max-height: 96dvh;
-    max-height: 96vh;
+    height: 97dvh;
+    height: 97vh;
+    max-height: 97dvh;
+    max-height: 97vh;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     width: 100%;
   }
@@ -3152,7 +3162,7 @@ button, input, select, textarea {
 
   .admin-modal-body {
     padding: 1rem;
-    padding-bottom: 2.5rem;
+    padding-bottom: 3.5rem;
   }
 
   .admin-modal-header {

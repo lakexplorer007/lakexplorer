@@ -2272,14 +2272,6 @@ function handleTripEnquirySubmit(e) {
 let activeAdminTab = 'enquiries';
 
 function openAdminModal() {
-  const modalOverlay = document.getElementById('admin-modal-overlay');
-  if (modalOverlay) {
-    modalOverlay.classList.add('active');
-    renderAdminTable();
-  }
-}
-
-function openAdminModal() {
   const isAuth = localStorage.getItem('lak_admin_auth') === 'true';
   if (!isAuth) {
     const loginOverlay = document.getElementById('admin-login-overlay');
@@ -2290,6 +2282,7 @@ function openAdminModal() {
   const modalOverlay = document.getElementById('admin-modal-overlay');
   if (modalOverlay) {
     modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // lock page scroll while admin is open
     renderAdminTable();
   }
 }
@@ -2310,6 +2303,7 @@ function handleAdminLogin(e) {
     closeAdminLoginModal();
     const modalOverlay = document.getElementById('admin-modal-overlay');
     if (modalOverlay) modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // lock page scroll
     renderAdminTable();
     showToast('🔓 Welcome, Admin! Access granted.');
     if (errorMsg) errorMsg.style.display = 'none';
@@ -2327,6 +2321,7 @@ function adminLogout() {
 function closeAdminModal() {
   const modalOverlay = document.getElementById('admin-modal-overlay');
   if (modalOverlay) modalOverlay.classList.remove('active');
+  document.body.style.overflow = ''; // restore page scroll
 }
 
 function switchAdminTab(tab) {
@@ -2742,7 +2737,10 @@ function toggleAddShipForm(show = null) {
     document.querySelector('input[name="ship-release-type"][value="pending"]').checked = true;
     toggleReleaseDateInput();
   }
-  if (shouldShow) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (shouldShow) {
+    const modalBodyShip = document.querySelector('.admin-modal-body');
+    if (modalBodyShip) modalBodyShip.scrollTop = 0;
+  }
 }
 
 // Toggle release date input visibility based on radio
@@ -3252,7 +3250,11 @@ function togglePackageForm(show = null) {
       const el = document.getElementById(id); if (el) el.textContent = '₹0';
     });
   }
-  if (shouldShow) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (shouldShow) {
+    // Scroll the modal body (not the page) to the top so form is visible
+    const modalBody = document.querySelector('.admin-modal-body');
+    if (modalBody) { modalBody.scrollTop = 0; }
+  }
 }
 
 function editAdminPackage(id) {
@@ -3298,7 +3300,9 @@ function editAdminPackage(id) {
   document.getElementById('pkg-form-title').textContent = `✏️ Editing: ${pkg.title}`;
   togglePackageForm(true);
   pkgAutoCalcTotal();
-  document.getElementById('admin-package-form-box').scrollIntoView({ behavior: 'smooth' });
+  // Scroll the modal body to the top so the form is visible
+  const modalBodyPkg = document.querySelector('.admin-modal-body');
+  if (modalBodyPkg) modalBodyPkg.scrollTop = 0;
 }
 
 function handleSavePackage(e) {
@@ -3446,10 +3450,16 @@ function toggleServiceForm(show = null) {
   const box = document.getElementById('admin-service-form-box');
   if (!box) return;
   const isHidden = box.style.display === 'none';
-  box.style.display = (show !== null ? show : isHidden) ? 'block' : 'none';
-  if (box.style.display === 'block' && !document.getElementById('srv-edit-id').value) {
+  const shouldShow = (show !== null ? show : isHidden);
+  box.style.display = shouldShow ? 'block' : 'none';
+  if (shouldShow && !document.getElementById('srv-edit-id').value) {
     document.getElementById('admin-service-form').reset();
     document.getElementById('srv-form-title').textContent = 'Add New Marketplace Item';
+  }
+  if (shouldShow) {
+    // Scroll the modal body (not the page) so form is visible
+    const modalBody = document.querySelector('.admin-modal-body');
+    if (modalBody) { modalBody.scrollTop = 0; }
   }
 }
 
@@ -3513,7 +3523,9 @@ function editAdminService(id) {
 
   document.getElementById('srv-form-title').textContent = `Edit Service: ${srv.title}`;
   toggleServiceForm(true);
-  document.getElementById('admin-service-form-box').scrollIntoView({ behavior: 'smooth' });
+  // Scroll the modal body to the top so the edit form is visible
+  const modalBodySrv = document.querySelector('.admin-modal-body');
+  if (modalBodySrv) modalBodySrv.scrollTop = 0;
 }
 
 function handleSaveService(e) {
