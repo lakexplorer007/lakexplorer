@@ -1046,7 +1046,7 @@
        Admin / Operator CRM Modal with Multi-Vendor Commission
        ========================================================== -->
   <!-- ==========================================================
-       Admin Login Gate Modal (Protected with lakexplorer / mj@010701#)
+       Admin Login Gate Modal
        ========================================================== -->
   <div class="admin-login-overlay" id="admin-login-overlay">
     <div class="admin-login-card">
@@ -1062,7 +1062,7 @@
       <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
         <div class="login-field">
           <label for="admin-login-id">Admin Login ID</label>
-          <input type="text" id="admin-login-id" placeholder="lakexplorer" required autocomplete="username" value="lakexplorer">
+          <input type="text" id="admin-login-id" placeholder="Admin Login ID" required autocomplete="username">
         </div>
         <div class="login-field">
           <label for="admin-login-password">Password</label>
@@ -1072,9 +1072,6 @@
           🔓 Unlock Admin Panel
         </button>
       </form>
-      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:1.25rem;">
-        Credentials: <code>lakexplorer</code> / <code>mj@010701#</code>
-      </div>
     </div>
   </div>
 
@@ -1102,28 +1099,8 @@
         </div>
       </div>
 
-      <!-- Stats & Tabs — sticky, outside scroll area -->
+      <!-- Sticky Tabs Navigation — slim, compact, never shrinks -->
       <div class="admin-sticky-top">
-        <div class="admin-stats-row">
-          <div class="admin-stat-card">
-            <div class="num" id="admin-stat-total">0</div>
-            <div class="lbl">Total Bookings</div>
-          </div>
-          <div class="admin-stat-card">
-            <div class="num" id="admin-stat-commission" style="color:#10b981;">₹0</div>
-            <div class="lbl">Total Commission</div>
-          </div>
-          <div class="admin-stat-card">
-            <div class="num" id="admin-stat-permit" style="color:#7c3aed;">0</div>
-            <div class="lbl">Permits Pending</div>
-          </div>
-          <div class="admin-stat-card">
-            <div class="num" id="admin-stat-confirmed" style="color:#0284c7;">0</div>
-            <div class="lbl">Confirmed Tours</div>
-          </div>
-        </div>
-
-        <!-- WordPress-style Navigation Tabs -->
         <div class="admin-tab-nav">
           <button class="admin-nav-tab active" id="admin-tab-btn-enquiries" onclick="switchAdminTab('enquiries')">
             📑 Tourist Bookings & CRM
@@ -1147,8 +1124,26 @@
       </div><!-- /admin-sticky-top -->
       <div class="admin-modal-body">
 
-        <!-- View 1: Tourist Bookings Table -->
+        <!-- View 1: Tourist Bookings Table & CRM Stats -->
         <div id="admin-view-enquiries">
+          <div class="admin-stats-row">
+            <div class="admin-stat-card">
+              <div class="num" id="admin-stat-total">0</div>
+              <div class="lbl">Total Bookings</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="num" id="admin-stat-commission" style="color:#10b981;">₹0</div>
+              <div class="lbl">Total Commission</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="num" id="admin-stat-permit" style="color:#7c3aed;">0</div>
+              <div class="lbl">Permits Pending</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="num" id="admin-stat-confirmed" style="color:#0284c7;">0</div>
+              <div class="lbl">Confirmed Tours</div>
+            </div>
+          </div>
           <div class="admin-toolbar">
             <div style="font-size:0.9rem; font-weight:700; color:var(--ocean-deep);">
               Tourist Leads & QR Advance Payments:
@@ -1475,7 +1470,6 @@
           <!-- Packages CRUD List -->
           <div class="cms-crud-grid" id="admin-packages-list-container"></div>
         </div>
-        </div>
 
         <!-- View 3: Marketplace Activities & Stays Manager -->
         <div id="admin-view-marketplace" style="display:none;">
@@ -1511,7 +1505,6 @@
                     <option value="clothing">👗 Clothing, T-Shirts &amp; Crafts</option>
                     <option value="jewels">💎 Jewelry &amp; Traditional Gifts</option>
                     <option value="rentals">🚴 GoPro, Gear &amp; Bike Rentals</option>
-                  </select>
                   </select>
                 </div>
 

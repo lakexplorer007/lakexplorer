@@ -1504,10 +1504,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Also allow secret URL param: ?admin=1
-  if (new URLSearchParams(window.location.search).get('admin') === '1') {
-    setTimeout(() => openAdminModal(), 800);
+  // Also allow secret URL param: ?admin=1 or hash #admin / #admin-secret
+  if (new URLSearchParams(window.location.search).get('admin') === '1' || window.location.hash === '#admin' || window.location.hash === '#admin-secret') {
+    setTimeout(() => openAdminModal(), 600);
   }
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#admin' || window.location.hash === '#admin-secret') {
+      openAdminModal();
+    }
+  });
 });
 
 // =============================================================================
@@ -2271,6 +2276,22 @@ function handleTripEnquirySubmit(e) {
 // =============================================================================
 let activeAdminTab = 'enquiries';
 
+function fixAdminModalScrollHeight() {
+  requestAnimationFrame(() => {
+    const modal = document.querySelector('.admin-modal');
+    const header = document.querySelector('.admin-modal-header');
+    const sticky = document.querySelector('.admin-sticky-top');
+    const body = document.querySelector('.admin-modal-body');
+    if (!modal || !body) return;
+    const modalH = modal.getBoundingClientRect().height;
+    const headerH = header ? header.getBoundingClientRect().height : 0;
+    const stickyH = sticky ? sticky.getBoundingClientRect().height : 0;
+    const available = Math.max(200, Math.floor(modalH - headerH - stickyH));
+    body.style.maxHeight = available + 'px';
+  });
+}
+window.addEventListener('resize', fixAdminModalScrollHeight);
+
 function openAdminModal() {
   const isAuth = localStorage.getItem('lak_admin_auth') === 'true';
   if (!isAuth) {
@@ -2284,6 +2305,7 @@ function openAdminModal() {
     modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden'; // lock page scroll while admin is open
     renderAdminTable();
+    fixAdminModalScrollHeight();
   }
 }
 
@@ -2305,6 +2327,7 @@ function handleAdminLogin(e) {
     if (modalOverlay) modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden'; // lock page scroll
     renderAdminTable();
+    fixAdminModalScrollHeight();
     showToast('🔓 Welcome, Admin! Access granted.');
     if (errorMsg) errorMsg.style.display = 'none';
   } else {
@@ -2350,13 +2373,16 @@ function switchAdminTab(tab) {
     renderAdminShipsEditor();
   } else if (tab === 'settings') {
     loadSettingsIntoForm();
+  } else if (tab === 'partners') {
+    renderAdminPartnersTable();
   } else {
     renderAdminTable();
   }
 
-  // Always scroll modal body back to top on tab switch
+  // Always scroll modal body back to top on tab switch and ensure correct scroll height
   const body = document.querySelector('.admin-modal-body');
   if (body) body.scrollTop = 0;
+  fixAdminModalScrollHeight();
 
   // Close any open form boxes when switching tabs
   ['admin-package-form-box', 'admin-service-form-box', 'admin-add-ship-form'].forEach(id => {
@@ -2433,6 +2459,10 @@ function renderAdminTable() {
   }
 
   // 3. Render Partners Table
+  renderAdminPartnersTable();
+}
+
+function renderAdminPartnersTable() {
   const partnersTbody = document.getElementById('admin-partners-tbody');
   if (partnersTbody) {
     partnersTbody.innerHTML = partnerRegistry.map(p => `
@@ -2740,6 +2770,7 @@ function toggleAddShipForm(show = null) {
   if (shouldShow) {
     const modalBodyShip = document.querySelector('.admin-modal-body');
     if (modalBodyShip) modalBodyShip.scrollTop = 0;
+    fixAdminModalScrollHeight();
   }
 }
 
@@ -3254,6 +3285,7 @@ function togglePackageForm(show = null) {
     // Scroll the modal body (not the page) to the top so form is visible
     const modalBody = document.querySelector('.admin-modal-body');
     if (modalBody) { modalBody.scrollTop = 0; }
+    fixAdminModalScrollHeight();
   }
 }
 
@@ -3460,6 +3492,7 @@ function toggleServiceForm(show = null) {
     // Scroll the modal body (not the page) so form is visible
     const modalBody = document.querySelector('.admin-modal-body');
     if (modalBody) { modalBody.scrollTop = 0; }
+    fixAdminModalScrollHeight();
   }
 }
 
