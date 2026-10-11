@@ -1708,6 +1708,11 @@
                   <label class="form-label">Capacity / Type</label>
                   <input type="text" id="ship-input-capacity" class="form-control" placeholder="e.g. 350 Passengers, Weekly Cruise">
                 </div>
+                <div class="form-group cms-form-full">
+                  <label class="form-label" style="font-weight:700;">🚢 Vessel Photo / Ship Image (Upload, Presets or URL)</label>
+                  <input type="hidden" id="ship-input-image" value="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop&q=80">
+                  <div id="ship-image-uploader-wrapper"></div>
+                </div>
                 <div class="form-group">
                   <label class="form-label">Sailing Date *</label>
                   <input type="text" id="ship-input-sailing" class="form-control" placeholder="e.g. Sat, 25 Oct 2026 or Weekly Fridays" required>
@@ -1797,9 +1802,69 @@
         <!-- View 5: Registered Agencies & Vendors -->
         <div id="admin-view-partners" style="display:none;">
           <div class="admin-toolbar">
-            <div style="font-size:0.9rem; font-weight:700; color:var(--ocean-deep);">
-              Local Agencies, Dive Operators & Homestay Partners:
+            <div>
+              <strong style="color:var(--ocean-deep); font-size:1rem; display:block;">🤝 Partner Agencies, Dive Centers & Homestays</strong>
+              <span style="font-size:0.8rem; color:var(--text-muted);">Manage registered island operators, review commission terms, and approve listings.</span>
             </div>
+            <button class="btn btn-primary btn-sm" onclick="togglePartnerForm()">
+              ➕ Add New Partner Agency
+            </button>
+          </div>
+
+          <!-- Partner Add / Edit Form Box -->
+          <div id="admin-partner-form-box" class="cms-form-box" style="display:none; margin-bottom:1.5rem; border-color:#10b981; background:#f0fdf4;">
+            <h4 id="partner-form-heading" style="margin:0 0 1rem 0; color:#065f46; font-size:1rem;">🤝 Add / Edit Partner Agency</h4>
+            <form id="admin-partner-form" onsubmit="handleSavePartner(event)">
+              <input type="hidden" id="partner-edit-id" value="">
+              <div class="cms-form-grid">
+                <div class="form-group">
+                  <label class="form-label">Agency / Venture Name *</label>
+                  <input type="text" id="partner-input-name" class="form-control" placeholder="e.g. Lakshadweep Watersports & Scuba" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Category / Service Type *</label>
+                  <select id="partner-input-type" class="form-control" required>
+                    <option value="Water Sports & Dive Center">🤿 Water Sports & Dive Center</option>
+                    <option value="Resorts, Stays & Homestays">🏨 Resorts, Stays & Homestays</option>
+                    <option value="Island Tour Operator">🏝️ Island Tour Operator</option>
+                    <option value="Boat & Speedboat Transfers">🛥️ Boat & Speedboat Transfers</option>
+                    <option value="Drone & Photo Shoot">📸 Drone & Photo Shoot</option>
+                    <option value="Local Food & BBQ Dining">🍽️ Local Food & BBQ Dining</option>
+                    <option value="GoPro & Bike Rentals">🚲 GoPro & Bike Rentals</option>
+                    <option value="Traditional Crafts & Souvenirs">🐚 Traditional Crafts & Souvenirs</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Islands Served *</label>
+                  <input type="text" id="partner-input-islands" class="form-control" placeholder="e.g. Agatti, Bangaram, Kadmat, Kavaratti" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">WhatsApp Number (e.g. 919496924874) *</label>
+                  <input type="tel" id="partner-input-contact" class="form-control" placeholder="919496924874" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Commission Offered to Admin</label>
+                  <input type="text" id="partner-input-commission" class="form-control" placeholder="e.g. ₹500 per booking or 10%">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Status</label>
+                  <select id="partner-input-status" class="form-control">
+                    <option value="Approved">🟢 Approved (Active)</option>
+                    <option value="Under Review">🟡 Under Review</option>
+                    <option value="Pending Verification">🔴 Pending Verification</option>
+                  </select>
+                </div>
+                <div class="form-group cms-form-full">
+                  <label class="form-label" style="font-weight:700;">Agency Logo / Venture Photo</label>
+                  <input type="hidden" id="partner-input-image" value="assets/images/logo.png">
+                  <div id="partner-admin-image-uploader-wrapper"></div>
+                </div>
+              </div>
+              <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1.25rem;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="togglePartnerForm(false)">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm">💾 Save Partner Agency</button>
+              </div>
+            </form>
           </div>
 
           <div class="admin-table-wrapper">
@@ -1812,6 +1877,7 @@
                   <th>Contact</th>
                   <th>Commission Offered</th>
                   <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="admin-partners-tbody"></tbody>
