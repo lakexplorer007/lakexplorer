@@ -891,6 +891,13 @@
               </div>
             </div>
 
+            <!-- Vendor / Business Photo Upload Option -->
+            <div style="margin-bottom:1.5rem;">
+              <label class="form-label" style="font-weight:700;">📸 Business Logo / Storefront / Activity Photo (Upload Option)</label>
+              <input type="hidden" id="part-input-image" value="assets/images/logo.png">
+              <div id="part-image-uploader-wrapper"></div>
+            </div>
+
             <button type="submit" class="btn btn-primary btn-lg" style="width:100%; padding:1rem;">
               🤝 Submit Partnership Application → Admin Reviews &amp; Approves
             </button>
@@ -1228,12 +1235,13 @@
                     <input type="text" id="pkg-input-ribbon" class="form-control" placeholder="e.g. Best Seller, New, Top Rated">
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Featured Image Path</label>
-                    <input type="text" id="pkg-input-image" class="form-control" placeholder="assets/images/hero.jpg" value="assets/images/hero.jpg">
-                  </div>
-                  <div class="form-group">
                     <label class="form-label">Your Commission per person (₹)</label>
                     <input type="number" id="pkg-input-commission" class="form-control" placeholder="2000" value="2000">
+                  </div>
+                  <div class="form-group cms-form-full">
+                    <label class="form-label" style="font-weight:700;">📸 Package Featured Image (Upload, Presets or URL)</label>
+                    <input type="hidden" id="pkg-input-image" value="assets/images/hero.jpg">
+                    <div id="pkg-image-uploader-wrapper"></div>
                   </div>
                 </div>
               </div>
@@ -1556,9 +1564,10 @@
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <label class="form-label">Image Path *</label>
-                  <input type="text" id="srv-input-image" class="form-control" value="assets/images/scuba.jpg" required>
+                <div class="form-group cms-form-full">
+                  <label class="form-label" style="font-weight:700;">📸 Service / Activity Image (Upload, Presets or URL)</label>
+                  <input type="hidden" id="srv-input-image" value="assets/images/scuba.jpg">
+                  <div id="srv-image-uploader-wrapper"></div>
                 </div>
 
                 <div class="form-group cms-form-full">
@@ -1951,7 +1960,35 @@
       </div>
     </div>
   </footer>
+  <!-- ===== ISLAND PROGRAMS MODAL (Admin - Ship Voyage Programs & Dates) ===== -->
+  <div class="modal-overlay" id="island-programs-modal" style="z-index:10001;">
+    <div class="modal-box ipm-modal-box" style="max-width:760px; width:95%; max-height:90vh; display:flex; flex-direction:column; border-radius:16px; overflow:hidden; position:relative;">
+      <!-- Header -->
+      <div style="background:linear-gradient(135deg, var(--ocean-deep) 0%, #0369a1 100%); padding:1.25rem 1.5rem; flex-shrink:0; display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+        <div>
+          <h3 id="ipm-ship-title" style="margin:0 0 0.25rem 0; color:#fff; font-size:1.15rem;">🚢 Ship Name</h3>
+          <p id="ipm-ship-route" style="margin:0; color:rgba(255,255,255,0.8); font-size:0.82rem;">📍 Route loading...</p>
+          <input type="hidden" id="ipm-ship-id" value="">
+        </div>
+        <button onclick="closeIslandProgramsModal()" style="background:rgba(255,255,255,0.15); border:none; color:#fff; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; flex-shrink:0;">✕</button>
+      </div>
+
+      <!-- Scrollable body -->
+      <div id="ipm-islands-area" style="flex:1; overflow-y:auto; padding:1.25rem 1.5rem; background:#f8fafc;">
+        <!-- Content rendered by JS -->
+      </div>
+
+      <!-- Footer with Save & Close -->
+      <div style="background:#fff; border-top:1px solid var(--border-light); padding:1rem 1.5rem; flex-shrink:0; display:flex; justify-content:flex-end; gap:0.75rem; flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="closeIslandProgramsModal()">✕ Close</button>
+        <button class="btn btn-primary" onclick="saveIslandProgramsAndBooking(document.getElementById('ipm-ship-id').value)">
+          💾 Save Programs, Dates & Booking Window
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
+
 </body>
 </html>

@@ -1460,12 +1460,227 @@ function initDatabases() {
     }
   } else {
     partnerRegistry = [
-      { id: 'PT-1', name: 'Coral Sands Tours Agatti', type: 'Travel Agency', islands: 'Agatti, Bangaram', contact: '+91 94471 23456', commissionOffer: '₹2,500 / person', status: 'Approved' },
-      { id: 'PT-2', name: 'Ocean Blue Dive Center', type: 'Water Sports Vendor', islands: 'Agatti, Kadmat', contact: '+91 94960 98765', commissionOffer: '₹500 / dive', status: 'Approved' },
-      { id: 'PT-3', name: 'Atoll Visuals Studio', type: 'Drone & Photography', islands: 'All Islands', contact: '+91 97450 11223', commissionOffer: '₹1,000 / shoot', status: 'Approved' }
+      { id: 'PT-1', name: 'Coral Sands Tours Agatti', type: 'Travel Agency', islands: 'Agatti, Bangaram', contact: '+91 94471 23456', commissionOffer: '₹2,500 / person', status: 'Approved', image: 'assets/images/resort.jpg' },
+      { id: 'PT-2', name: 'Ocean Blue Dive Center', type: 'Water Sports Vendor', islands: 'Agatti, Kadmat', contact: '+91 94960 98765', commissionOffer: '₹500 / dive', status: 'Approved', image: 'assets/images/scuba.jpg' },
+      { id: 'PT-3', name: 'Atoll Visuals Studio', type: 'Drone & Photography', islands: 'All Islands', contact: '+91 97450 11223', commissionOffer: '₹1,000 / shoot', status: 'Approved', image: 'assets/images/hero.jpg' }
     ];
     localStorage.setItem('lak_partners_v2', JSON.stringify(partnerRegistry));
   }
+}
+
+// =============================================================================
+// Multi-Option Image Uploader Engine (Upload, Island Presets, URL)
+// =============================================================================
+const PRESET_IMAGE_LIBRARY = [
+  { label: 'Scuba Diving & Coral', url: 'assets/images/scuba.jpg' },
+  { label: 'Agatti Lagoon & Beach', url: 'assets/images/hero.jpg' },
+  { label: 'Resort & Beach Villa', url: 'assets/images/resort.jpg' },
+  { label: 'Bangaram Sandbank', url: 'assets/images/bangaram.jpg' },
+  { label: 'Minicoy Lighthouse', url: 'assets/images/minicoy.jpg' },
+  { label: 'LakExplorer Brand Logo', url: 'assets/images/logo.png' },
+  { label: 'Island Emblem & Badge', url: 'assets/images/favicon.jpg' },
+  { label: 'Passenger Cruise Ship', url: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Speedboat & Ferry Transfer', url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Sea Turtles & Snorkeling', url: 'https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Lagoon Kayaking & Blue Water', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Tropical Sunset & Palms', url: 'https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Coral Garden & Marine Life', url: 'https://images.unsplash.com/photo-1582967788606-a171c1080cb0?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Traditional Dining & Homestay', url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Aerial Island Drone View', url: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800&auto=format&fit=crop&q=80' }
+];
+
+function compressAndReadImage(file, callback) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxDim = 800;
+      let w = img.width;
+      let h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) {
+          h = Math.round((h * maxDim) / w);
+          w = maxDim;
+        } else {
+          w = Math.round((w * maxDim) / h);
+          h = maxDim;
+        }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      callback(dataUrl, file.name);
+    };
+    img.onerror = () => callback(e.target.result, file.name);
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function initImageUploader(wrapperId, inputId, defaultVal, defaultLabel) {
+  const wrapper = document.getElementById(wrapperId);
+  if (!wrapper) return;
+  const inputEl = document.getElementById(inputId);
+  let currentVal = (inputEl ? inputEl.value : '') || defaultVal || 'assets/images/hero.jpg';
+
+  wrapper.innerHTML = `
+    <div class="image-uploader-card" id="${wrapperId}-card">
+      <div class="uploader-tabs-bar">
+        <button type="button" class="uploader-tab-btn active" data-tab="upload" onclick="switchUploaderTab('${wrapperId}', 'upload')">
+          📤 Upload Photo
+        </button>
+        <button type="button" class="uploader-tab-btn" data-tab="presets" onclick="switchUploaderTab('${wrapperId}', 'presets')">
+          🖼️ Island Presets
+        </button>
+        <button type="button" class="uploader-tab-btn" data-tab="url" onclick="switchUploaderTab('${wrapperId}', 'url')">
+          🔗 Web Link
+        </button>
+      </div>
+
+      <!-- Tab 1: Upload from Device / Phone -->
+      <div class="uploader-pane" id="${wrapperId}-pane-upload">
+        <div class="uploader-dropzone" onclick="document.getElementById('${wrapperId}-file-input').click()" ondragover="handleUploaderDragOver(event)" ondragleave="handleUploaderDragLeave(event)" ondrop="handleUploaderDrop(event, '${wrapperId}', '${inputId}')">
+          <input type="file" id="${wrapperId}-file-input" accept="image/*" style="display:none;" onchange="handleUploaderFileSelect(this, '${wrapperId}', '${inputId}')">
+          <div class="uploader-dropzone-icon">📁</div>
+          <strong style="color:var(--ocean-deep); font-size:0.88rem; display:block;">Click to Browse or Drag & Drop Photo</strong>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Supports JPG, PNG, WEBP from device or mobile camera</span>
+        </div>
+      </div>
+
+      <!-- Tab 2: Curated Island Presets -->
+      <div class="uploader-pane" id="${wrapperId}-pane-presets" style="display:none;">
+        <div class="uploader-presets-grid">
+          ${PRESET_IMAGE_LIBRARY.map(p => `
+            <div class="uploader-preset-item ${currentVal === p.url ? 'active' : ''}" onclick="selectUploaderPreset('${wrapperId}', '${inputId}', '${p.url}', '${p.label}')" title="${p.label}">
+              <img src="${p.url}" alt="${p.label}">
+              <span class="preset-label">${p.label}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Tab 3: External URL -->
+      <div class="uploader-pane" id="${wrapperId}-pane-url" style="display:none;">
+        <div class="uploader-url-box">
+          <input type="url" id="${wrapperId}-url-input" class="form-control" placeholder="https://... direct image link">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="applyUploaderUrl('${wrapperId}', '${inputId}')">Apply Link</button>
+        </div>
+      </div>
+
+      <!-- Live Preview Bar -->
+      <div class="uploader-preview-bar" id="${wrapperId}-preview-bar">
+        <img src="${currentVal}" id="${wrapperId}-preview-img" class="uploader-preview-thumb" alt="Preview">
+        <div class="uploader-preview-info">
+          <div class="uploader-preview-source" id="${wrapperId}-preview-label">${getPreviewDisplayLabel(currentVal)}</div>
+          <span class="uploader-preview-badge" id="${wrapperId}-preview-badge">${getPreviewBadge(currentVal)}</span>
+        </div>
+        <button type="button" class="uploader-preview-remove" onclick="resetUploaderImage('${wrapperId}', '${inputId}', '${defaultVal}')" title="Reset image">
+          ✕ Reset
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function switchUploaderTab(wrapperId, tab) {
+  const card = document.getElementById(`${wrapperId}-card`);
+  if (!card) return;
+  card.querySelectorAll('.uploader-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-tab') === tab);
+  });
+  ['upload', 'presets', 'url'].forEach(t => {
+    const pane = document.getElementById(`${wrapperId}-pane-${t}`);
+    if (pane) pane.style.display = t === tab ? 'block' : 'none';
+  });
+}
+
+function handleUploaderFileSelect(input, wrapperId, inputId) {
+  if (input.files && input.files[0]) {
+    compressAndReadImage(input.files[0], (dataUrl, fileName) => {
+      setUploaderValue(wrapperId, inputId, dataUrl, `Uploaded: ${fileName || 'Photo'}`, '📁 Uploaded');
+    });
+  }
+}
+
+function handleUploaderDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('dragover');
+}
+
+function handleUploaderDragLeave(e) {
+  e.currentTarget.classList.remove('dragover');
+}
+
+function handleUploaderDrop(e, wrapperId, inputId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('dragover');
+  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    compressAndReadImage(e.dataTransfer.files[0], (dataUrl, fileName) => {
+      setUploaderValue(wrapperId, inputId, dataUrl, `Uploaded: ${fileName || 'Photo'}`, '📁 Uploaded');
+    });
+  }
+}
+
+function selectUploaderPreset(wrapperId, inputId, url, label) {
+  setUploaderValue(wrapperId, inputId, url, `Preset: ${label}`, '🖼️ Preset Gallery');
+  const card = document.getElementById(`${wrapperId}-card`);
+  if (card) {
+    card.querySelectorAll('.uploader-preset-item').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('title') === label);
+    });
+  }
+}
+
+function applyUploaderUrl(wrapperId, inputId) {
+  const urlInput = document.getElementById(`${wrapperId}-url-input`);
+  const val = urlInput?.value.trim();
+  if (!val) {
+    alert('Please enter a valid image web URL.');
+    return;
+  }
+  setUploaderValue(wrapperId, inputId, val, val.length > 32 ? val.slice(0, 30) + '...' : val, '🔗 Web Link');
+}
+
+function setUploaderValue(wrapperId, inputId, url, label, badge) {
+  const hiddenInput = document.getElementById(inputId);
+  if (hiddenInput) hiddenInput.value = url;
+  const previewImg = document.getElementById(`${wrapperId}-preview-img`);
+  if (previewImg) previewImg.src = url;
+  const previewLabel = document.getElementById(`${wrapperId}-preview-label`);
+  if (previewLabel) previewLabel.textContent = label || getPreviewDisplayLabel(url);
+  const previewBadge = document.getElementById(`${wrapperId}-preview-badge`);
+  if (previewBadge) previewBadge.textContent = badge || getPreviewBadge(url);
+}
+
+function resetUploaderImage(wrapperId, inputId, defaultVal) {
+  setUploaderValue(wrapperId, inputId, defaultVal, getPreviewDisplayLabel(defaultVal), getPreviewBadge(defaultVal));
+}
+
+function getPreviewDisplayLabel(url) {
+  if (!url) return 'Default Image';
+  if (url.startsWith('data:image')) return 'Custom Uploaded Photo';
+  const found = PRESET_IMAGE_LIBRARY.find(p => p.url === url);
+  if (found) return `Preset: ${found.label}`;
+  return url.length > 35 ? url.slice(0, 32) + '...' : url;
+}
+
+function getPreviewBadge(url) {
+  if (!url) return 'Default';
+  if (url.startsWith('data:image')) return '📁 Uploaded (device)';
+  if (PRESET_IMAGE_LIBRARY.some(p => p.url === url)) return '🖼️ Preset Gallery';
+  return '🔗 Web Link';
+}
+
+function initAllImageUploaders() {
+  initImageUploader('part-image-uploader-wrapper', 'part-input-image', 'assets/images/logo.png', 'Venture Logo');
+  initImageUploader('partner-admin-image-uploader-wrapper', 'partner-input-image', 'assets/images/logo.png', 'Partner Logo');
+  initImageUploader('pkg-image-uploader-wrapper', 'pkg-input-image', 'assets/images/hero.jpg', 'Package Image');
+  initImageUploader('srv-image-uploader-wrapper', 'srv-input-image', 'assets/images/scuba.jpg', 'Service Image');
+  initImageUploader('ship-image-uploader-wrapper', 'ship-input-image', 'https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop&q=80', 'Ship Image');
 }
 
 // =============================================================================
@@ -1484,6 +1699,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initModals();
   renderAdminTable();
   setupPartnerForm();
+  initAllImageUploaders();
 
   // Set default start date in builder to 14 days ahead
   const dateInput = document.getElementById('trip-date');
@@ -2016,6 +2232,7 @@ function setupPartnerForm() {
     const minBooking      = document.getElementById('part-min-booking')?.value.trim() || '';
     const details         = document.getElementById('part-details')?.value.trim();
     const paymentTerms    = document.getElementById('part-payment-terms')?.value.trim() || '';
+    const image           = document.getElementById('part-input-image')?.value.trim() || 'assets/images/logo.png';
 
     if (!name || !contact) {
       alert('Please fill out your business/venture name and WhatsApp contact number.');
@@ -2047,6 +2264,7 @@ function setupPartnerForm() {
       minBooking,
       commissionOffer: commissionSummary,
       paymentTerms,
+      image,
       status: 'Pending Verification',
       registeredDate: new Date().toLocaleDateString('en-IN')
     };
@@ -2054,6 +2272,7 @@ function setupPartnerForm() {
     partnerRegistry.unshift(newPartner);
     localStorage.setItem('lak_partners_v2', JSON.stringify(partnerRegistry));
     renderAdminTable();
+    setUploaderValue('part-image-uploader-wrapper', 'part-input-image', 'assets/images/logo.png');
 
     // Notify Admin on WhatsApp with private commission terms
     const waMessage = `🤝 *NEW PARTNER VENTURE REGISTRATION* 🤝
@@ -2286,8 +2505,9 @@ function fixAdminModalScrollHeight() {
     const modalH = modal.getBoundingClientRect().height;
     const headerH = header ? header.getBoundingClientRect().height : 0;
     const stickyH = sticky ? sticky.getBoundingClientRect().height : 0;
-    const available = Math.max(200, Math.floor(modalH - headerH - stickyH));
+    const available = Math.max(250, Math.floor(modalH - headerH - stickyH));
     body.style.maxHeight = available + 'px';
+    body.style.height = available + 'px';
   });
 }
 window.addEventListener('resize', fixAdminModalScrollHeight);
@@ -2385,7 +2605,7 @@ function switchAdminTab(tab) {
   fixAdminModalScrollHeight();
 
   // Close any open form boxes when switching tabs
-  ['admin-package-form-box', 'admin-service-form-box', 'admin-add-ship-form'].forEach(id => {
+  ['admin-package-form-box', 'admin-service-form-box', 'admin-add-ship-form-box', 'admin-partner-form-box'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -2465,25 +2685,132 @@ function renderAdminTable() {
 function renderAdminPartnersTable() {
   const partnersTbody = document.getElementById('admin-partners-tbody');
   if (partnersTbody) {
+    if (partnerRegistry.length === 0) {
+      partnersTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--text-muted);">No partner agencies registered yet. Click "+ Add New Partner Agency" above to create one.</td></tr>';
+      return;
+    }
     partnersTbody.innerHTML = partnerRegistry.map(p => `
       <tr>
         <td>
-          <strong>${p.name}</strong>
-          ${p.registeredDate ? `<br><span style="font-size:0.72rem; color:#64748b;">📅 ${p.registeredDate}</span>` : ''}
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <img src="${p.image || 'assets/images/logo.png'}" style="width:42px;height:42px;border-radius:8px;object-fit:cover;border:1px solid #cbd5e1;box-shadow:0 1px 3px rgba(0,0,0,0.08);flex-shrink:0;" alt="${p.name}">
+            <div>
+              <strong style="color:var(--ocean-deep); font-size:0.95rem;">${p.name}</strong>
+              ${p.registeredDate ? `<br><span style="font-size:0.72rem; color:#64748b;">📅 ${p.registeredDate}</span>` : ''}
+            </div>
+          </div>
         </td>
         <td><span class="status-badge status-permit">${p.type}</span></td>
         <td>${p.islands}</td>
-        <td><a href="https://wa.me/${(p.contact || '').replace(/[^0-9]/g,'')}" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">📞 ${p.contact}</a></td>
+        <td><a href="https://wa.me/${(p.contact || '').replace(/[^0-9]/g,'')}" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">📱 ${p.contact}</a></td>
         <td>
           <div style="background:#fef9ec; border:1px solid #fcd34d; border-radius:6px; padding:0.3rem 0.5rem; display:inline-block;">
-            <strong style="color:#92400e; font-size:0.8rem;">🔒 ${p.commissionOffer || (p.commissionValue ? `₹${p.commissionValue}` : 'N/A')}</strong>
+            <strong style="color:#92400e; font-size:0.8rem;">💰 ${p.commissionOffer || (p.commissionValue ? `₹${p.commissionValue}` : 'N/A')}</strong>
             ${p.paymentTerms ? `<div style="font-size:0.72rem; color:#78350f;">Terms: ${p.paymentTerms}</div>` : ''}
           </div>
         </td>
-        <td><span class="status-badge status-confirmed">${p.status || 'Approved'}</span></td>
+        <td><span class="status-badge ${p.status === 'Approved' ? 'status-confirmed' : 'status-permit'}">${p.status || 'Approved'}</span></td>
+        <td>
+          <div style="display:flex; gap:0.35rem;">
+            <button class="btn btn-outline btn-sm" style="padding:0.25rem 0.5rem; font-size:0.75rem;" onclick="editAdminPartner('${p.id}')" title="Edit Partner">✏️ Edit</button>
+            <button class="btn btn-outline btn-sm" style="padding:0.25rem 0.45rem; font-size:0.75rem; color:#ef4444; border-color:#fca5a5;" onclick="deleteAdminPartner('${p.id}')" title="Delete Partner">🗑️</button>
+          </div>
+        </td>
       </tr>
     `).join('');
   }
+}
+
+// Partner Agency Admin CRUD Handlers
+function togglePartnerForm(show = null) {
+  const box = document.getElementById('admin-partner-form-box');
+  if (!box) return;
+  const isHidden = box.style.display === 'none';
+  const shouldShow = (show !== null ? show : isHidden);
+  box.style.display = shouldShow ? 'block' : 'none';
+  if (shouldShow && !document.getElementById('partner-edit-id').value) {
+    document.getElementById('admin-partner-form').reset();
+    document.getElementById('partner-form-heading').textContent = '🤝 Add New Partner Agency';
+    setUploaderValue('partner-admin-image-uploader-wrapper', 'partner-input-image', 'assets/images/logo.png');
+  }
+  if (shouldShow) {
+    const modalBody = document.querySelector('.admin-modal-body');
+    if (modalBody) modalBody.scrollTop = 0;
+    fixAdminModalScrollHeight();
+  }
+}
+
+function handleSavePartner(e) {
+  e.preventDefault();
+  const editId = document.getElementById('partner-edit-id').value;
+  const name = document.getElementById('partner-input-name').value.trim();
+  const type = document.getElementById('partner-input-type').value;
+  const islands = document.getElementById('partner-input-islands').value.trim();
+  const contact = document.getElementById('partner-input-contact').value.trim();
+  const commission = document.getElementById('partner-input-commission').value.trim();
+  const status = document.getElementById('partner-input-status').value;
+  const image = document.getElementById('partner-input-image').value || 'assets/images/logo.png';
+
+  if (!name || !islands || !contact) {
+    alert('Please complete all required fields.');
+    return;
+  }
+
+  if (editId) {
+    const idx = partnerRegistry.findIndex(p => p.id === editId);
+    if (idx !== -1) {
+      partnerRegistry[idx] = {
+        ...partnerRegistry[idx],
+        name, type, islands, contact,
+        commissionOffer: commission,
+        status, image
+      };
+      showToast(`✅ Updated partner: ${name}`);
+    }
+  } else {
+    const newPartner = {
+      id: 'partner_' + Date.now(),
+      name, type, islands, contact,
+      commissionOffer: commission,
+      status, image,
+      registeredDate: new Date().toLocaleDateString('en-GB')
+    };
+    partnerRegistry.unshift(newPartner);
+    showToast(`✅ Added new partner: ${name}`);
+  }
+
+  localStorage.setItem('lak_partners_v2', JSON.stringify(partnerRegistry));
+  renderAdminPartnersTable();
+  togglePartnerForm(false);
+}
+
+function editAdminPartner(id) {
+  const p = partnerRegistry.find(item => item.id === id);
+  if (!p) return;
+
+  document.getElementById('partner-edit-id').value = p.id;
+  document.getElementById('partner-input-name').value = p.name;
+  document.getElementById('partner-input-type').value = p.type;
+  document.getElementById('partner-input-islands').value = p.islands;
+  document.getElementById('partner-input-contact').value = p.contact;
+  document.getElementById('partner-input-commission').value = p.commissionOffer || p.commissionValue || '';
+  document.getElementById('partner-input-status').value = p.status || 'Approved';
+  document.getElementById('partner-input-image').value = p.image || 'assets/images/logo.png';
+  setUploaderValue('partner-admin-image-uploader-wrapper', 'partner-input-image', p.image || 'assets/images/logo.png');
+
+  document.getElementById('partner-form-heading').textContent = `Edit Partner: ${p.name}`;
+  togglePartnerForm(true);
+}
+
+function deleteAdminPartner(id) {
+  const p = partnerRegistry.find(item => item.id === id);
+  if (!p) return;
+  if (!confirm(`Are you sure you want to remove ${p.name}?`)) return;
+
+  partnerRegistry = partnerRegistry.filter(item => item.id !== id);
+  localStorage.setItem('lak_partners_v2', JSON.stringify(partnerRegistry));
+  renderAdminPartnersTable();
+  showToast(`🗑️ Partner removed: ${p.name}`);
 }
 
 function updateBookingStatus(id, newStatus) {
@@ -2582,14 +2909,21 @@ function renderAdminShipsEditor() {
 
   container.innerHTML = currentShipSchedules.map(ship => {
     const releaseIsPending = (ship.releaseDate || '').includes('Pending') || (ship.releaseDate || '').includes('TBD');
+    const totalProgs = Object.values(ship.islandPrograms || {}).reduce((sum, arr) => sum + arr.length, 0);
+    const sailingCount = (ship.sailingDates || []).length;
     return `
     <div class="ship-edit-card" id="ship-card-${ship.id}">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
         <div>
           <strong style="font-size:1.05rem; color:var(--ocean-deep);">🚢 ${ship.vessel}</strong>
           <span style="font-size:0.8rem; color:var(--text-muted); display:block;">${ship.routes} • ${ship.capacity}</span>
+          <div style="display:flex; gap:0.4rem; margin-top:0.4rem; flex-wrap:wrap;">
+            ${sailingCount > 0 ? `<span style="font-size:0.72rem; background:#dbeafe; color:#1e40af; padding:0.15rem 0.5rem; border-radius:4px; font-weight:600;">📅 ${sailingCount} date${sailingCount>1?'s':''}</span>` : ''}
+            ${totalProgs > 0 ? `<span style="font-size:0.72rem; background:#dcfce7; color:#166534; padding:0.15rem 0.5rem; border-radius:4px; font-weight:600;">🏝️ ${totalProgs} program${totalProgs>1?'s':''}</span>` : ''}
+          </div>
         </div>
         <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" style="padding:0.3rem 0.7rem; font-size:0.75rem; background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="openIslandProgramsModal('${ship.id}')">🏝️ Programs &amp; Dates</button>
           <button class="btn btn-outline btn-sm" style="padding:0.3rem 0.7rem; font-size:0.75rem;" onclick="editShipInForm('${ship.id}')">✏️ Edit</button>
           <button class="btn btn-outline btn-sm" style="padding:0.3rem 0.6rem; font-size:0.75rem; color:#ef4444; border-color:#fca5a5;" onclick="deleteAdminShip('${ship.id}')">🗑️ Delete</button>
         </div>
@@ -2660,7 +2994,8 @@ function renderAdminShipsEditor() {
         </div>
       </div>
 
-      <div style="display:flex; justify-content:flex-end;">
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" style="background:#ecfdf5; border-color:#6ee7b7; color:#065f46;" onclick="openIslandProgramsModal('${ship.id}')">🏝️ Manage Programs &amp; Dates</button>
         <button class="btn btn-primary btn-sm" onclick="saveAdminShipEdit('${ship.id}')">💾 Save &amp; Publish Live</button>
       </div>
     </div>
@@ -2853,6 +3188,485 @@ function handleSaveNewShip(e) {
 
 // Keep openAddShipModal alias for backward compat
 function openAddShipModal() { toggleAddShipForm(true); }
+
+// =============================================================================
+// SHIP VOYAGE ISLAND PROGRAMS MANAGER
+// Admin can click island names in a voyage to add/edit/delete programs per stop
+// =============================================================================
+
+// Open the Island Programs sub-modal for a specific ship
+function openIslandProgramsModal(shipId) {
+  const ship = currentShipSchedules.find(s => s.id === shipId);
+  if (!ship) return;
+
+  // Parse island stops from the route string
+  const routeIslands = extractIslandsFromRoute(ship.routes);
+
+  const modal = document.getElementById('island-programs-modal');
+  if (!modal) return;
+
+  document.getElementById('ipm-ship-title').textContent = `🚢 ${ship.vessel}`;
+  document.getElementById('ipm-ship-route').textContent = `📍 Route: ${ship.routes}`;
+  document.getElementById('ipm-ship-id').value = shipId;
+
+  renderIslandProgramsUI(ship, routeIslands);
+  modal.classList.add('active');
+  fixAdminModalScrollHeight();
+}
+
+function closeIslandProgramsModal() {
+  const modal = document.getElementById('island-programs-modal');
+  if (modal) modal.classList.remove('active');
+}
+
+// Extract island names from route string
+function extractIslandsFromRoute(route) {
+  const knownIslands = [
+    'Kavaratti', 'Agatti', 'Kadmat', 'Kalpeni', 'Androth', 'Amini',
+    'Minicoy', 'Kiltan', 'Chetlat', 'Bitra', 'Bangaram', 'Kochi', 'Cochin'
+  ];
+  const found = [];
+  const routeUpper = route.toUpperCase();
+  knownIslands.forEach(isl => {
+    if (routeUpper.includes(isl.toUpperCase())) found.push(isl);
+  });
+
+  // Also parse codes
+  Object.entries(ISLAND_PORT_CODES).forEach(([code, name]) => {
+    if (routeUpper.includes(code) && !found.includes(name)) found.push(name);
+  });
+
+  if (found.length === 0) found.push('Kochi', 'Kavaratti', 'Agatti');
+  return found;
+}
+
+// Render the island buttons + programs list in the modal
+function renderIslandProgramsUI(ship, islands) {
+  const container = document.getElementById('ipm-islands-area');
+  if (!container) return;
+
+  const programs = ship.islandPrograms || {};
+
+  container.innerHTML = `
+    <div style="margin-bottom:1.25rem;">
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">
+        Click an island/port stop to add or edit programs, activities, and port schedules for that stop.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.5rem;">
+        ${islands.map(isl => {
+          const count = (programs[isl] || []).length;
+          return `<button class="island-prog-btn ${count > 0 ? 'has-programs' : ''}" 
+            onclick="selectIslandForPrograms('${isl}', '${ship.id}')" 
+            id="ipm-btn-${isl.replace(/\s/g,'_')}">
+            🏝️ ${isl}
+            ${count > 0 ? `<span class="island-prog-count">${count}</span>` : ''}
+          </button>`;
+        }).join('')}
+      </div>
+      <div id="ipm-selected-island-panel" style="display:none; background:#f8fafc; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:1rem;">
+        <!-- Island program editor loads here -->
+      </div>
+    </div>
+
+    <!-- Multi-Date Voyage Scheduler -->
+    <div style="background:#fff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:1rem; margin-bottom:1rem;">
+      <h5 style="margin:0 0 0.75rem 0; color:var(--ocean-deep); font-size:0.95rem;">📅 Voyage Date Schedule</h5>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+        Add multiple sailing dates for this voyage. Passengers will see all upcoming dates.
+      </p>
+      <div id="ipm-sailing-dates-list" style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:0.75rem;">
+        ${renderSailingDatesList(ship)}
+      </div>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:flex-end;">
+        <div style="flex:1; min-width:200px;">
+          <label style="font-size:0.75rem; font-weight:600; color:#374151; display:block; margin-bottom:0.25rem;">Add Sailing Date / Text</label>
+          <input type="text" id="ipm-new-date-input" class="form-control" 
+            placeholder="e.g. Fri, 25 Oct 2026 or Weekly Fridays" 
+            style="padding:0.4rem 0.6rem; font-size:0.82rem;">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="addSailingDate('${ship.id}')">➕ Add Date</button>
+      </div>
+    </div>
+
+    <!-- Booking Window Manager -->
+    <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:var(--radius-md); padding:1rem;">
+      <h5 style="margin:0 0 0.75rem 0; color:#c2410c; font-size:0.95rem;">🎟️ Booking Window & Release Control</h5>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.75rem;">
+        <div>
+          <label style="font-size:0.75rem; font-weight:600; color:#7c2d12; display:block; margin-bottom:0.25rem;">Release Date/Time</label>
+          <input type="text" id="ipm-release-datetime" class="form-control" 
+            value="${ship.releaseDateTime || ship.releaseDate || ''}"
+            placeholder="e.g. 25 Sep 2026 at 10:00 AM IST"
+            style="padding:0.4rem 0.6rem; font-size:0.82rem;">
+        </div>
+        <div>
+          <label style="font-size:0.75rem; font-weight:600; color:#7c2d12; display:block; margin-bottom:0.25rem;">Advance Booking Window (Days)</label>
+          <input type="number" id="ipm-booking-window" class="form-control" 
+            value="${ship.bookingWindowDays || 30}"
+            min="1" max="365"
+            style="padding:0.4rem 0.6rem; font-size:0.82rem;">
+        </div>
+        <div>
+          <label style="font-size:0.75rem; font-weight:600; color:#7c2d12; display:block; margin-bottom:0.25rem;">No-Show Ticket Window (hrs before sailing)</label>
+          <input type="number" id="ipm-noshow-window" class="form-control" 
+            value="${ship.noShowWindowHours || 2}"
+            min="0.5" max="12" step="0.5"
+            style="padding:0.4rem 0.6rem; font-size:0.82rem;">
+        </div>
+        <div>
+          <label style="font-size:0.75rem; font-weight:600; color:#7c2d12; display:block; margin-bottom:0.25rem;">Gate Closes (hrs before sailing)</label>
+          <input type="number" id="ipm-gate-close" class="form-control" 
+            value="${ship.gateCloseHours || 1.5}"
+            min="0.5" max="8" step="0.5"
+            style="padding:0.4rem 0.6rem; font-size:0.82rem;">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:0.75rem; font-weight:600; color:#7c2d12; display:block; margin-bottom:0.25rem;">Booking Status Note (shown publicly)</label>
+        <input type="text" id="ipm-booking-note" class="form-control" 
+          value="${ship.bookingNote || ''}"
+          placeholder="e.g. Advance booking open on lakshadweep.irctc.co.in · 30-day window"
+          style="padding:0.4rem 0.6rem; font-size:0.82rem;">
+      </div>
+    </div>
+  `;
+}
+
+// Render sailing dates list for a ship
+function renderSailingDatesList(ship) {
+  const dates = ship.sailingDates || [];
+  if (dates.length === 0) {
+    return `<div style="font-size:0.82rem; color:var(--text-muted); font-style:italic; padding:0.25rem 0;">No sailing dates added yet. Add your first date below.</div>`;
+  }
+  return dates.map((d, idx) => `
+    <div style="display:flex; align-items:center; gap:0.5rem; background:#fff; border:1px solid var(--border-light); border-radius:6px; padding:0.4rem 0.75rem;">
+      <span style="font-size:0.85rem; flex:1; color:#1e293b;">📅 ${d}</span>
+      <button onclick="removeSailingDate('${ship.id}', ${idx})" 
+        style="background:none; border:none; cursor:pointer; color:#ef4444; font-size:0.85rem; padding:0 0.2rem;" title="Remove date">✕</button>
+    </div>
+  `).join('');
+}
+
+// Add a sailing date to a ship
+function addSailingDate(shipId) {
+  const input = document.getElementById('ipm-new-date-input');
+  const val = input?.value.trim();
+  if (!val) { alert('Please enter a date or description.'); return; }
+
+  const idx = currentShipSchedules.findIndex(s => s.id === shipId);
+  if (idx === -1) return;
+
+  if (!currentShipSchedules[idx].sailingDates) currentShipSchedules[idx].sailingDates = [];
+  currentShipSchedules[idx].sailingDates.push(val);
+
+  // Also update the main nextSailing field with combined text
+  const allDates = currentShipSchedules[idx].sailingDates;
+  currentShipSchedules[idx].nextSailing = allDates.slice(0, 3).join(' • ') + (allDates.length > 3 ? ` +${allDates.length-3} more` : '');
+
+  localStorage.setItem('lak_ship_schedules_v3', JSON.stringify(currentShipSchedules));
+  renderTransportSchedules();
+
+  // Re-render the dates list
+  const listEl = document.getElementById('ipm-sailing-dates-list');
+  if (listEl) listEl.innerHTML = renderSailingDatesList(currentShipSchedules[idx]);
+  if (input) input.value = '';
+  showToast(`📅 Sailing date added: ${val}`);
+}
+
+// Remove a sailing date
+function removeSailingDate(shipId, dateIdx) {
+  const idx = currentShipSchedules.findIndex(s => s.id === shipId);
+  if (idx === -1) return;
+  if (!currentShipSchedules[idx].sailingDates) return;
+
+  currentShipSchedules[idx].sailingDates.splice(dateIdx, 1);
+  const allDates = currentShipSchedules[idx].sailingDates;
+  currentShipSchedules[idx].nextSailing = allDates.length > 0
+    ? allDates.slice(0, 3).join(' • ') + (allDates.length > 3 ? ` +${allDates.length-3} more` : '')
+    : currentShipSchedules[idx].nextSailing;
+
+  localStorage.setItem('lak_ship_schedules_v3', JSON.stringify(currentShipSchedules));
+  renderTransportSchedules();
+
+  const listEl = document.getElementById('ipm-sailing-dates-list');
+  if (listEl) listEl.innerHTML = renderSailingDatesList(currentShipSchedules[idx]);
+  showToast('Date removed.');
+}
+
+// Select an island to view/edit its programs
+function selectIslandForPrograms(islandName, shipId) {
+  // Highlight the selected button
+  document.querySelectorAll('.island-prog-btn').forEach(b => b.classList.remove('selected'));
+  const btn = document.getElementById(`ipm-btn-${islandName.replace(/\s/g,'_')}`);
+  if (btn) btn.classList.add('selected');
+
+  const ship = currentShipSchedules.find(s => s.id === shipId);
+  if (!ship) return;
+
+  const programs = (ship.islandPrograms || {})[islandName] || [];
+  const panel = document.getElementById('ipm-selected-island-panel');
+  if (!panel) return;
+
+  panel.style.display = 'block';
+  panel.dataset.island = islandName;
+  panel.dataset.shipId = shipId;
+
+  panel.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+      <div>
+        <h5 style="margin:0 0 0.2rem 0; color:var(--ocean-deep); font-size:0.95rem;">🏝️ ${islandName} — Port Programs & Activities</h5>
+        <p style="margin:0; font-size:0.78rem; color:var(--text-muted);">Add timed activities, shore excursions, and port programs for this island stop.</p>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="showAddProgramForm('${islandName}','${shipId}')">➕ Add Program</button>
+    </div>
+
+    <div id="ipm-program-list-${islandName.replace(/\s/g,'_')}">
+      ${renderIslandProgramList(programs, islandName, shipId)}
+    </div>
+
+    <!-- Add/Edit Program Form (hidden by default) -->
+    <div id="ipm-add-program-form-${islandName.replace(/\s/g,'_')}" style="display:none; background:#fff; border:1px solid #bfdbfe; border-radius:var(--radius-md); padding:1rem; margin-top:0.75rem;">
+      <h6 style="margin:0 0 0.75rem 0; color:#0c4a6e; font-size:0.88rem;">➕ Add Island Program / Activity</h6>
+      <input type="hidden" id="ipm-prog-edit-idx-${islandName.replace(/\s/g,'_')}" value="">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.6rem;">
+        <div>
+          <label style="font-size:0.73rem; font-weight:600; display:block; margin-bottom:0.2rem; color:#374151;">Activity / Program Name *</label>
+          <input type="text" id="ipm-prog-name-${islandName.replace(/\s/g,'_')}" class="form-control" 
+            placeholder="e.g. Snorkelling Safari, Village Walk, Coral Reef Tour"
+            style="padding:0.35rem 0.5rem; font-size:0.82rem;">
+        </div>
+        <div>
+          <label style="font-size:0.73rem; font-weight:600; display:block; margin-bottom:0.2rem; color:#374151;">Type / Category</label>
+          <select id="ipm-prog-type-${islandName.replace(/\s/g,'_')}" class="form-control" style="padding:0.35rem 0.5rem; font-size:0.82rem;">
+            <option value="🤿 Water Activity">🤿 Water Activity</option>
+            <option value="🚶 Shore Excursion">🚶 Shore Excursion</option>
+            <option value="🛥️ Boat Trip">🛥️ Boat Trip</option>
+            <option value="🏖️ Beach Program">🏖️ Beach Program</option>
+            <option value="🎒 Sightseeing">🎒 Sightseeing</option>
+            <option value="🍽️ Local Dining">🍽️ Local Dining</option>
+            <option value="📸 Photography Tour">📸 Photography Tour</option>
+            <option value="🕌 Cultural Visit">🕌 Cultural Visit</option>
+            <option value="⛵ Island Cruise">⛵ Island Cruise</option>
+            <option value="🔧 Port Operations">🔧 Port Operations</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.73rem; font-weight:600; display:block; margin-bottom:0.2rem; color:#374151;">Port Arrival Time</label>
+          <input type="text" id="ipm-prog-arrival-${islandName.replace(/\s/g,'_')}" class="form-control" 
+            placeholder="e.g. 08:00 AM" style="padding:0.35rem 0.5rem; font-size:0.82rem;">
+        </div>
+        <div>
+          <label style="font-size:0.73rem; font-weight:600; display:block; margin-bottom:0.2rem; color:#374151;">Departure / End Time</label>
+          <input type="text" id="ipm-prog-departure-${islandName.replace(/\s/g,'_')}" class="form-control" 
+            placeholder="e.g. 05:00 PM" style="padding:0.35rem 0.5rem; font-size:0.82rem;">
+        </div>
+        <div>
+          <label style="font-size:0.73rem; font-weight:600; display:block; margin-bottom:0.2rem; color:#374151;">Duration</label>
+          <input type="text" id="ipm-prog-duration-${islandName.replace(/\s/g,'_')}" class="form-control" 
+            placeholder="e.g. 2 Hours, Full Day" style="padding:0.35rem 0.5rem; font-size:0.82rem;">
+        </div>
+        <div>
+          <label style="font-size:0.73rem; font-weight:600; display:block; margin-bottom:0.2rem; color:#374151;">Cost (₹, leave blank = included)</label>
+          <input type="text" id="ipm-prog-cost-${islandName.replace(/\s/g,'_')}" class="form-control" 
+            placeholder="e.g. ₹500/person or Included" style="padding:0.35rem 0.5rem; font-size:0.82rem;">
+        </div>
+      </div>
+      <div style="margin-bottom:0.6rem;">
+        <label style="font-size:0.73rem; font-weight:600; display:block; margin-bottom:0.2rem; color:#374151;">Program Description</label>
+        <textarea id="ipm-prog-desc-${islandName.replace(/\s/g,'_')}" class="form-control" rows="2" 
+          placeholder="Describe the activity, what's included, meeting point, etc."
+          style="padding:0.35rem 0.5rem; font-size:0.82rem; resize:vertical;"></textarea>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+        <button class="btn btn-outline btn-sm" 
+          onclick="document.getElementById('ipm-add-program-form-${islandName.replace(/\s/g,'_')}').style.display='none'">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="saveIslandProgram('${islandName}','${shipId}')">💾 Save Program</button>
+      </div>
+    </div>
+  `;
+}
+
+// Render the list of programs for an island
+function renderIslandProgramList(programs, islandName, shipId) {
+  const safeIsland = islandName.replace(/\s/g,'_');
+  if (programs.length === 0) {
+    return `<div style="font-size:0.82rem; color:var(--text-muted); font-style:italic; padding:0.5rem 0;">
+      No programs added for ${islandName} yet. Click "Add Program" to get started.
+    </div>`;
+  }
+  return `<div style="display:flex; flex-direction:column; gap:0.5rem;">
+    ${programs.map((p, idx) => `
+      <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:0.65rem 0.9rem; display:flex; align-items:flex-start; gap:0.75rem;">
+        <div style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem; flex-wrap:wrap;">
+            <span style="font-size:0.8rem; font-weight:700; color:var(--ocean-deep);">${p.type || '🏝️'}</span>
+            <strong style="font-size:0.88rem; color:#1e293b;">${p.name}</strong>
+            ${p.cost ? `<span style="font-size:0.75rem; background:#dcfce7; color:#166534; padding:0.1rem 0.4rem; border-radius:4px; font-weight:600;">${p.cost}</span>` : `<span style="font-size:0.72rem; background:#dbeafe; color:#1e40af; padding:0.1rem 0.4rem; border-radius:4px;">Included</span>`}
+          </div>
+          <div style="font-size:0.77rem; color:#64748b; display:flex; gap:0.75rem; flex-wrap:wrap;">
+            ${p.arrival ? `<span>🛬 Arrive: ${p.arrival}</span>` : ''}
+            ${p.departure ? `<span>🛫 Depart: ${p.departure}</span>` : ''}
+            ${p.duration ? `<span>⏱️ ${p.duration}</span>` : ''}
+          </div>
+          ${p.desc ? `<p style="margin:0.3rem 0 0; font-size:0.78rem; color:#475569;">${p.desc}</p>` : ''}
+        </div>
+        <div style="display:flex; gap:0.3rem; flex-shrink:0;">
+          <button onclick="editIslandProgram('${islandName}','${shipId}',${idx})" 
+            style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:4px; padding:0.25rem 0.5rem; cursor:pointer; font-size:0.75rem;" title="Edit">✏️</button>
+          <button onclick="deleteIslandProgram('${islandName}','${shipId}',${idx})" 
+            style="background:#fef2f2; border:1px solid #fca5a5; border-radius:4px; padding:0.25rem 0.5rem; cursor:pointer; font-size:0.75rem; color:#ef4444;" title="Delete">🗑️</button>
+        </div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+// Show the add program form
+function showAddProgramForm(islandName, shipId) {
+  const safeIsland = islandName.replace(/\s/g,'_');
+  const formEl = document.getElementById(`ipm-add-program-form-${safeIsland}`);
+  if (!formEl) return;
+  // Clear form
+  document.getElementById(`ipm-prog-edit-idx-${safeIsland}`).value = '';
+  document.getElementById(`ipm-prog-name-${safeIsland}`).value = '';
+  document.getElementById(`ipm-prog-type-${safeIsland}`).value = '🤿 Water Activity';
+  document.getElementById(`ipm-prog-arrival-${safeIsland}`).value = '';
+  document.getElementById(`ipm-prog-departure-${safeIsland}`).value = '';
+  document.getElementById(`ipm-prog-duration-${safeIsland}`).value = '';
+  document.getElementById(`ipm-prog-cost-${safeIsland}`).value = '';
+  document.getElementById(`ipm-prog-desc-${safeIsland}`).value = '';
+  formEl.style.display = 'block';
+  formEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Pre-fill form for editing an existing program
+function editIslandProgram(islandName, shipId, progIdx) {
+  const safeIsland = islandName.replace(/\s/g,'_');
+  const ship = currentShipSchedules.find(s => s.id === shipId);
+  if (!ship) return;
+  const prog = (ship.islandPrograms || {})[islandName]?.[progIdx];
+  if (!prog) return;
+
+  document.getElementById(`ipm-prog-edit-idx-${safeIsland}`).value = progIdx;
+  document.getElementById(`ipm-prog-name-${safeIsland}`).value = prog.name || '';
+  document.getElementById(`ipm-prog-type-${safeIsland}`).value = prog.type || '🤿 Water Activity';
+  document.getElementById(`ipm-prog-arrival-${safeIsland}`).value = prog.arrival || '';
+  document.getElementById(`ipm-prog-departure-${safeIsland}`).value = prog.departure || '';
+  document.getElementById(`ipm-prog-duration-${safeIsland}`).value = prog.duration || '';
+  document.getElementById(`ipm-prog-cost-${safeIsland}`).value = prog.cost || '';
+  document.getElementById(`ipm-prog-desc-${safeIsland}`).value = prog.desc || '';
+
+  const formEl = document.getElementById(`ipm-add-program-form-${safeIsland}`);
+  if (formEl) {
+    formEl.style.display = 'block';
+    formEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// Save (create or update) an island program
+function saveIslandProgram(islandName, shipId) {
+  const safeIsland = islandName.replace(/\s/g,'_');
+  const name = document.getElementById(`ipm-prog-name-${safeIsland}`)?.value.trim();
+  if (!name) { alert('Please enter a program/activity name.'); return; }
+
+  const type = document.getElementById(`ipm-prog-type-${safeIsland}`)?.value || '';
+  const arrival = document.getElementById(`ipm-prog-arrival-${safeIsland}`)?.value.trim() || '';
+  const departure = document.getElementById(`ipm-prog-departure-${safeIsland}`)?.value.trim() || '';
+  const duration = document.getElementById(`ipm-prog-duration-${safeIsland}`)?.value.trim() || '';
+  const cost = document.getElementById(`ipm-prog-cost-${safeIsland}`)?.value.trim() || '';
+  const desc = document.getElementById(`ipm-prog-desc-${safeIsland}`)?.value.trim() || '';
+  const editIdxRaw = document.getElementById(`ipm-prog-edit-idx-${safeIsland}`)?.value;
+  const editIdx = editIdxRaw !== '' && editIdxRaw !== undefined ? parseInt(editIdxRaw) : -1;
+
+  const progData = { name, type, arrival, departure, duration, cost, desc };
+
+  const shipIdx = currentShipSchedules.findIndex(s => s.id === shipId);
+  if (shipIdx === -1) return;
+
+  if (!currentShipSchedules[shipIdx].islandPrograms) currentShipSchedules[shipIdx].islandPrograms = {};
+  if (!currentShipSchedules[shipIdx].islandPrograms[islandName]) currentShipSchedules[shipIdx].islandPrograms[islandName] = [];
+
+  if (!isNaN(editIdx) && editIdx >= 0) {
+    currentShipSchedules[shipIdx].islandPrograms[islandName][editIdx] = progData;
+    showToast(`✅ Program updated: ${name} at ${islandName}`);
+  } else {
+    currentShipSchedules[shipIdx].islandPrograms[islandName].push(progData);
+    showToast(`✅ Program added: ${name} at ${islandName}`);
+  }
+
+  localStorage.setItem('lak_ship_schedules_v3', JSON.stringify(currentShipSchedules));
+
+  // Re-render program list and buttons
+  const listEl = document.getElementById(`ipm-program-list-${safeIsland}`);
+  if (listEl) {
+    const updatedProgs = currentShipSchedules[shipIdx].islandPrograms[islandName];
+    listEl.innerHTML = renderIslandProgramList(updatedProgs, islandName, shipId);
+  }
+
+  // Update island button count
+  const btn = document.getElementById(`ipm-btn-${safeIsland}`);
+  if (btn) {
+    const count = currentShipSchedules[shipIdx].islandPrograms[islandName].length;
+    btn.className = `island-prog-btn has-programs selected`;
+    btn.innerHTML = `🏝️ ${islandName}<span class="island-prog-count">${count}</span>`;
+  }
+
+  // Hide form
+  const formEl = document.getElementById(`ipm-add-program-form-${safeIsland}`);
+  if (formEl) formEl.style.display = 'none';
+}
+
+// Delete an island program
+function deleteIslandProgram(islandName, shipId, progIdx) {
+  if (!confirm(`Remove this program from ${islandName}?`)) return;
+  const safeIsland = islandName.replace(/\s/g,'_');
+  const shipIdx = currentShipSchedules.findIndex(s => s.id === shipId);
+  if (shipIdx === -1) return;
+
+  currentShipSchedules[shipIdx].islandPrograms?.[islandName]?.splice(progIdx, 1);
+  localStorage.setItem('lak_ship_schedules_v3', JSON.stringify(currentShipSchedules));
+
+  const listEl = document.getElementById(`ipm-program-list-${safeIsland}`);
+  if (listEl) {
+    const progs = (currentShipSchedules[shipIdx].islandPrograms || {})[islandName] || [];
+    listEl.innerHTML = renderIslandProgramList(progs, islandName, shipId);
+  }
+  const btn = document.getElementById(`ipm-btn-${safeIsland}`);
+  if (btn) {
+    const count = ((currentShipSchedules[shipIdx].islandPrograms || {})[islandName] || []).length;
+    btn.className = `island-prog-btn ${count > 0 ? 'has-programs selected' : 'selected'}`;
+    btn.innerHTML = `🏝️ ${islandName}${count > 0 ? `<span class="island-prog-count">${count}</span>` : ''}`;
+  }
+  showToast('Program removed.');
+}
+
+// Save booking window settings from the Island Programs modal
+function saveIslandProgramsAndBooking(shipId) {
+  const shipIdx = currentShipSchedules.findIndex(s => s.id === shipId);
+  if (shipIdx === -1) return;
+
+  const releaseDateTime = document.getElementById('ipm-release-datetime')?.value.trim() || '';
+  const bookingWindowDays = parseInt(document.getElementById('ipm-booking-window')?.value) || 30;
+  const noShowWindowHours = parseFloat(document.getElementById('ipm-noshow-window')?.value) || 2;
+  const gateCloseHours = parseFloat(document.getElementById('ipm-gate-close')?.value) || 1.5;
+  const bookingNote = document.getElementById('ipm-booking-note')?.value.trim() || '';
+
+  Object.assign(currentShipSchedules[shipIdx], {
+    releaseDateTime,
+    releaseDate: releaseDateTime || currentShipSchedules[shipIdx].releaseDate,
+    bookingWindowDays,
+    noShowWindowHours,
+    gateCloseHours,
+    bookingNote
+  });
+
+  localStorage.setItem('lak_ship_schedules_v3', JSON.stringify(currentShipSchedules));
+  renderTransportSchedules();
+  renderAdminShipsEditor();
+
+  showToast(`✅ Booking window & programs saved for ${currentShipSchedules[shipIdx].vessel}!`);
+  closeIslandProgramsModal();
+}
 
 
 // PDF Dropzone drag & drop setup
@@ -3274,6 +4088,7 @@ function togglePackageForm(show = null) {
   if (shouldShow && !document.getElementById('pkg-edit-id').value) {
     document.getElementById('admin-package-form').reset();
     document.getElementById('pkg-form-title').textContent = '🌴 Build New Island Package';
+    setUploaderValue('pkg-image-uploader-wrapper', 'pkg-input-image', 'assets/images/hero.jpg');
     pkgCustomActivities = [];
     const list = document.getElementById('pkg-custom-activities-list');
     if (list) list.innerHTML = '';
@@ -3303,6 +4118,7 @@ function editAdminPackage(id) {
   document.getElementById('pkg-input-commission').value   = pkg.commission || 2000;
   document.getElementById('pkg-input-ribbon').value       = pkg.ribbon || '';
   document.getElementById('pkg-input-image').value        = pkg.image;
+  setUploaderValue('pkg-image-uploader-wrapper', 'pkg-input-image', pkg.image);
   document.getElementById('pkg-input-highlights').value  = (pkg.highlights || []).join('\n');
   document.getElementById('pkg-input-itinerary').value   = pkg.itinerary ? JSON.stringify(pkg.itinerary, null, 2) : '';
 
@@ -3487,6 +4303,7 @@ function toggleServiceForm(show = null) {
   if (shouldShow && !document.getElementById('srv-edit-id').value) {
     document.getElementById('admin-service-form').reset();
     document.getElementById('srv-form-title').textContent = 'Add New Marketplace Item';
+    setUploaderValue('srv-image-uploader-wrapper', 'srv-input-image', 'assets/images/scuba.jpg');
   }
   if (shouldShow) {
     // Scroll the modal body (not the page) so form is visible
@@ -3547,6 +4364,7 @@ function editAdminService(id) {
   document.getElementById('srv-input-unit').value        = srv.priceUnit;
   document.getElementById('srv-input-commission').value  = srv.commission;
   document.getElementById('srv-input-image').value       = srv.image;
+  setUploaderValue('srv-image-uploader-wrapper', 'srv-input-image', srv.image);
   document.getElementById('srv-input-desc').value        = srv.desc;
 
   // Restore commission type

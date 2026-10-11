@@ -1645,14 +1645,14 @@ button, input, select, textarea {
 }
 
 .admin-modal-body {
-  padding: 1.5rem 2rem 6.5rem;
-  overflow-y: scroll;
+  padding: 1.5rem 2rem 9rem;
+  overflow-y: auto !important;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  flex: 1 1 0;
+  flex: 1 1 auto;
   min-height: 0;
-  height: 0;
+  height: 100%;
   position: relative;
   scrollbar-width: thin;
   scrollbar-color: var(--lagoon-cyan) #f1f5f9;
@@ -2840,6 +2840,194 @@ button, input, select, textarea {
 }
 
 /* ==========================================================
+   Multi-Option Image Uploader (Device Upload, Presets, Web URL)
+   ========================================================== */
+.image-uploader-card {
+  background: #f8fafc;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  margin-top: 0.35rem;
+  transition: var(--transition);
+}
+
+.image-uploader-card:hover {
+  border-color: var(--lagoon-cyan);
+}
+
+.uploader-tabs-bar {
+  display: flex;
+  gap: 0.35rem;
+  background: #e2e8f0;
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.75rem;
+}
+
+.uploader-tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.uploader-tab-btn.active {
+  background: #ffffff;
+  color: var(--ocean-deep);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.uploader-dropzone {
+  border: 2px dashed #94a3b8;
+  border-radius: var(--radius-md);
+  padding: 1.1rem 0.85rem;
+  text-align: center;
+  background: #ffffff;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.uploader-dropzone:hover, .uploader-dropzone.dragover {
+  border-color: var(--lagoon-cyan);
+  background: #f0f9ff;
+}
+
+.uploader-dropzone-icon {
+  font-size: 1.7rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.uploader-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 0.5rem;
+}
+
+.uploader-preset-item {
+  position: relative;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1;
+  background: #cbd5e1;
+  transition: var(--transition);
+}
+
+.uploader-preset-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--lagoon-cyan);
+}
+
+.uploader-preset-item.active {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.4);
+}
+
+.uploader-preset-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.uploader-preset-item .preset-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(3, 25, 38, 0.8);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 2px 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uploader-url-box {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.uploader-preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.uploader-preview-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid #cbd5e1;
+  flex-shrink: 0;
+}
+
+.uploader-preview-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.uploader-preview-source {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ocean-deep);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uploader-preview-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #0369a1;
+  background: #e0f2fe;
+  padding: 1px 6px;
+  border-radius: 12px;
+  margin-top: 2px;
+}
+
+.uploader-preview-remove {
+  background: #fee2e2;
+  color: #ef4444;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.uploader-preview-remove:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* ==========================================================
    Monthly Ship Schedule & PDF Import System
    ========================================================== */
 .schedule-nav-tabs {
@@ -3171,10 +3359,10 @@ button, input, select, textarea {
   }
 
   .admin-modal-body {
-    padding: 1rem 1rem 6rem;
-    flex: 1 1 0;
+    padding: 1rem 1rem 8.5rem;
+    flex: 1 1 auto;
     min-height: 0;
-    height: 0;
+    height: 100%;
   }
 
   .admin-modal-header {
@@ -3209,4 +3397,218 @@ button, input, select, textarea {
   .admin-table-wrapper {
     font-size: 0.78rem;
   }
+}
+
+/* =======================================================
+   ISLAND PROGRAMS MODAL � Ship Voyage Editor
+   ======================================================= */
+
+/* Island program selector buttons */
+.island-prog-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  background: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+}
+
+.island-prog-btn:hover {
+  background: #e0f2fe;
+  border-color: #7dd3fc;
+  color: #0369a1;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(3, 105, 161, 0.15);
+}
+
+.island-prog-btn.has-programs {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.island-prog-btn.selected {
+  background: var(--ocean-deep);
+  border-color: var(--ocean-deep);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(3, 105, 161, 0.35);
+}
+
+.island-prog-btn.has-programs.selected {
+  background: #16a34a;
+  border-color: #15803d;
+}
+
+.island-prog-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0 4px;
+}
+
+/* IPM Modal Box */
+.ipm-modal-box {
+  animation: ipmSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes ipmSlideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Ship edit card enhancements */
+.ship-edit-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.ship-edit-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* ============================================================
+   Generic Modal Overlay (Island Programs Modal & others)
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 25, 38, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  overscroll-behavior: contain;
+  overflow: hidden;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  transform: scale(0.96) translateY(16px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-overlay.active .modal-box {
+  transform: scale(1) translateY(0);
+}
+
+/* IPM (Island Programs Modal) scrollbar */
+#ipm-islands-area::-webkit-scrollbar { width: 6px; }
+#ipm-islands-area::-webkit-scrollbar-track { background: #f1f5f9; }
+#ipm-islands-area::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 999px; }
+#ipm-islands-area::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+/* Island program form sections */
+.ipm-section {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.ipm-section-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ocean-deep, #0c4a6e);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ipm-prog-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  transition: background 0.15s ease;
+}
+
+.ipm-prog-item:hover { background: #f0f9ff; }
+
+.ipm-prog-item-name {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.ipm-prog-item-meta {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.ipm-date-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #e0f2fe;
+  border: 1px solid #7dd3fc;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #0369a1;
+  margin: 0.2rem;
+}
+
+.ipm-date-chip button {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.booking-window-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  .booking-window-grid { grid-template-columns: 1fr; }
 }
